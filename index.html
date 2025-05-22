@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¿Quién Quiere Ser Millonario? - Magnitudes y Unidades</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* General styling */
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(to bottom, #0a0a0a, #333333);
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            overflow-y: auto; /* Allow scrolling for smaller screens */
+        }
+
+        .game-container {
+            background-color: #1a1a1a;
+            border-radius: 20px;
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+            padding: 30px;
+            width: 100%;
+            max-width: 900px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid #00ffff;
+        }
+
+        /* Title */
+        h1 {
+            font-family: 'Roboto', sans-serif;
+            font-size: 2.8em;
+            color: #ffd700; /* Gold */
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+            line-height: 1.2;
+        }
+
+        /* Game image */
+        .game-image {
+            width: 100%;
+            max-width: 300px;
+            height: auto;
+            border-radius: 10px;
+            margin: 0 auto 20px;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
+            display: block;
+            object-fit: cover;
+        }
+
+        /* Lifelines */
+        .lifelines {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .lifeline-button {
+            background-color: #007bff; /* Blue */
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 12px 20px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4);
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .lifeline-button:hover:not(:disabled) {
+            background-color: #0056b3;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 123, 255, 0.6);
+        }
+
+        .lifeline-button:disabled {
+            background-color: #6c757d; /* Gray */
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .lifeline-button svg {
+            width: 20px;
+            height: 20px;
+            fill: white;
+        }
+
+        /* Question area */
+        .question-area {
+            background-color: #2c3e50; /* Dark blue-gray */
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: inset 0 0 15px rgba(0, 255, 255, 0.3);
+            border: 1px solid #00ffff;
+        }
+
+        .question-text {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            font-weight: 700;
+            line-height: 1.4;
+            color: #e0f7fa; /* Light cyan */
+        }
+
+        /* Options grid */
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .option-button {
+            background-color: #34495e; /* Medium blue-gray */
+            color: #ffffff;
+            border: 2px solid #00ffff;
+            border-radius: 10px;
+            padding: 15px 20px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            text-align: left;
+            font-weight: 600;
+            box-shadow: 0 4px 10px rgba(0, 255, 255, 0.2);
+        }
+
+        .option-button:hover:not(:disabled) {
+            background-color: #2c3e50;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 255, 255, 0.4);
+        }
+
+        .option-button:disabled {
+            background-color: #4a4a4a;
+            color: #cccccc;
+            cursor: not-allowed;
+            border-color: #666666;
+            box-shadow: none;
+        }
+
+        .option-button.correct {
+            background-color: #28a745; /* Green */
+            border-color: #28a745;
+            box-shadow: 0 0 20px rgba(40, 167, 69, 0.8);
+        }
+
+        .option-button.incorrect {
+            background-color: #dc3545; /* Red */
+            border-color: #dc3545;
+            box-shadow: 0 0 20px rgba(220, 53, 69, 0.8);
+        }
+
+        /* Control buttons */
+        .control-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .control-button {
+            background-color: #ffc107; /* Yellow */
+            color: #333;
+            border: none;
+            border-radius: 10px;
+            padding: 15px 30px;
+            font-size: 1.3em;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(255, 193, 7, 0.4);
+        }
+
+        .control-button:hover:not(:disabled) {
+            background-color: #e0a800;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 193, 7, 0.6);
+        }
+
+        .control-button:disabled {
+            background-color: #6c757d;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        /* Message Box */
+        .message-box-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .message-box-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .message-box {
+            background-color: #1a1a1a;
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 0 25px rgba(0, 255, 255, 0.6);
+            text-align: center;
+            border: 2px solid #00ffff;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .message-box-overlay.show .message-box {
+            transform: scale(1);
+        }
+
+        .message-box h2 {
+            color: #ffd700;
+            font-size: 2.2em;
+            margin-bottom: 20px;
+        }
+
+        .message-box p {
+            font-size: 1.3em;
+            margin-bottom: 30px;
+            line-height: 1.5;
+            color: #e0f7fa;
+        }
+
+        .message-box-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .message-box-button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 25px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .message-box-button.confirm {
+            background-color: #28a745;
+        }
+
+        .message-box-button.confirm:hover {
+            background-color: #218838;
+        }
+
+        .message-box-button.cancel {
+            background-color: #dc3545;
+        }
+
+        .message-box-button.cancel:hover {
+            background-color: #c82333;
+        }
+
+        .message-box-button:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+            }
+
+            .lifeline-button {
+                font-size: 0.9em;
+                padding: 10px 15px;
+            }
+
+            .question-text {
+                font-size: 1.4em;
+            }
+
+            .options-grid {
+                grid-template-columns: 1fr; /* Stack options on small screens */
+            }
+
+            .option-button {
+                font-size: 1em;
+                padding: 12px 15px;
+            }
+
+            .control-button {
+                font-size: 1.1em;
+                padding: 12px 25px;
+            }
+
+            .message-box h2 {
+                font-size: 1.8em;
+            }
+
+            .message-box p {
+                font-size: 1.1em;
+            }
+
+            /* Adjust game container for smaller screens to accommodate prize ladder */
+            .game-container {
+                flex-direction: column;
+                align-items: center;
+                padding: 20px;
+            }
+
+            .prize-ladder {
+                position: relative;
+                width: 100%;
+                margin-top: 20px;
+                order: -1; /* Move to top on small screens */
+            }
+
+            .prize-level-item {
+                font-size: 0.9em;
+                padding: 8px 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .game-container {
+                padding: 20px;
+                gap: 15px;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .lifelines {
+                gap: 10px;
+            }
+
+            .lifeline-button {
+                font-size: 0.8em;
+                padding: 8px 12px;
+            }
+
+            .question-area {
+                padding: 15px;
+            }
+
+            .question-text {
+                font-size: 1.2em;
+            }
+
+            .option-button {
+                font-size: 0.9em;
+                padding: 10px 12px;
+            }
+
+            .control-buttons {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .control-button {
+                width: 100%;
+            }
+        }
+
+        /* Prize Ladder Styling */
+        .game-area-with-ladder {
+            display: flex;
+            width: 100%;
+            justify-content: space-between;
+            align-items: flex-start; /* Align items to the top */
+            gap: 30px; /* Space between question area and ladder */
+        }
+
+        .main-game-content {
+            flex-grow: 1; /* Allows main content to take available space */
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .prize-ladder {
+            background-color: #2c3e50;
+            border-radius: 15px;
+            padding: 15px 10px;
+            box-shadow: inset 0 0 10px rgba(0, 255, 255, 0.2);
+            border: 1px solid #00ffff;
+            min-width: 150px; /* Adjust as needed */
+            display: flex;
+            flex-direction: column-reverse; /* To display from lowest to highest */
+            align-items: stretch;
+            gap: 5px;
+        }
+
+        .prize-level-item {
+            background-color: #34495e;
+            color: #ffffff;
+            border: 1px solid #00ffff;
+            border-radius: 8px;
+            padding: 8px 15px;
+            font-size: 1em;
+            font-weight: 600;
+            text-align: center;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+            cursor: default;
+        }
+
+        .prize-level-item.current-level {
+            background-color: #ffd700; /* Gold */
+            color: #1a1a1a; /* Dark text for contrast */
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.8), inset 0 0 10px rgba(255, 215, 0, 0.5);
+            transform: scale(1.05);
+            font-weight: bold;
+        }
+
+        /* Player Name Input Styling */
+        .player-name-input {
+            width: calc(100% - 40px); /* Adjust for padding */
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            border: 2px solid #00ffff;
+            background-color: #34495e;
+            color: #ffffff;
+            font-size: 1.1em;
+            text-align: center;
+            box-sizing: border-box; /* Include padding in width */
+        }
+
+        .player-name-input::placeholder {
+            color: #bbb;
+        }
+
+
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>¿QUIÉN QUIERE SER MILLONARIO?</h1>
+        <img id="gameLogoImage" src="https://placehold.co/300x100/000000/00FF00?text=%C2%BFT%C3%BA%3F" alt="Imagen de billetes de dinero con el texto ¿Tú?" class="game-image" onerror="this.onerror=null;this.src='https://placehold.co/300x100/000000/FFFFFF?text=Logo+del+Juego';">
+
+        <div class="game-area-with-ladder">
+            <div class="main-game-content">
+                <div class="lifelines">
+                    <button id="lifeline5050" class="lifeline-button">
+                        <svg viewBox="0 0 24 24" width="24" height="24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z" fill="white"/>
+                        </svg>
+                        50:50
+                    </button>
+                    <button id="lifelineCall" class="lifeline-button">
+                        <svg viewBox="0 0 24 24" width="24" height="24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20 15.5c-1.25 0-2.45-.2-3.57-.57-.35-.11-.74-.03-1.01.24l-2.2 2.2c-2.83-1.44-5.15-3.75-6.59-6.59l2.2-2.2c.27-.27.35-.66.24-1.01C8.75 6.45 8.55 5.25 8.55 4c0-1.1.9-2 2-2h3.5c1.1 0 2 .9 2 2v3.5c0 1.1-.9 2-2 2h-3.5c-.55 0-1-.45-1-1s.45-1 1-1h.5c.28 0 .5-.22.5-.5s-.22-.5-.5-.5h-.5c-.55 0-1-.45-1-1s.45-1 1-1h.5c.28 0 .5-.22.5-.5s-.22-.5-.5-.5h-.5c-.55 0-1-.45-1-1s.45-1 1-1h.5c.28 0 .5-.22.5-.5s-.22-.5-.5-.5H10.5c-1.1 0-2 .9-2 2v3.5c0 1.1.9 2 2 2h3.5c.55 0 1 .45 1 1s-.45 1-1 1h-.5c-.28 0-.5.22-.5.5s.22.5.5.5h.5c.55 0 1 .45 1 1s-.45 1-1 1h-.5c-.28 0-.5.22-.5.5s.22.5.5.5H10.5c-1.1 0-2 .9-2 2v3.5c0 1.1.9 2 2 2h3.5c1.1 0 2-.9 2-2V15.5z" fill="white"/>
+                        </svg>
+                        Llamada
+                    </button>
+                    <button id="lifelineAudience" class="lifeline-button">
+                        <svg viewBox="0 0 24 24" width="24" height="24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z" fill="white"/>
+                        </svg>
+                        Público
+                    </button>
+                </div>
+
+                <div class="question-area">
+                    <p id="questionText" class="question-text">Cargando pregunta...</p>
+                    <div id="optionsGrid" class="options-grid">
+                        <button class="option-button" data-option="A">A) Opción A</button>
+                        <button class="option-button" data-option="B">B) Opción B</button>
+                        <button class="option-button" data-option="C">C) Opción C</button>
+                        <button class="option-button" data-option="D">D) Opción D</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="prizeLadder" class="prize-ladder">
+                </div>
+        </div>
+
+        <div class="control-buttons">
+            <button id="nextQuestionButton" class="control-button" style="display: none;">Siguiente Pregunta</button>
+            <button id="restartGameButton" class="control-button" style="display: none;">Reiniciar Juego</button>
+            <button id="startGameButton" class="control-button">Empezar Juego</button>
+        </div>
+    </div>
+
+    <div id="messageBoxOverlay" class="message-box-overlay">
+        <div class="message-box">
+            <h2 id="messageBoxTitle"></h2>
+            <p id="messageBoxContent"></p>
+            <div id="messageBoxButtons" class="message-box-buttons">
+                </div>
+        </div>
+    </div>
+
+    <div id="playerNameModalOverlay" class="message-box-overlay">
+        <div class="message-box">
+            <h2 id="playerNameBoxTitle">¡Bienvenido!</h2>
+            <p id="playerNameBoxContent">Por favor, introduce tu nombre para empezar a jugar:</p>
+            <input type="text" id="playerNameInput" class="player-name-input" placeholder="Tu nombre aquí..." maxlength="20">
+            <div class="message-box-buttons">
+                <button id="submitPlayerNameButton" class="message-box-button confirm">Empezar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Array completo de preguntas relacionadas con magnitudes y unidades de medida, con niveles de dificultad
+        const allAvailableQuestions = [
+            // Easy (12 questions)
+            { question: "¿Cuál es la unidad de medida estándar de la longitud en el Sistema Internacional (SI)?", options: { A: "Kilogramo", B: "Segundo", C: "Metro", D: "Amperio" }, correct: "C", difficulty: "easy" },
+            { question: "¿Qué magnitud física se mide en julios (J)?", options: { A: "Potencia", B: "Energía", C: "Fuerza", D: "Presión" }, correct: "B", difficulty: "easy" },
+            { question: "Si la temperatura se mide en grados Celsius, ¿cuál es su unidad equivalente en el Sistema Internacional?", options: { A: "Fahrenheit", B: "Kelvin", C: "Rankine", D: "Litro" }, correct: "B", difficulty: "easy" },
+            { question: "¿Qué unidad se utiliza para medir la corriente eléctrica?", options: { A: "Voltio", B: "Ohmio", C: "Vatio", D: "Amperio" }, correct: "D", difficulty: "easy" },
+            { question: "¿Cuál de las siguientes es una magnitud escalar?", options: { A: "Velocidad", B: "Aceleración", C: "Masa", D: "Fuerza" }, correct: "C", difficulty: "easy" },
+            { question: "¿Qué unidad de medida se asocia comúnmente con la frecuencia?", options: { A: "Newton", B: "Hertz", C: "Pascal", D: "Weber" }, correct: "B", difficulty: "easy" },
+            { question: "¿Qué instrumento se utiliza para medir la presión atmosférica?", options: { A: "Termómetro", B: "Barómetro", C: "Higrómetro", D: "Anemómetro" }, correct: "B", difficulty: "easy" },
+            { question: "¿Cuál es la unidad de medida de la resistencia eléctrica?", options: { A: "Voltio", B: "Amperio", C: "Ohmio", D: "Vatio" }, correct: "C", difficulty: "easy" },
+            { question: "¿Qué magnitud mide un dinamómetro?", options: { A: "Masa", B: "Volumen", C: "Fuerza", D: "Densidad" }, correct: "C", difficulty: "easy" },
+            { question: "¿Qué prefijo del SI representa un factor de $10^9$?", options: { A: "Micro", B: "Mega", C: "Giga", D: "Nano" }, correct: "C", difficulty: "easy" },
+            { question: "¿Cuál es la unidad de medida de la potencia en el SI?", options: { A: "Julio", B: "Vatio", C: "Newton", D: "Pascal" }, correct: "B", difficulty: "easy" },
+            { question: "¿Qué magnitud se mide en metros por segundo (m/s)?", options: { A: "Aceleración", B: "Fuerza", C: "Velocidad", D: "Energía" }, correct: "C", difficulty: "easy" },
+
+            // Medium (12 questions)
+            { question: "¿Cuál es la unidad de medida de la cantidad de sustancia en el SI?", options: { A: "Gramo", B: "Mol", C: "Litro", D: "Kilogramo" }, correct: "B", difficulty: "medium" },
+            { question: "¿Qué magnitud se mide en pascales (Pa)?", options: { A: "Volumen", B: "Presión", C: "Temperatura", D: "Longitud" }, correct: "B", difficulty: "medium" },
+            { question: "¿Cuál es la unidad de medida del tiempo en el SI?", options: { A: "Hora", B: "Minuto", C: "Día", D: "Segundo" }, correct: "D", difficulty: "medium" },
+            { question: "¿Qué magnitud se mide en kilogramos por metro cúbico (kg/m³)?", options: { A: "Masa", B: "Volumen", C: "Densidad", D: "Peso" }, correct: "C", difficulty: "medium" },
+            { question: "¿Cuál es la unidad de medida de la intensidad luminosa en el SI?", options: { A: "Lux", B: "Lumen", C: "Candela", D: "Weber" }, correct: "C", difficulty: "medium" },
+            { question: "¿Qué magnitud se mide en newtons (N)?", options: { A: "Masa", B: "Fuerza", C: "Energía", D: "Potencia" }, correct: "B", difficulty: "medium" },
+            { question: "¿Cuál es la unidad de medida del ángulo plano en el SI?", options: { A: "Grado", B: "Minuto de arco", C: "Segundo de arco", D: "Radián" }, correct: "D", difficulty: "medium" },
+            { question: "¿Qué magnitud se mide en voltios (V)?", options: { A: "Corriente eléctrica", B: "Resistencia", C: "Potencial eléctrico", D: "Potencia" }, correct: "C", difficulty: "medium" },
+            { question: "¿Cuál es la unidad de medida de la carga eléctrica en el SI?", options: { A: "Amperio", B: "Voltio", C: "Ohmio", D: "Culombio" }, correct: "D", difficulty: "medium" },
+            { question: "¿Qué magnitud se mide en siemens (S)?", options: { A: "Tensión", B: "Corriente", C: "Resistencia", D: "Conductancia eléctrica" }, correct: "D", difficulty: "medium" },
+            { question: "¿Cuál es la unidad de medida de la inductancia en el SI?", options: { A: "Faradio", B: "Tesla", C: "Henrio", D: "Weber" }, correct: "C", difficulty: "medium" },
+            { question: "¿Qué magnitud se mide en webers (Wb)?", options: { A: "Campo eléctrico", B: "Flujo magnético", C: "Inductancia", D: "Capacitancia" }, correct: "B", difficulty: "medium" },
+
+            // Hard (12 questions)
+            { question: "¿Cuál es la unidad de medida de la capacitancia en el SI?", options: { A: "Henrio", B: "Faradio", C: "Ohmio", D: "Voltio" }, correct: "B", difficulty: "hard" },
+            { question: "¿Qué magnitud se mide en teslas (T)?", options: { A: "Flujo magnético", B: "Campo magnético", C: "Inductancia", D: "Resistencia" }, correct: "B", difficulty: "hard" },
+            { question: "¿Cuál es la unidad de medida de la actividad radiactiva en el SI?", options: { A: "Curie", B: "Rutherford", C: "Becquerel", D: "Sievert" }, correct: "C", difficulty: "hard" },
+            { question: "¿Qué magnitud se mide en sieverts (Sv)?", options: { A: "Dosis absorbida", B: "Dosis equivalente de radiación", C: "Actividad radiactiva", D: "Exposición" }, correct: "B", difficulty: "hard" },
+            { question: "¿Cuál es la unidad de medida de la dosis absorbida de radiación en el SI?", options: { A: "Sievert", B: "Gray", C: "Becquerel", D: "Curie" }, correct: "B", difficulty: "hard" },
+            { question: "¿Qué magnitud se mide en lux (lx)?", options: { A: "Flujo luminoso", B: "Intensidad luminosa", C: "Iluminancia", D: "Brillo" }, correct: "C", difficulty: "hard" },
+            { question: "¿Cuál es la unidad de medida del flujo luminoso en el SI?", options: { A: "Lux", B: "Candela", C: "Lumen", D: "Nit" }, correct: "C", difficulty: "hard" },
+            { question: "¿Qué magnitud se mide en grados sexagesimales (°)?", options: { A: "Tiempo", B: "Longitud", C: "Ángulo", D: "Temperatura" }, correct: "C", difficulty: "hard" },
+            { question: "¿Cuál es la unidad de medida de la energía calórica en el SI?", options: { A: "Caloría", B: "Ergio", C: "Julio", D: "Vatio" }, correct: "C", difficulty: "hard" },
+            { question: "¿Qué magnitud se mide en amperios-hora (Ah)?", options: { A: "Corriente", B: "Potencia", C: "Carga eléctrica", D: "Voltaje" }, correct: "C", difficulty: "hard" },
+            { question: "¿Cuál es la unidad de medida de la velocidad angular?", options: { A: "Metros por segundo", B: "Radián por segundo", C: "Hertz", D: "Revoluciones por minuto" }, correct: "B", difficulty: "hard" },
+            { question: "¿Qué magnitud se mide en newton-metro (N·m)?", options: { A: "Fuerza", B: "Energía", C: "Momento de fuerza", D: "Presión" }, correct: "C", difficulty: "hard" },
+
+            // Very Hard (12 questions)
+            { question: "¿Cuál es la unidad de medida de la viscosidad dinámica en el SI?", options: { A: "Poise", B: "Stokes", C: "Pascal-segundo", D: "Centipoise" }, correct: "C", difficulty: "very-hard" },
+            { question: "¿Qué magnitud se mide en decibelios (dB)?", options: { A: "Frecuencia", B: "Longitud de onda", C: "Nivel de intensidad sonora", D: "Velocidad" }, correct: "C", difficulty: "very-hard" },
+            { question: "¿Cuál es la unidad de medida de la conductancia eléctrica en el SI?", options: { A: "Ohmio", B: "Voltio", C: "Amperio", D: "Siemens" }, correct: "D", difficulty: "very-hard" },
+            { question: "¿Qué magnitud se mide en becquerelios por kilogramo (Bq/kg)?", options: { A: "Dosis absorbida", B: "Actividad específica", C: "Dosis equivalente", D: "Exposición" }, correct: "B", difficulty: "very-hard" },
+            { question: "¿Cuál es la unidad de medida de la fuerza electromotriz?", options: { A: "Amperio", B: "Ohmio", C: "Voltio", D: "Vatio" }, correct: "C", difficulty: "very-hard" },
+            { question: "¿Qué magnitud se mide en metros cuadrados (m²)?", options: { A: "Volumen", B: "Longitud", C: "Área", D: "Perímetro" }, correct: "C", difficulty: "very-hard" },
+            { question: "¿Cuál es la unidad de medida del volumen en el SI?", options: { A: "Litro", B: "Centímetro cúbico", C: "Metro cúbico", D: "Galón" }, correct: "C", difficulty: "very-hard" },
+            { question: "¿Qué magnitud se mide en metros por segundo al cuadrado (m/s²)?", options: { A: "Velocidad", B: "Fuerza", C: "Aceleración", D: "Trabajo" }, correct: "C", difficulty: "very-hard" },
+            { question: "¿Cuál es la unidad de medida del trabajo en el SI?", options: { A: "Vatio", B: "Newton", C: "Julio", D: "Pascal" }, correct: "C", difficulty: "very-hard" },
+            { question: "¿Qué magnitud se mide en vatios por metro cuadrado (W/m²)?", options: { A: "Potencia", B: "Intensidad de radiación", C: "Presión", D: "Energía" }, correct: "B", difficulty: "very-hard" },
+            { question: "¿Cuál es la unidad de medida de la presión en el sistema CGS?", options: { A: "Pascal", B: "Baria", C: "Atmósfera", D: "Milímetro de mercurio" }, correct: "B", difficulty: "very-hard" },
+            { question: "¿Qué magnitud se mide en gramos por centímetro cúbico (g/cm³)?", options: { A: "Masa", B: "Volumen", C: "Densidad", D: "Peso" }, correct: "C", difficulty: "very-hard" },
+
+            // Expert (12 questions)
+            { question: "¿Cuál es la unidad de medida de la potencia en el sistema CGS?", options: { A: "Vatio", B: "Caballo de fuerza", C: "Ergio por segundo", D: "Julio por segundo" }, correct: "C", difficulty: "expert" },
+            { question: "¿Qué magnitud se mide en calorías?", options: { A: "Potencia", B: "Fuerza", C: "Energía", D: "Temperatura" }, correct: "C", difficulty: "expert" },
+            { question: "¿Cuál es la unidad de medida de la luminancia en el SI?", options: { A: "Lux", B: "Lumen", C: "Nit", D: "Candela" }, correct: "C", difficulty: "expert" },
+            { question: "¿Qué magnitud se mide en candelas por metro cuadrado (cd/m²)?", options: { A: "Iluminancia", B: "Flujo luminoso", C: "Luminancia", D: "Intensidad luminosa" }, correct: "C", difficulty: "expert" },
+            { question: "¿Cuál es la unidad de medida del campo eléctrico en el SI?", options: { A: "Voltio", B: "Newton por culombio", C: "Amperio", D: "Ohmio" }, correct: "B", difficulty: "expert" },
+            { question: "¿Qué magnitud se mide en voltios por metro (V/m)?", options: { A: "Potencial eléctrico", B: "Campo eléctrico", C: "Resistencia", D: "Corriente" }, correct: "B", difficulty: "expert" },
+            { question: "¿Cuál es la unidad de medida de la cantidad de movimiento en el SI?", options: { A: "Newton", B: "Julio", C: "Kilogramo metro por segundo", D: "Vatio" }, correct: "C", difficulty: "expert" },
+            { question: "¿Qué magnitud se mide en kilogramo metro por segundo (kg·m/s)?", options: { A: "Fuerza", B: "Energía", C: "Potencia", D: "Cantidad de movimiento" }, correct: "D", difficulty: "expert" },
+            { question: "¿Cuál es la unidad de medida de la cantidad de movimiento angular en el SI?", options: { A: "Newton metro", B: "Joule-segundo", C: "Kilogramo metro cuadrado", D: "Vatio segundo" }, correct: "B", difficulty: "expert" },
+            { question: "¿Cuál es la unidad de medida de la fuerza en el sistema técnico de unidades?", options: { A: "Newton", B: "Dina", C: "Kilopondio", D: "Poundal" }, correct: "C", difficulty: "expert" },
+            { question: "¿Cuál es la unidad de medida de la viscosidad cinemática en el SI?", options: { A: "Poise", B: "Stokes", C: "Metro cuadrado por segundo", D: "Centistokes" }, correct: "C", difficulty: "expert" },
+            { question: "¿Qué magnitud se mide en vatios por estereorradián (W/sr)?", options: { A: "Flujo radiante", B: "Intensidad radiante", C: "Radiación", D: "Irradiancia" }, correct: "B", difficulty: "expert" }
+        ];
+
+        let questions = []; // This will hold the 12 questions for the current game
+        let playedQuestionIndices = new Set(); // Stores indices of questions already used across all games
+        let gamesPlayedCount = 0; // Counts how many unique games have been started (max 5)
+        const MAX_GAMES = 5;
+        const QUESTIONS_PER_GAME = 12; // Changed to 12 questions per game
+
+        // Prize levels corresponding to question index + 1 (for 1-based indexing in display)
+        const prizeLevels = [
+            "500", "1.000", "2.000", "5.000", "10.000",
+            "25.000", "50.000", "75.000", "125.000", "250.000",
+            "500.000", "1 MILLÓN"
+        ];
+
+        // Map game number to difficulty level
+        const difficultyMap = {
+            1: 'easy',
+            2: 'medium',
+            3: 'hard',
+            4: 'very-hard',
+            5: 'expert'
+        };
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let used5050 = false;
+        let usedCall = false;
+        let usedAudience = false;
+        let gameStarted = false;
+        let playerName = "Jugador"; // Default player name
+        let hasPlayerNameBeenSet = false; // New flag to track if name has been set for the current series of games
+
+        // Get DOM elements
+        const questionText = document.getElementById('questionText');
+        const optionsGrid = document.getElementById('optionsGrid');
+        let optionButtons; // Changed from const to let, will be reassigned in restartGame
+        const lifeline5050Button = document.getElementById('lifeline5050');
+        const lifelineCallButton = document.getElementById('lifelineCall');
+        const lifelineAudienceButton = document.getElementById('lifelineAudience');
+        const nextQuestionButton = document.getElementById('nextQuestionButton');
+        const restartGameButton = document.getElementById('restartGameButton');
+        const startGameButton = document.getElementById('startGameButton');
+        const prizeLadderElement = document.getElementById('prizeLadder');
+
+        // Message Box elements
+        const messageBoxOverlay = document.getElementById('messageBoxOverlay');
+        const messageBoxTitle = document.getElementById('messageBoxTitle');
+        const messageBoxContent = document.getElementById('messageBoxContent');
+        const messageBoxButtons = document.getElementById('messageBoxButtons');
+
+        // Player Name Input Modal elements
+        const gameLogoImage = document.getElementById('gameLogoImage');
+        const playerNameModalOverlay = document.getElementById('playerNameModalOverlay');
+        const playerNameInput = document.getElementById('playerNameInput');
+        const submitPlayerNameButton = document.getElementById('submitPlayerNameButton');
+
+        /**
+         * Shuffles an array in place using the Fisher-Yates (Knuth) algorithm.
+         * @param {Array} array - The array to shuffle.
+         */
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]]; // Swap elements
+            }
+        }
+
+        /**
+         * Displays a custom message box.
+         * @param {string} title - The title of the message box.
+         * @param {string} content - The content/message to display.
+         * @param {Array<Object>} buttons - An array of button objects { text, className, onClick }.
+         */
+        function showMessageBox(title, content, buttons) {
+            messageBoxTitle.textContent = title;
+            messageBoxContent.textContent = content;
+            messageBoxButtons.innerHTML = ''; // Clear previous buttons
+
+            buttons.forEach(buttonInfo => {
+                const button = document.createElement('button');
+                button.textContent = buttonInfo.text;
+                button.className = `message-box-button ${buttonInfo.className || ''}`;
+                button.onclick = () => {
+                    hideMessageBox();
+                    if (buttonInfo.onClick) {
+                        buttonInfo.onClick();
+                    }
+                };
+                messageBoxButtons.appendChild(button);
+            });
+
+            messageBoxOverlay.classList.add('show');
+        }
+
+        /**
+         * Hides the custom message box.
+         */
+        function hideMessageBox() {
+            messageBoxOverlay.classList.remove('show');
+        }
+
+        /**
+         * Shows the player name input modal.
+         */
+        function showPlayerNameInput() {
+            playerNameModalOverlay.classList.add('show');
+            playerNameInput.value = ''; // Clear previous input
+            playerNameInput.focus(); // Focus on the input field
+        }
+
+        /**
+         * Hides the player name input modal.
+         */
+        function hidePlayerNameInput() {
+            playerNameModalOverlay.classList.remove('show');
+        }
+
+        /**
+         * Handles the submission of the player's name.
+         */
+        function handleNameSubmission() {
+            const enteredName = playerNameInput.value.trim();
+            if (enteredName) {
+                playerName = enteredName;
+            } else {
+                playerName = "Jugador"; // Revert to default if empty
+            }
+            hidePlayerNameInput();
+            hasPlayerNameBeenSet = true; // Set flag to true as name is now stored
+
+            // Update the game logo image to display the player's name permanently
+            gameLogoImage.src = `https://placehold.co/300x100/000000/00FF00?text=${encodeURIComponent(playerName)}`;
+            gameLogoImage.alt = `Nombre del jugador: ${playerName}`;
+            gameLogoImage.style.display = 'block'; // Ensure it's visible
+
+            loadQuestion(); // Start loading the first question after name is submitted
+        }
+
+        /**
+         * Updates the prize ladder display, highlighting the current level.
+         */
+        function updatePrizeLadder() {
+            const allPrizeItems = prizeLadderElement.querySelectorAll('.prize-level-item');
+            allPrizeItems.forEach(item => item.classList.remove('current-level'));
+
+            // Highlight the current level based on the score
+            // The prize levels are displayed in reverse order (1 Million at top, 500 at bottom)
+            // So, if score is 1, we want to highlight the last item (index 11, which is "500")
+            // If score is 12, we want to highlight the first item (index 0, which is "1 MILLÓN")
+            if (score > 0 && score <= QUESTIONS_PER_GAME) {
+                // Calculate the index from the end of the displayed list
+                const highlightIndex = prizeLevels.length - score;
+                if (highlightIndex >= 0 && highlightIndex < allPrizeItems.length) {
+                    allPrizeItems[highlightIndex].classList.add('current-level');
+                }
+            }
+        }
+
+
+        /**
+         * Loads the current question into the game display.
+         */
+        function loadQuestion() {
+            if (currentQuestionIndex >= questions.length) {
+                endGame(true); // Player won!
+                return;
+            }
+
+            const currentQuestion = questions[currentQuestionIndex];
+            questionText.textContent = currentQuestion.question;
+
+            // Ensure optionButtons is up-to-date before iterating
+            optionButtons = optionsGrid.querySelectorAll('.option-button'); // Re-query here just in case
+
+            optionButtons.forEach(button => {
+                const optionKey = button.dataset.option;
+                button.textContent = `${optionKey}) ${currentQuestion.options[optionKey]}`;
+                button.classList.remove('correct', 'incorrect');
+                button.disabled = false; // Re-enable all buttons
+                button.style.display = 'block'; // Ensure all options are visible
+                button.onclick = () => checkAnswer(optionKey); // Re-attach click listener
+            });
+
+            nextQuestionButton.style.display = 'none'; // Hide next question button initially
+            restartGameButton.style.display = 'none'; // Hide restart button
+            startGameButton.style.display = 'none'; // Hide start button
+
+            updatePrizeLadder(); // Update prize ladder on new question load
+        }
+
+        /**
+         * Checks if the selected answer is correct.
+         * @param {string} selectedOptionKey - The key of the selected option (A, B, C, D).
+         */
+        function checkAnswer(selectedOptionKey) {
+            const currentQuestion = questions[currentQuestionIndex];
+            const isCorrect = selectedOptionKey === currentQuestion.correct;
+
+            // Disable all option buttons after an answer is selected
+            optionButtons.forEach(button => {
+                button.disabled = true;
+                if (button.dataset.option === currentQuestion.correct) {
+                    button.classList.add('correct');
+                } else if (button.dataset.option === selectedOptionKey && !isCorrect) {
+                    button.classList.add('incorrect');
+                }
+            });
+
+            if (isCorrect) {
+                score++;
+                updatePrizeLadder(); // Update prize ladder immediately on correct answer
+                showMessageBox(
+                    "¡Correcto!",
+                    `¡Has acertado, ${playerName}! Tu puntuación actual es: ${score}`,
+                    [{ text: "Continuar", className: "confirm", onClick: moveToNextQuestion }]
+                );
+            } else {
+                showMessageBox(
+                    "¡Incorrecto!",
+                    `La respuesta correcta era: ${currentQuestion.correct}) ${currentQuestion.options[currentQuestion.correct]}. ¡Ánimo, ${playerName}!`,
+                    [{ text: "Fin del Juego", className: "cancel", onClick: () => endGame(false) }]
+                );
+            }
+        }
+
+        /**
+         * Moves to the next question or ends the game if all questions are answered.
+         */
+        function moveToNextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questions.length) {
+                loadQuestion();
+            } else {
+                endGame(true);
+            }
+        }
+
+        /**
+         * Ends the game and displays the final score.
+         * @param {boolean} won - True if the player won, false otherwise.
+         */
+        function endGame(won) {
+            let title, content;
+            if (won) {
+                title = "¡Felicidades, " + playerName + "!";
+                content = `¡Has respondido todas las preguntas correctamente y te has convertido en millonario! Tu puntuación final es: ${score} de ${questions.length}.`;
+            } else {
+                title = "Fin del Juego";
+                content = `¡Oh no, ${playerName}! Has perdido. Tu puntuación final es: ${score} de ${questions.length}. ¡Inténtalo de nuevo!`;
+            }
+
+            showMessageBox(
+                title,
+                content,
+                [{ text: "Reiniciar Juego", className: "confirm", onClick: restartGame }]
+            );
+            restartGameButton.style.display = 'block';
+            nextQuestionButton.style.display = 'none';
+        }
+
+        /**
+         * Resets the game to its initial state, selecting new questions if available.
+         */
+        function restartGame() {
+            // Increment game count only if it's a new unique game session
+            // This ensures gamesPlayedCount only increments when a full game (or attempt) is made
+            if (gameStarted || gamesPlayedCount === 0) {
+                gamesPlayedCount++;
+            }
+
+            // Determine the difficulty for the current game
+            const currentDifficulty = difficultyMap[gamesPlayedCount];
+
+            // Filter questions by difficulty and ensure they haven't been played before
+            const availableQuestionsForDifficulty = allAvailableQuestions.filter((q, index) =>
+                q.difficulty === currentDifficulty && !playedQuestionIndices.has(index)
+            );
+
+            // Check if max games reached or not enough new questions for the current difficulty
+            if (gamesPlayedCount > MAX_GAMES || availableQuestionsForDifficulty.length < QUESTIONS_PER_GAME) {
+                showMessageBox(
+                    "¡Juegos Completados!",
+                    `Has jugado ${MAX_GAMES} partidas únicas o hemos agotado todas las preguntas disponibles para esta dificultad. ¿Quieres empezar desde el principio con todas las preguntas disponibles de nuevo?`,
+                    [{ text: "Sí, reiniciar todo", className: "confirm", onClick: resetAllGames }]
+                );
+                startGameButton.style.display = 'none';
+                restartGameButton.style.display = 'none';
+                return; // Stop here, wait for user to confirm full reset
+            }
+
+            currentQuestionIndex = 0;
+            score = 0;
+            used5050 = false;
+            usedCall = false;
+            usedAudience = false;
+            gameStarted = false; // Reset gameStarted for the new session
+
+            // Select 12 new unique questions for this game based on difficulty
+            shuffleArray(availableQuestionsForDifficulty); // Shuffle available questions for this difficulty
+            questions = availableQuestionsForDifficulty.slice(0, QUESTIONS_PER_GAME); // Take the first 12
+
+            // Add the indices of these selected questions to playedQuestionIndices
+            questions.forEach(q => {
+                const originalIndex = allAvailableQuestions.findIndex(oq => oq === q);
+                if (originalIndex !== -1) {
+                    playedQuestionIndices.add(originalIndex);
+                }
+            });
+
+            lifeline5050Button.disabled = false;
+            lifelineCallButton.disabled = false;
+            lifelineAudienceButton.disabled = false;
+
+            startGameButton.style.display = 'block';
+            nextQuestionButton.style.display = 'none';
+            restartGameButton.style.display = 'none';
+            questionText.textContent = `Haz clic en 'Empezar Juego' para comenzar la partida ${gamesPlayedCount} de ${MAX_GAMES}.`;
+
+            // Re-create the buttons to ensure fresh event listeners and state
+            optionsGrid.innerHTML = `
+                <button class="option-button" data-option="A"></button>
+                <button class="option-button" data-option="B"></button>
+                <button class="option-button" data-option="C"></button>
+                <button class="option-button" data-option="D"></button>
+            `;
+            // IMPORTANT: Re-query option buttons after they are re-rendered
+            optionButtons = optionsGrid.querySelectorAll('.option-button'); // Reassign the global variable
+
+            optionButtons.forEach(button => {
+                button.disabled = true; // Initially disabled until game starts and question loads
+                button.classList.remove('correct', 'incorrect');
+                // The loadQuestion function will set the text content and re-attach the onclick handler
+            });
+
+            generatePrizeLadder(); // Generate and reset prize ladder
+            updatePrizeLadder(); // Initial update to show no level selected
+
+            // Update the logo display based on whether the name has been set
+            if (hasPlayerNameBeenSet) {
+                gameLogoImage.src = `https://placehold.co/300x100/000000/00FF00?text=${encodeURIComponent(playerName)}`;
+                gameLogoImage.alt = `Nombre del jugador: ${playerName}`;
+            } else {
+                gameLogoImage.src = `https://placehold.co/300x100/000000/00FF00?text=%C2%BFT%C3%BA%3F`;
+                gameLogoImage.alt = "Imagen de billetes de dinero con el texto ¿Tú?";
+            }
+            gameLogoImage.style.display = 'block'; // Ensure the logo is visible
+        }
+
+        /**
+         * Resets all game progress, including played question sets.
+         */
+        function resetAllGames() {
+            playedQuestionIndices.clear(); // Clear all played questions
+            gamesPlayedCount = 0; // Reset game counter
+            hasPlayerNameBeenSet = false; // Allow name input again for a full reset
+            restartGame(); // Start a fresh game from the beginning
+        }
+
+        /**
+         * Starts the game.
+         */
+        function startGame() {
+            gameStarted = true;
+            startGameButton.style.display = 'none';
+
+            if (!hasPlayerNameBeenSet) {
+                // Only show the initial logo animation and name input if name hasn't been set yet
+                setTimeout(() => {
+                    gameLogoImage.style.display = 'none'; // Hide the logo after 2 seconds
+                    showPlayerNameInput(); // Then show the name input modal
+                }, 2000); // 2 seconds
+            } else {
+                // If name is already set, just load the question immediately
+                loadQuestion();
+            }
+        }
+
+        /**
+         * Generates the HTML for the prize ladder dynamically.
+         */
+        function generatePrizeLadder() {
+            prizeLadderElement.innerHTML = ''; // Clear existing ladder
+            // Display levels in reverse order for visual appeal (highest at top)
+            const fullPrizeDisplayLevels = [
+                "1 MILLÓN", "500.000", "250.000", "125.000", "75.000",
+                "50.000", "25.000", "10.000", "5.000", "2.000", "1.000", "500"
+            ];
+
+            fullPrizeDisplayLevels.forEach((level, index) => {
+                const prizeItem = document.createElement('div');
+                prizeItem.classList.add('prize-level-item');
+                prizeItem.textContent = level;
+                prizeLadderElement.appendChild(prizeItem);
+            });
+        }
+
+
+        // Lifeline functions
+        lifeline5050Button.addEventListener('click', () => {
+            if (!gameStarted || used5050) return;
+
+            showMessageBox(
+                "¿Usar 50:50?",
+                "¿Estás seguro de que quieres usar la ayuda 50:50? Eliminará dos opciones incorrectas.",
+                [
+                    { text: "Sí", className: "confirm", onClick: apply5050 },
+                    { text: "No", className: "cancel" }
+                ]
+            );
+        });
+
+        function apply5050() {
+            used5050 = true;
+            lifeline5050Button.disabled = true;
+
+            const currentQuestion = questions[currentQuestionIndex];
+            const correctOption = currentQuestion.correct;
+            const incorrectOptions = Object.keys(currentQuestion.options).filter(
+                key => key !== correctOption
+            );
+
+            // Randomly select two incorrect options to hide
+            let optionsToHide = [];
+            while (optionsToHide.length < 2) {
+                const randomIndex = Math.floor(Math.random() * incorrectOptions.length);
+                const optionToHide = incorrectOptions[randomIndex];
+                if (!optionsToHide.includes(optionToHide)) {
+                    optionsToHide.push(optionToHide);
+                }
+            }
+
+            optionButtons.forEach(button => {
+                if (optionsToHide.includes(button.dataset.option)) {
+                    button.disabled = true;
+                    button.style.display = 'none'; // Hide the button
+                }
+            });
+        }
+
+        lifelineCallButton.addEventListener('click', () => {
+            if (!gameStarted || usedCall) return;
+
+            showMessageBox(
+                "¿Usar Llamada?",
+                "¿Estás seguro de que quieres usar la ayuda de la llamada a un amigo? Te dará una pista.",
+                [
+                    { text: "Sí", className: "confirm", onClick: applyCall },
+                    { text: "No", className: "cancel" }
+                ]
+            );
+        });
+
+        function applyCall() {
+            usedCall = true;
+            lifelineCallButton.disabled = true;
+
+            const currentQuestion = questions[currentQuestionIndex];
+            const correctOptionText = currentQuestion.options[currentQuestion.correct];
+
+            showMessageBox(
+                "Llamada a un Amigo",
+                `Tu amigo dice: "Estoy bastante seguro de que la respuesta es la opción ${currentQuestion.correct}, ${correctOptionText}."`,
+                [{ text: "Entendido", className: "confirm" }]
+            );
+        }
+
+        lifelineAudienceButton.addEventListener('click', () => {
+            if (!gameStarted || usedAudience) return;
+
+            showMessageBox(
+                "¿Usar Público?",
+                "¿Estás seguro de que quieres usar la ayuda del público? Te mostrará las preferencias del público.",
+                [
+                    { text: "Sí", className: "confirm", onClick: applyAudience },
+                    { text: "No", className: "cancel" }
+                ]
+            );
+        });
+
+        function applyAudience() {
+            usedAudience = true;
+            lifelineAudienceButton.disabled = true;
+
+            const currentQuestion = questions[currentQuestionIndex];
+            const options = Object.keys(currentQuestion.options);
+            const correctOption = currentQuestion.correct;
+
+            // Simulate audience votes
+            const votes = {};
+            let remainingPercentage = 100;
+
+            // Give the correct answer a high percentage
+            const correctPercentage = Math.floor(Math.random() * (70 - 40 + 1)) + 40; // 40-70%
+            votes[correctOption] = correctPercentage;
+            remainingPercentage -= correctPercentage;
+
+            // Distribute remaining percentage among incorrect options
+            const incorrectOptions = options.filter(opt => opt !== correctOption);
+            for (let i = 0; i < incorrectOptions.length; i++) {
+                if (i === incorrectOptions.length - 1) {
+                    votes[incorrectOptions[i]] = remainingPercentage;
+                } else {
+                    const percentage = Math.floor(Math.random() * (remainingPercentage + 1));
+                    votes[incorrectOptions[i]] = percentage;
+                    remainingPercentage -= percentage;
+                }
+            }
+
+            // Ensure sum is 100 (due to rounding, might need adjustment)
+            let currentSum = Object.values(votes).reduce((a, b) => a + b, 0);
+            if (currentSum !== 100) {
+                votes[correctOption] += (100 - currentSum);
+            }
+
+            let audienceMessage = "El público vota:\n";
+            options.forEach(opt => {
+                audienceMessage += `${opt}: ${votes[opt]}%\n`;
+            });
+
+            showMessageBox(
+                "Voto del Público",
+                audienceMessage,
+                [{ text: "Entendido", className: "confirm" }]
+            );
+        }
+
+        // Event Listeners
+        startGameButton.addEventListener('click', startGame);
+        submitPlayerNameButton.addEventListener('click', handleNameSubmission);
+
+
+        // Initial setup on window load
+        window.onload = function() {
+            generatePrizeLadder(); // Generate the ladder when the page loads
+            restartGame(); // Set initial state
+        };
+    </script>
+</body>
+</html>
