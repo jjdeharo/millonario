@@ -918,6 +918,15 @@
             localStorage.setItem('gameLanguage', lang);
             updateLanguageButtons();
             translatePage();
+            
+            // Re-renderizar LaTeX después del cambio de idioma
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                setTimeout(() => {
+                    window.MathJax.typesetPromise().catch((err) => {
+                        console.log('Error re-renderizando LaTeX después del cambio de idioma:', err);
+                    });
+                }, 100);
+            }
         }
 
         // Traducir toda la página
@@ -1088,15 +1097,21 @@
         /**
          * Procesa el texto para renderizar LaTeX
          */
-        function processLatexText(text) {
+        function processLatexText(text, element) {
+            element.innerHTML = text;
+            
+            // Asegurar que MathJax esté disponible antes de usarlo
             if (window.MathJax && window.MathJax.typesetPromise) {
+                // Usar setTimeout para permitir que el DOM se actualice primero
                 setTimeout(() => {
-                    window.MathJax.typesetPromise([document.querySelector('.question-text')]).catch((err) => {
+                    window.MathJax.typesetPromise([element]).catch((err) => {
                         console.log('Error renderizando LaTeX:', err);
                     });
-                }, 100);
+                }, 50);
+            } else {
+                // Si MathJax no está disponible, intentar de nuevo después de un breve retraso
+                setTimeout(() => processLatexText(text, element), 100);
             }
-            return text;
         }
 
         /**
@@ -1258,27 +1273,19 @@
             const currentQuestion = questions[currentQuestionIndex];
             
             // Procesar texto con LaTeX
-            questionText.innerHTML = processLatexText(currentQuestion.question);
+            processLatexText(currentQuestion.question, questionText);
 
             optionButtons = optionsGrid.querySelectorAll('.option-button');
 
             optionButtons.forEach(button => {
                 const optionKey = button.dataset.option;
-                button.innerHTML = `${optionKey}) ${processLatexText(currentQuestion.options[optionKey])}`;
+                const optionText = `${optionKey}) ${currentQuestion.options[optionKey]}`;
+                processLatexText(optionText, button);
                 button.classList.remove('correct', 'incorrect');
                 button.disabled = false;
                 button.style.display = 'block';
                 button.onclick = () => checkAnswer(optionKey);
             });
-
-            // Renderizar LaTeX en las opciones
-            if (window.MathJax && window.MathJax.typesetPromise) {
-                setTimeout(() => {
-                    window.MathJax.typesetPromise([optionsGrid]).catch((err) => {
-                        console.log('Error renderizando LaTeX en opciones:', err);
-                    });
-                }, 100);
-            }
 
             nextQuestionButton.style.display = 'none';
             restartGameButton.style.display = 'none';
@@ -1665,6 +1672,17 @@
             initializeLanguage();
             generatePrizeLadder();
             checkUrlParameters();
+            
+            // Verificar que MathJax esté cargado
+            function waitForMathJax() {
+                if (window.MathJax && window.MathJax.typesetPromise) {
+                    console.log('MathJax está listo para usar');
+                } else {
+                    console.log('Esperando a que MathJax se cargue...');
+                    setTimeout(waitForMathJax, 100);
+                }
+            }
+            waitForMathJax();
         };
     </script>
 </body>
