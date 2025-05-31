@@ -1,6 +1,6 @@
-# ¿Quién quiere ser millonario? - juego de trivia
+# ¿Quién quiere ser millonario?
 
-Este proyecto es una versión web del famoso concurso “¿Quién quiere ser millonario?”. Permite cargar preguntas desde un archivo JSON externo, usar comodines clásicos y disfrutar de una experiencia interactiva.
+Este proyecto, creado a partir de una bifurcación del original de [Ernesto Boixader](https://github.com/eboixader/magnitunid), es una versión web del famoso concurso “¿Quién quiere ser millonario?”. Permite cargar preguntas desde un archivo JSON externo, usar comodines clásicos y disfrutar de una experiencia interactiva.
 
 ## Características
 
