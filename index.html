@@ -3,8 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>¿Quién Quiere Ser Millonario? - Magnitudes y Unidades</title>
+    <title>¿Quién Quiere Ser Millonario?</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            options: {
+                processEscapes: true,
+                processEnvironments: true
+            }
+        };
+    </script>
     <style>
         /* General styling */
         body {
@@ -18,7 +32,7 @@
             margin: 0;
             padding: 20px;
             box-sizing: border-box;
-            overflow-y: auto; /* Allow scrolling for smaller screens */
+            overflow-y: auto;
         }
 
         .game-container {
@@ -41,11 +55,92 @@
         h1 {
             font-family: 'Roboto', sans-serif;
             font-size: 2.8em;
-            color: #ffd700; /* Gold */
+            color: #ffd700;
             text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
             margin-bottom: 20px;
             letter-spacing: 2px;
             line-height: 1.2;
+        }
+
+        /* Topic display */
+        .topic-info {
+            background-color: #2c3e50;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid #00ffff;
+        }
+
+        .topic-title {
+            color: #ffd700;
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .topic-content {
+            color: #e0f7fa;
+            font-size: 1em;
+        }
+
+        /* JSON Loader */
+        .json-loader {
+            background-color: #34495e;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid #00ffff;
+        }
+
+        .json-input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: 1px solid #00ffff;
+            background-color: #2c3e50;
+            color: #ffffff;
+            font-size: 1em;
+            box-sizing: border-box;
+        }
+
+        .json-input::placeholder {
+            color: #bbb;
+        }
+
+        .load-json-button {
+            background-color: #17a2b8;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-right: 10px;
+        }
+
+        .load-json-button:hover {
+            background-color: #138496;
+        }
+
+        .status-message {
+            margin-top: 10px;
+            font-size: 0.9em;
+            padding: 8px;
+            border-radius: 5px;
+        }
+
+        .status-success {
+            background-color: rgba(40, 167, 69, 0.2);
+            color: #28a745;
+            border: 1px solid #28a745;
+        }
+
+        .status-error {
+            background-color: rgba(220, 53, 69, 0.2);
+            color: #dc3545;
+            border: 1px solid #dc3545;
         }
 
         /* Game image */
@@ -70,7 +165,7 @@
         }
 
         .lifeline-button {
-            background-color: #007bff; /* Blue */
+            background-color: #007bff;
             color: white;
             border: none;
             border-radius: 10px;
@@ -92,7 +187,7 @@
         }
 
         .lifeline-button:disabled {
-            background-color: #6c757d; /* Gray */
+            background-color: #6c757d;
             cursor: not-allowed;
             box-shadow: none;
         }
@@ -105,7 +200,7 @@
 
         /* Question area */
         .question-area {
-            background-color: #2c3e50; /* Dark blue-gray */
+            background-color: #2c3e50;
             border-radius: 15px;
             padding: 25px;
             margin-bottom: 25px;
@@ -118,7 +213,7 @@
             margin-bottom: 20px;
             font-weight: 700;
             line-height: 1.4;
-            color: #e0f7fa; /* Light cyan */
+            color: #e0f7fa;
         }
 
         /* Options grid */
@@ -129,7 +224,7 @@
         }
 
         .option-button {
-            background-color: #34495e; /* Medium blue-gray */
+            background-color: #34495e;
             color: #ffffff;
             border: 2px solid #00ffff;
             border-radius: 10px;
@@ -157,13 +252,13 @@
         }
 
         .option-button.correct {
-            background-color: #28a745; /* Green */
+            background-color: #28a745;
             border-color: #28a745;
             box-shadow: 0 0 20px rgba(40, 167, 69, 0.8);
         }
 
         .option-button.incorrect {
-            background-color: #dc3545; /* Red */
+            background-color: #dc3545;
             border-color: #dc3545;
             box-shadow: 0 0 20px rgba(220, 53, 69, 0.8);
         }
@@ -177,7 +272,7 @@
         }
 
         .control-button {
-            background-color: #ffc107; /* Yellow */
+            background-color: #ffc107;
             color: #333;
             border: none;
             border-radius: 10px;
@@ -291,6 +386,74 @@
             transform: translateY(-2px);
         }
 
+        /* Player Name Input Styling */
+        .player-name-input {
+            width: calc(100% - 40px);
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            border: 2px solid #00ffff;
+            background-color: #34495e;
+            color: #ffffff;
+            font-size: 1.1em;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        .player-name-input::placeholder {
+            color: #bbb;
+        }
+
+        /* Prize Ladder Styling */
+        .game-area-with-ladder {
+            display: flex;
+            width: 100%;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 30px;
+        }
+
+        .main-game-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .prize-ladder {
+            background-color: #2c3e50;
+            border-radius: 15px;
+            padding: 15px 10px;
+            box-shadow: inset 0 0 10px rgba(0, 255, 255, 0.2);
+            border: 1px solid #00ffff;
+            min-width: 150px;
+            display: flex;
+            flex-direction: column-reverse;
+            align-items: stretch;
+            gap: 5px;
+        }
+
+        .prize-level-item {
+            background-color: #34495e;
+            color: #ffffff;
+            border: 1px solid #00ffff;
+            border-radius: 8px;
+            padding: 8px 15px;
+            font-size: 1em;
+            font-weight: 600;
+            text-align: center;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+            cursor: default;
+        }
+
+        .prize-level-item.current-level {
+            background-color: #ffd700;
+            color: #1a1a1a;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.8), inset 0 0 10px rgba(255, 215, 0, 0.5);
+            transform: scale(1.05);
+            font-weight: bold;
+        }
+
         /* Responsive adjustments */
         @media (max-width: 768px) {
             h1 {
@@ -307,7 +470,7 @@
             }
 
             .options-grid {
-                grid-template-columns: 1fr; /* Stack options on small screens */
+                grid-template-columns: 1fr;
             }
 
             .option-button {
@@ -328,7 +491,6 @@
                 font-size: 1.1em;
             }
 
-            /* Adjust game container for smaller screens to accommodate prize ladder */
             .game-container {
                 flex-direction: column;
                 align-items: center;
@@ -339,7 +501,7 @@
                 position: relative;
                 width: 100%;
                 margin-top: 20px;
-                order: -1; /* Move to top on small screens */
+                order: -1;
             }
 
             .prize-level-item {
@@ -390,80 +552,135 @@
             }
         }
 
-        /* Prize Ladder Styling */
-        .game-area-with-ladder {
+        /* Language Selector */
+        .language-selector {
+            position: fixed;
+            top: 20px;
+            right: 20px;
             display: flex;
-            width: 100%;
-            justify-content: space-between;
-            align-items: flex-start; /* Align items to the top */
-            gap: 30px; /* Space between question area and ladder */
-        }
-
-        .main-game-content {
-            flex-grow: 1; /* Allows main content to take available space */
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
-        }
-
-        .prize-ladder {
-            background-color: #2c3e50;
-            border-radius: 15px;
-            padding: 15px 10px;
-            box-shadow: inset 0 0 10px rgba(0, 255, 255, 0.2);
-            border: 1px solid #00ffff;
-            min-width: 150px; /* Adjust as needed */
-            display: flex;
-            flex-direction: column-reverse; /* To display from lowest to highest */
-            align-items: stretch;
             gap: 5px;
+            z-index: 100;
         }
 
-        .prize-level-item {
+        .lang-button {
             background-color: #34495e;
             color: #ffffff;
-            border: 1px solid #00ffff;
-            border-radius: 8px;
-            padding: 8px 15px;
-            font-size: 1em;
-            font-weight: 600;
-            text-align: center;
-            transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
-            cursor: default;
-        }
-
-        .prize-level-item.current-level {
-            background-color: #ffd700; /* Gold */
-            color: #1a1a1a; /* Dark text for contrast */
-            box-shadow: 0 0 15px rgba(255, 215, 0, 0.8), inset 0 0 10px rgba(255, 215, 0, 0.5);
-            transform: scale(1.05);
+            border: 2px solid #00ffff;
+            border-radius: 5px;
+            padding: 8px 12px;
+            font-size: 0.9em;
+            cursor: pointer;
+            transition: all 0.3s ease;
             font-weight: bold;
         }
 
-        /* Player Name Input Styling */
-        .player-name-input {
-            width: calc(100% - 40px); /* Adjust for padding */
-            padding: 10px;
-            margin-bottom: 20px;
-            border-radius: 8px;
-            border: 2px solid #00ffff;
-            background-color: #34495e;
-            color: #ffffff;
-            font-size: 1.1em;
+        .lang-button:hover {
+            background-color: #2c3e50;
+            transform: translateY(-2px);
+        }
+
+        .lang-button.active {
+            background-color: #ffd700;
+            color: #1a1a1a;
+            border-color: #ffd700;
+        }
+
+        /* Footer */
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(26, 26, 26, 0.95);
+            border-top: 1px solid #00ffff;
+            padding: 10px 20px;
             text-align: center;
-            box-sizing: border-box; /* Include padding in width */
+            font-size: 0.85em;
+            color: #e0f7fa;
+            z-index: 50;
         }
 
-        .player-name-input::placeholder {
-            color: #bbb;
+        .footer a {
+            color: #00ffff;
+            text-decoration: none;
+            transition: color 0.3s ease;
         }
 
+        .footer a:hover {
+            color: #ffd700;
+        }
 
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .footer-separator {
+            color: #666;
+        }
+
+        /* Adjust body padding for footer */
+        body {
+            padding-bottom: 60px;
+        }
+
+        @media (max-width: 768px) {
+            .language-selector {
+                top: 10px;
+                right: 10px;
+            }
+
+            .lang-button {
+                padding: 6px 10px;
+                font-size: 0.8em;
+            }
+
+            .footer {
+                padding: 8px 15px;
+                font-size: 0.8em;
+            }
+
+            .footer-links {
+                gap: 10px;
+            }
+
+            body {
+                padding-bottom: 50px;
+            }
+        }
     </style>
 </head>
 <body>
+    <!-- Language Selector -->
+    <div class="language-selector">
+        <button id="langCA" class="lang-button">CA</button>
+        <button id="langES" class="lang-button active">ES</button>
+    </div>
+
     <div class="game-container">
         <h1>¿QUIÉN QUIERE SER MILLONARIO?</h1>
+        
+        <!-- Topic Information -->
+        <div id="topicInfo" class="topic-info" style="display: none;">
+            <div class="topic-title">Tema:</div>
+            <div id="topicContent" class="topic-content"></div>
+        </div>
+
+        <!-- JSON Loader -->
+        <div class="json-loader">
+            <input 
+                type="text" 
+                id="jsonUrlInput" 
+                class="json-input" 
+                placeholder="Introduce la URL del archivo JSON con las preguntas..."
+            >
+            <button id="loadJsonButton" class="load-json-button">Cargar preguntas</button>
+            <div id="statusMessage" class="status-message" style="display: none;"></div>
+        </div>
+
         <img id="gameLogoImage" src="https://placehold.co/300x100/000000/00FF00?text=%C2%BFT%C3%BA%3F" alt="Imagen de billetes de dinero con el texto ¿Tú?" class="game-image" onerror="this.onerror=null;this.src='https://placehold.co/300x100/000000/FFFFFF?text=Logo+del+Juego';">
 
         <div class="game-area-with-ladder">
@@ -490,24 +707,37 @@
                 </div>
 
                 <div class="question-area">
-                    <p id="questionText" class="question-text">Cargando pregunta...</p>
+                    <p id="questionText" class="question-text">Carga un archivo JSON con preguntas para comenzar...</p>
                     <div id="optionsGrid" class="options-grid">
-                        <button class="option-button" data-option="A">A) Opción A</button>
-                        <button class="option-button" data-option="B">B) Opción B</button>
-                        <button class="option-button" data-option="C">C) Opción C</button>
-                        <button class="option-button" data-option="D">D) Opción D</button>
+                        <button class="option-button" data-option="A">A) Carga preguntas...</button>
+                        <button class="option-button" data-option="B">B) Carga preguntas...</button>
+                        <button class="option-button" data-option="C">C) Carga preguntas...</button>
+                        <button class="option-button" data-option="D">D) Carga preguntas...</button>
                     </div>
                 </div>
             </div>
 
             <div id="prizeLadder" class="prize-ladder">
-                </div>
+            </div>
         </div>
 
         <div class="control-buttons">
-            <button id="nextQuestionButton" class="control-button" style="display: none;">Siguiente Pregunta</button>
-            <button id="restartGameButton" class="control-button" style="display: none;">Reiniciar Juego</button>
-            <button id="startGameButton" class="control-button">Empezar Juego</button>
+            <button id="nextQuestionButton" class="control-button" style="display: none;">Siguiente pregunta</button>
+            <button id="restartGameButton" class="control-button" style="display: none;">Reiniciar juego</button>
+            <button id="startGameButton" class="control-button" disabled>Empezar juego</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <div class="footer-links">
+            <a href="https://labia.tiddlyhost.com" target="_blank" data-i18n="footer.lab">Laboratorio de aplicaciones educativas</a>
+            <span class="footer-separator">|</span>
+            <span data-i18n="footer.based">Basado en</span> <a href="https://github.com/eboixader/magnitunid" target="_blank">Ernesto Boixader</a>
+            <span class="footer-separator">|</span>
+            <a href="https://bilateria.org" target="_blank" data-i18n="footer.author">Aplicación hecha por Juan José de Haro</a>
+            <span class="footer-separator">|</span>
+            <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" data-i18n="footer.license">Licencia Creative Commons BY-SA</a>
         </div>
     </div>
 
@@ -516,7 +746,7 @@
             <h2 id="messageBoxTitle"></h2>
             <p id="messageBoxContent"></p>
             <div id="messageBoxButtons" class="message-box-buttons">
-                </div>
+            </div>
         </div>
     </div>
 
@@ -532,93 +762,250 @@
     </div>
 
     <script>
-        // Array completo de preguntas relacionadas con magnitudes y unidades de medida, con niveles de dificultad
-        const allAvailableQuestions = [
-            // Easy (12 questions)
-            { question: "¿Cuál es la unidad de medida estándar de la longitud en el Sistema Internacional (SI)?", options: { A: "Kilogramo", B: "Segundo", C: "Metro", D: "Amperio" }, correct: "C", difficulty: "easy" },
-            { question: "¿Qué magnitud física se mide en julios (J)?", options: { A: "Potencia", B: "Energía", C: "Fuerza", D: "Presión" }, correct: "B", difficulty: "easy" },
-            { question: "Si la temperatura se mide en grados Celsius, ¿cuál es su unidad equivalente en el Sistema Internacional?", options: { A: "Fahrenheit", B: "Kelvin", C: "Rankine", D: "Litro" }, correct: "B", difficulty: "easy" },
-            { question: "¿Qué unidad se utiliza para medir la corriente eléctrica?", options: { A: "Voltio", B: "Ohmio", C: "Vatio", D: "Amperio" }, correct: "D", difficulty: "easy" },
-            { question: "¿Cuál de las siguientes es una magnitud escalar?", options: { A: "Velocidad", B: "Aceleración", C: "Masa", D: "Fuerza" }, correct: "C", difficulty: "easy" },
-            { question: "¿Qué unidad de medida se asocia comúnmente con la frecuencia?", options: { A: "Newton", B: "Hertz", C: "Pascal", D: "Weber" }, correct: "B", difficulty: "easy" },
-            { question: "¿Qué instrumento se utiliza para medir la presión atmosférica?", options: { A: "Termómetro", B: "Barómetro", C: "Higrómetro", D: "Anemómetro" }, correct: "B", difficulty: "easy" },
-            { question: "¿Cuál es la unidad de medida de la resistencia eléctrica?", options: { A: "Voltio", B: "Amperio", C: "Ohmio", D: "Vatio" }, correct: "C", difficulty: "easy" },
-            { question: "¿Qué magnitud mide un dinamómetro?", options: { A: "Masa", B: "Volumen", C: "Fuerza", D: "Densidad" }, correct: "C", difficulty: "easy" },
-            { question: "¿Qué prefijo del SI representa un factor de $10^9$?", options: { A: "Micro", B: "Mega", C: "Giga", D: "Nano" }, correct: "C", difficulty: "easy" },
-            { question: "¿Cuál es la unidad de medida de la potencia en el SI?", options: { A: "Julio", B: "Vatio", C: "Newton", D: "Pascal" }, correct: "B", difficulty: "easy" },
-            { question: "¿Qué magnitud se mide en metros por segundo (m/s)?", options: { A: "Aceleración", B: "Fuerza", C: "Velocidad", D: "Energía" }, correct: "C", difficulty: "easy" },
+        // Sistema de traducción
+        const translations = {
+            es: {
+                title: "¿QUIÉN QUIERE SER MILLONARIO?",
+                topic: "Tema:",
+                loadQuestionsPlaceholder: "Introduce la URL del archivo JSON con las preguntas...",
+                loadQuestions: "Cargar preguntas",
+                loadingQuestions: "Cargando preguntas...",
+                questionsLoaded: "¡Preguntas cargadas correctamente!",
+                questionsAvailable: "preguntas disponibles.",
+                enterValidUrl: "Por favor, introduce una URL válida.",
+                error: "Error:",
+                lifeline5050: "50:50",
+                lifelineCall: "Llamada",
+                lifelineAudience: "Público",
+                loadQuestionsFirst: "Carga un archivo JSON con preguntas para comenzar...",
+                optionLoadQuestions: "Carga preguntas...",
+                nextQuestion: "Siguiente pregunta",
+                restartGame: "Reiniciar juego",
+                startGame: "Empezar juego",
+                welcome: "¡Bienvenido!",
+                enterName: "Por favor, introduce tu nombre para empezar a jugar:",
+                yourNameHere: "Tu nombre aquí...",
+                start: "Empezar",
+                correct: "¡Correcto!",
+                youGotIt: "¡Has acertado,",
+                currentScore: "! Tu puntuación actual es:",
+                continue: "Continuar",
+                incorrect: "¡Incorrecto!",
+                correctAnswerWas: "La respuesta correcta era:",
+                cheer: "¡Ánimo,",
+                gameOver: "Fin del juego",
+                congratulations: "¡Felicidades,",
+                wonMessage: "¡Has respondido todas las preguntas correctamente y te has convertido en millonario! Tu puntuación final es:",
+                of: "de",
+                lostMessage: "¡Oh no,! Has perdido. Tu puntuación final es:",
+                tryAgain: "¡Inténtalo de nuevo!",
+                gamesCompleted: "¡Juegos completados!",
+                playedGames: "Has jugado",
+                uniqueGames: "partidas únicas o hemos agotado todas las preguntas disponibles para esta dificultad. ¿Quieres empezar desde el principio con todas las preguntas disponibles de nuevo?",
+                yesRestart: "Sí, reiniciar todo",
+                clickStart: "Haz clic en 'Empezar Juego' para comenzar la partida",
+                use5050: "¿Usar 50:50?",
+                sure5050: "¿Estás seguro de que quieres usar la ayuda 50:50? Eliminará dos opciones incorrectas.",
+                yes: "Sí",
+                no: "No",
+                useCall: "¿Usar llamada?",
+                sureCall: "¿Estás seguro de que quieres usar la ayuda de la llamada a un amigo? Te dará una pista.",
+                friendCall: "Llamada a un amigo",
+                friendSays: "Tu amigo dice: \"Estoy bastante seguro de que la respuesta es la opción",
+                understood: "Entendido",
+                useAudience: "¿Usar público?",
+                sureAudience: "¿Estás seguro de que quieres usar la ayuda del público? Te mostrará las preferencias del público.",
+                audienceVote: "Voto del público",
+                audienceVotes: "El público vota:",
+                mustLoadQuestions: "Debes cargar preguntas antes de empezar el juego.",
+                footer: {
+                    lab: "Laboratorio de aplicaciones educativas",
+                    based: "Basado en",
+                    author: "Aplicación hecha por Juan José de Haro",
+                    license: "Licencia Creative Commons BY-SA"
+                }
+            },
+            ca: {
+                title: "QUI VOL SER MILIONARI?",
+                topic: "Tema:",
+                loadQuestionsPlaceholder: "Introdueix la URL del fitxer JSON amb les preguntes...",
+                loadQuestions: "Carregar preguntes",
+                loadingQuestions: "Carregant preguntes...",
+                questionsLoaded: "Preguntes carregades correctament!",
+                questionsAvailable: "preguntes disponibles.",
+                enterValidUrl: "Si us plau, introdueix una URL vàlida.",
+                error: "Error:",
+                lifeline5050: "50:50",
+                lifelineCall: "Trucada",
+                lifelineAudience: "Públic",
+                loadQuestionsFirst: "Carrega un fitxer JSON amb preguntes per començar...",
+                optionLoadQuestions: "Carrega preguntes...",
+                nextQuestion: "Següent pregunta",
+                restartGame: "Reiniciar joc",
+                startGame: "Començar joc",
+                welcome: "Benvingut!",
+                enterName: "Si us plau, introdueix el teu nom per començar a jugar:",
+                yourNameHere: "El teu nom aquí...",
+                start: "Començar",
+                correct: "Correcte!",
+                youGotIt: "Has encertat,",
+                currentScore: "! La teva puntuació actual és:",
+                continue: "Continuar",
+                incorrect: "Incorrecte!",
+                correctAnswerWas: "La resposta correcta era:",
+                cheer: "Ànim,",
+                gameOver: "Fi del joc",
+                congratulations: "Felicitats,",
+                wonMessage: "Has respost totes les preguntes correctament i t'has convertit en milionari! La teva puntuació final és:",
+                of: "de",
+                lostMessage: "Oh no,! Has perdut. La teva puntuació final és:",
+                tryAgain: "Torna-ho a intentar!",
+                gamesCompleted: "Jocs completats!",
+                playedGames: "Has jugat",
+                uniqueGames: "partides úniques o hem esgotat totes les preguntes disponibles per a aquesta dificultat. Vols començar des del principi amb totes les preguntes disponibles de nou?",
+                yesRestart: "Sí, reiniciar tot",
+                clickStart: "Fes clic a 'Començar Joc' per començar la partida",
+                use5050: "Usar 50:50?",
+                sure5050: "Estàs segur que vols usar l'ajuda 50:50? Eliminarà dues opcions incorrectes.",
+                yes: "Sí",
+                no: "No",
+                useCall: "Usar trucada?",
+                sureCall: "Estàs segur que vols usar l'ajuda de la trucada a un amic? Et donarà una pista.",
+                friendCall: "Trucada a un amic",
+                friendSays: "El teu amic diu: \"Estic bastant segur que la resposta és l'opció",
+                understood: "Entès",
+                useAudience: "Usar públic?",
+                sureAudience: "Estàs segur que vols usar l'ajuda del públic? Et mostrarà les preferències del públic.",
+                audienceVote: "Vot del públic",
+                audienceVotes: "El públic vota:",
+                mustLoadQuestions: "Has de carregar preguntes abans de començar el joc.",
+                footer: {
+                    lab: "Laboratori d'aplicacions educatives",
+                    based: "Basat en",
+                    author: "Aplicació feta per Juan José de Haro",
+                    license: "Llicència Creative Commons BY-SA"
+                }
+            }
+        };
 
-            // Medium (12 questions)
-            { question: "¿Cuál es la unidad de medida de la cantidad de sustancia en el SI?", options: { A: "Gramo", B: "Mol", C: "Litro", D: "Kilogramo" }, correct: "B", difficulty: "medium" },
-            { question: "¿Qué magnitud se mide en pascales (Pa)?", options: { A: "Volumen", B: "Presión", C: "Temperatura", D: "Longitud" }, correct: "B", difficulty: "medium" },
-            { question: "¿Cuál es la unidad de medida del tiempo en el SI?", options: { A: "Hora", B: "Minuto", C: "Día", D: "Segundo" }, correct: "D", difficulty: "medium" },
-            { question: "¿Qué magnitud se mide en kilogramos por metro cúbico (kg/m³)?", options: { A: "Masa", B: "Volumen", C: "Densidad", D: "Peso" }, correct: "C", difficulty: "medium" },
-            { question: "¿Cuál es la unidad de medida de la intensidad luminosa en el SI?", options: { A: "Lux", B: "Lumen", C: "Candela", D: "Weber" }, correct: "C", difficulty: "medium" },
-            { question: "¿Qué magnitud se mide en newtons (N)?", options: { A: "Masa", B: "Fuerza", C: "Energía", D: "Potencia" }, correct: "B", difficulty: "medium" },
-            { question: "¿Cuál es la unidad de medida del ángulo plano en el SI?", options: { A: "Grado", B: "Minuto de arco", C: "Segundo de arco", D: "Radián" }, correct: "D", difficulty: "medium" },
-            { question: "¿Qué magnitud se mide en voltios (V)?", options: { A: "Corriente eléctrica", B: "Resistencia", C: "Potencial eléctrico", D: "Potencia" }, correct: "C", difficulty: "medium" },
-            { question: "¿Cuál es la unidad de medida de la carga eléctrica en el SI?", options: { A: "Amperio", B: "Voltio", C: "Ohmio", D: "Culombio" }, correct: "D", difficulty: "medium" },
-            { question: "¿Qué magnitud se mide en siemens (S)?", options: { A: "Tensión", B: "Corriente", C: "Resistencia", D: "Conductancia eléctrica" }, correct: "D", difficulty: "medium" },
-            { question: "¿Cuál es la unidad de medida de la inductancia en el SI?", options: { A: "Faradio", B: "Tesla", C: "Henrio", D: "Weber" }, correct: "C", difficulty: "medium" },
-            { question: "¿Qué magnitud se mide en webers (Wb)?", options: { A: "Campo eléctrico", B: "Flujo magnético", C: "Inductancia", D: "Capacitancia" }, correct: "B", difficulty: "medium" },
+        let currentLanguage = 'es';
 
-            // Hard (12 questions)
-            { question: "¿Cuál es la unidad de medida de la capacitancia en el SI?", options: { A: "Henrio", B: "Faradio", C: "Ohmio", D: "Voltio" }, correct: "B", difficulty: "hard" },
-            { question: "¿Qué magnitud se mide en teslas (T)?", options: { A: "Flujo magnético", B: "Campo magnético", C: "Inductancia", D: "Resistencia" }, correct: "B", difficulty: "hard" },
-            { question: "¿Cuál es la unidad de medida de la actividad radiactiva en el SI?", options: { A: "Curie", B: "Rutherford", C: "Becquerel", D: "Sievert" }, correct: "C", difficulty: "hard" },
-            { question: "¿Qué magnitud se mide en sieverts (Sv)?", options: { A: "Dosis absorbida", B: "Dosis equivalente de radiación", C: "Actividad radiactiva", D: "Exposición" }, correct: "B", difficulty: "hard" },
-            { question: "¿Cuál es la unidad de medida de la dosis absorbida de radiación en el SI?", options: { A: "Sievert", B: "Gray", C: "Becquerel", D: "Curie" }, correct: "B", difficulty: "hard" },
-            { question: "¿Qué magnitud se mide en lux (lx)?", options: { A: "Flujo luminoso", B: "Intensidad luminosa", C: "Iluminancia", D: "Brillo" }, correct: "C", difficulty: "hard" },
-            { question: "¿Cuál es la unidad de medida del flujo luminoso en el SI?", options: { A: "Lux", B: "Candela", C: "Lumen", D: "Nit" }, correct: "C", difficulty: "hard" },
-            { question: "¿Qué magnitud se mide en grados sexagesimales (°)?", options: { A: "Tiempo", B: "Longitud", C: "Ángulo", D: "Temperatura" }, correct: "C", difficulty: "hard" },
-            { question: "¿Cuál es la unidad de medida de la energía calórica en el SI?", options: { A: "Caloría", B: "Ergio", C: "Julio", D: "Vatio" }, correct: "C", difficulty: "hard" },
-            { question: "¿Qué magnitud se mide en amperios-hora (Ah)?", options: { A: "Corriente", B: "Potencia", C: "Carga eléctrica", D: "Voltaje" }, correct: "C", difficulty: "hard" },
-            { question: "¿Cuál es la unidad de medida de la velocidad angular?", options: { A: "Metros por segundo", B: "Radián por segundo", C: "Hertz", D: "Revoluciones por minuto" }, correct: "B", difficulty: "hard" },
-            { question: "¿Qué magnitud se mide en newton-metro (N·m)?", options: { A: "Fuerza", B: "Energía", C: "Momento de fuerza", D: "Presión" }, correct: "C", difficulty: "hard" },
+        // Detectar idioma del navegador
+        function detectBrowserLanguage() {
+            const browserLang = navigator.language || navigator.userLanguage;
+            return browserLang.toLowerCase().startsWith('ca') ? 'ca' : 'es';
+        }
 
-            // Very Hard (12 questions)
-            { question: "¿Cuál es la unidad de medida de la viscosidad dinámica en el SI?", options: { A: "Poise", B: "Stokes", C: "Pascal-segundo", D: "Centipoise" }, correct: "C", difficulty: "very-hard" },
-            { question: "¿Qué magnitud se mide en decibelios (dB)?", options: { A: "Frecuencia", B: "Longitud de onda", C: "Nivel de intensidad sonora", D: "Velocidad" }, correct: "C", difficulty: "very-hard" },
-            { question: "¿Cuál es la unidad de medida de la conductancia eléctrica en el SI?", options: { A: "Ohmio", B: "Voltio", C: "Amperio", D: "Siemens" }, correct: "D", difficulty: "very-hard" },
-            { question: "¿Qué magnitud se mide en becquerelios por kilogramo (Bq/kg)?", options: { A: "Dosis absorbida", B: "Actividad específica", C: "Dosis equivalente", D: "Exposición" }, correct: "B", difficulty: "very-hard" },
-            { question: "¿Cuál es la unidad de medida de la fuerza electromotriz?", options: { A: "Amperio", B: "Ohmio", C: "Voltio", D: "Vatio" }, correct: "C", difficulty: "very-hard" },
-            { question: "¿Qué magnitud se mide en metros cuadrados (m²)?", options: { A: "Volumen", B: "Longitud", C: "Área", D: "Perímetro" }, correct: "C", difficulty: "very-hard" },
-            { question: "¿Cuál es la unidad de medida del volumen en el SI?", options: { A: "Litro", B: "Centímetro cúbico", C: "Metro cúbico", D: "Galón" }, correct: "C", difficulty: "very-hard" },
-            { question: "¿Qué magnitud se mide en metros por segundo al cuadrado (m/s²)?", options: { A: "Velocidad", B: "Fuerza", C: "Aceleración", D: "Trabajo" }, correct: "C", difficulty: "very-hard" },
-            { question: "¿Cuál es la unidad de medida del trabajo en el SI?", options: { A: "Vatio", B: "Newton", C: "Julio", D: "Pascal" }, correct: "C", difficulty: "very-hard" },
-            { question: "¿Qué magnitud se mide en vatios por metro cuadrado (W/m²)?", options: { A: "Potencia", B: "Intensidad de radiación", C: "Presión", D: "Energía" }, correct: "B", difficulty: "very-hard" },
-            { question: "¿Cuál es la unidad de medida de la presión en el sistema CGS?", options: { A: "Pascal", B: "Baria", C: "Atmósfera", D: "Milímetro de mercurio" }, correct: "B", difficulty: "very-hard" },
-            { question: "¿Qué magnitud se mide en gramos por centímetro cúbico (g/cm³)?", options: { A: "Masa", B: "Volumen", C: "Densidad", D: "Peso" }, correct: "C", difficulty: "very-hard" },
+        // Cargar idioma guardado o detectar automáticamente
+        function initializeLanguage() {
+            const savedLang = localStorage.getItem('gameLanguage');
+            currentLanguage = savedLang || detectBrowserLanguage();
+            updateLanguageButtons();
+            translatePage();
+        }
 
-            // Expert (12 questions)
-            { question: "¿Cuál es la unidad de medida de la potencia en el sistema CGS?", options: { A: "Vatio", B: "Caballo de fuerza", C: "Ergio por segundo", D: "Julio por segundo" }, correct: "C", difficulty: "expert" },
-            { question: "¿Qué magnitud se mide en calorías?", options: { A: "Potencia", B: "Fuerza", C: "Energía", D: "Temperatura" }, correct: "C", difficulty: "expert" },
-            { question: "¿Cuál es la unidad de medida de la luminancia en el SI?", options: { A: "Lux", B: "Lumen", C: "Nit", D: "Candela" }, correct: "C", difficulty: "expert" },
-            { question: "¿Qué magnitud se mide en candelas por metro cuadrado (cd/m²)?", options: { A: "Iluminancia", B: "Flujo luminoso", C: "Luminancia", D: "Intensidad luminosa" }, correct: "C", difficulty: "expert" },
-            { question: "¿Cuál es la unidad de medida del campo eléctrico en el SI?", options: { A: "Voltio", B: "Newton por culombio", C: "Amperio", D: "Ohmio" }, correct: "B", difficulty: "expert" },
-            { question: "¿Qué magnitud se mide en voltios por metro (V/m)?", options: { A: "Potencial eléctrico", B: "Campo eléctrico", C: "Resistencia", D: "Corriente" }, correct: "B", difficulty: "expert" },
-            { question: "¿Cuál es la unidad de medida de la cantidad de movimiento en el SI?", options: { A: "Newton", B: "Julio", C: "Kilogramo metro por segundo", D: "Vatio" }, correct: "C", difficulty: "expert" },
-            { question: "¿Qué magnitud se mide en kilogramo metro por segundo (kg·m/s)?", options: { A: "Fuerza", B: "Energía", C: "Potencia", D: "Cantidad de movimiento" }, correct: "D", difficulty: "expert" },
-            { question: "¿Cuál es la unidad de medida de la cantidad de movimiento angular en el SI?", options: { A: "Newton metro", B: "Joule-segundo", C: "Kilogramo metro cuadrado", D: "Vatio segundo" }, correct: "B", difficulty: "expert" },
-            { question: "¿Cuál es la unidad de medida de la fuerza en el sistema técnico de unidades?", options: { A: "Newton", B: "Dina", C: "Kilopondio", D: "Poundal" }, correct: "C", difficulty: "expert" },
-            { question: "¿Cuál es la unidad de medida de la viscosidad cinemática en el SI?", options: { A: "Poise", B: "Stokes", C: "Metro cuadrado por segundo", D: "Centistokes" }, correct: "C", difficulty: "expert" },
-            { question: "¿Qué magnitud se mide en vatios por estereorradián (W/sr)?", options: { A: "Flujo radiante", B: "Intensidad radiante", C: "Radiación", D: "Irradiancia" }, correct: "B", difficulty: "expert" }
-        ];
+        // Actualizar botones de idioma
+        function updateLanguageButtons() {
+            document.querySelectorAll('.lang-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(`lang${currentLanguage.toUpperCase()}`).classList.add('active');
+        }
 
-        let questions = []; // This will hold the 12 questions for the current game
-        let playedQuestionIndices = new Set(); // Stores indices of questions already used across all games
-        let gamesPlayedCount = 0; // Counts how many unique games have been started (max 5)
+        // Cambiar idioma
+        function changeLanguage(lang) {
+            currentLanguage = lang;
+            localStorage.setItem('gameLanguage', lang);
+            updateLanguageButtons();
+            translatePage();
+        }
+
+        // Traducir toda la página
+        function translatePage() {
+            const t = translations[currentLanguage];
+            
+            // Traducir elementos con data-i18n
+            document.querySelectorAll('[data-i18n]').forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                const keys = key.split('.');
+                let value = t;
+                
+                for (const k of keys) {
+                    value = value[k];
+                    if (!value) break;
+                }
+                
+                if (value) {
+                    element.textContent = value;
+                }
+            });
+
+            // Traducir elementos específicos
+            document.title = t.title;
+            document.querySelector('h1').textContent = t.title;
+            
+            if (document.getElementById('topicContent').textContent === 'Tema:') {
+                document.querySelector('.topic-title').textContent = t.topic;
+            }
+            
+            document.getElementById('jsonUrlInput').placeholder = t.loadQuestionsPlaceholder;
+            document.getElementById('loadJsonButton').textContent = t.loadQuestions;
+            document.getElementById('nextQuestionButton').textContent = t.nextQuestion;
+            document.getElementById('restartGameButton').textContent = t.restartGame;
+            document.getElementById('startGameButton').textContent = t.startGame;
+            document.getElementById('playerNameBoxTitle').textContent = t.welcome;
+            document.getElementById('playerNameBoxContent').textContent = t.enterName;
+            document.getElementById('playerNameInput').placeholder = t.yourNameHere;
+            document.getElementById('submitPlayerNameButton').textContent = t.start;
+
+            // Traducir ayudas
+            document.querySelectorAll('.lifeline-button')[0].innerHTML = `
+                <svg viewBox="0 0 24 24" width="24" height="24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z" fill="white"/>
+                </svg>
+                ${t.lifeline5050}
+            `;
+            
+            document.querySelectorAll('.lifeline-button')[1].innerHTML = `
+                <svg viewBox="0 0 24 24" width="24" height="24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20 15.5c-1.25 0-2.45-.2-3.57-.57-.35-.11-.74-.03-1.01.24l-2.2 2.2c-2.83-1.44-5.15-3.75-6.59-6.59l2.2-2.2c.27-.27.35-.66.24-1.01C8.75 6.45 8.55 5.25 8.55 4c0-1.1.9-2 2-2h3.5c1.1 0 2 .9 2 2v3.5c0 1.1-.9 2-2 2h-3.5c-.55 0-1-.45-1-1s.45-1 1-1h.5c.28 0 .5-.22.5-.5s-.22-.5-.5-.5h-.5c-.55 0-1-.45-1-1s.45-1 1-1h.5c.28 0 .5-.22.5-.5s-.22-.5-.5-.5h-.5c-.55 0-1-.45-1-1s.45-1 1-1h.5c.28 0 .5-.22.5-.5s-.22-.5-.5-.5H10.5c-1.1 0-2 .9-2 2v3.5c0 1.1.9 2 2 2h3.5c.55 0 1 .45 1 1s-.45 1-1 1h-.5c-.28 0-.5.22-.5.5s.22.5.5.5h.5c.55 0 1 .45 1 1s-.45 1-1 1h-.5c-.28 0-.5.22-.5.5s.22.5.5.5H10.5c-1.1 0-2 .9-2 2v3.5c0 1.1.9 2 2 2h3.5c1.1 0 2-.9 2-2V15.5z" fill="white"/>
+                </svg>
+                ${t.lifelineCall}
+            `;
+            
+            document.querySelectorAll('.lifeline-button')[2].innerHTML = `
+                <svg viewBox="0 0 24 24" width="24" height="24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z" fill="white"/>
+                </svg>
+                ${t.lifelineAudience}
+            `;
+
+            // Actualizar texto de pregunta inicial si no hay preguntas cargadas
+            if (!questionsLoaded) {
+                document.getElementById('questionText').textContent = t.loadQuestionsFirst;
+                const optionButtons = document.querySelectorAll('.option-button');
+                optionButtons.forEach(button => {
+                    const optionKey = button.dataset.option;
+                    button.textContent = `${optionKey}) ${t.optionLoadQuestions}`;
+                });
+            }
+        }
+
+        // Variables globales
+        let allAvailableQuestions = [];
+        let questionsTopic = "";
+        let questions = [];
+        let playedQuestionIndices = new Set();
+        let gamesPlayedCount = 0;
         const MAX_GAMES = 5;
-        const QUESTIONS_PER_GAME = 12; // Changed to 12 questions per game
+        const QUESTIONS_PER_GAME = 12;
 
-        // Prize levels corresponding to question index + 1 (for 1-based indexing in display)
         const prizeLevels = [
             "500", "1.000", "2.000", "5.000", "10.000",
             "25.000", "50.000", "75.000", "125.000", "250.000",
             "500.000", "1 MILLÓN"
         ];
 
-        // Map game number to difficulty level
         const difficultyMap = {
             1: 'easy',
             2: 'medium',
@@ -633,13 +1020,14 @@
         let usedCall = false;
         let usedAudience = false;
         let gameStarted = false;
-        let playerName = "Jugador"; // Default player name
-        let hasPlayerNameBeenSet = false; // New flag to track if name has been set for the current series of games
+        let playerName = "Jugador";
+        let hasPlayerNameBeenSet = false;
+        let questionsLoaded = false;
 
-        // Get DOM elements
+        // Elementos DOM
         const questionText = document.getElementById('questionText');
         const optionsGrid = document.getElementById('optionsGrid');
-        let optionButtons; // Changed from const to let, will be reassigned in restartGame
+        let optionButtons = optionsGrid.querySelectorAll('.option-button');
         const lifeline5050Button = document.getElementById('lifeline5050');
         const lifelineCallButton = document.getElementById('lifelineCall');
         const lifelineAudienceButton = document.getElementById('lifelineAudience');
@@ -647,40 +1035,142 @@
         const restartGameButton = document.getElementById('restartGameButton');
         const startGameButton = document.getElementById('startGameButton');
         const prizeLadderElement = document.getElementById('prizeLadder');
+        
+        // Elementos del cargador JSON
+        const jsonUrlInput = document.getElementById('jsonUrlInput');
+        const loadJsonButton = document.getElementById('loadJsonButton');
+        const statusMessage = document.getElementById('statusMessage');
+        const topicInfo = document.getElementById('topicInfo');
+        const topicContent = document.getElementById('topicContent');
 
-        // Message Box elements
+        // Elementos del modal
         const messageBoxOverlay = document.getElementById('messageBoxOverlay');
         const messageBoxTitle = document.getElementById('messageBoxTitle');
         const messageBoxContent = document.getElementById('messageBoxContent');
         const messageBoxButtons = document.getElementById('messageBoxButtons');
-
-        // Player Name Input Modal elements
         const gameLogoImage = document.getElementById('gameLogoImage');
         const playerNameModalOverlay = document.getElementById('playerNameModalOverlay');
         const playerNameInput = document.getElementById('playerNameInput');
         const submitPlayerNameButton = document.getElementById('submitPlayerNameButton');
 
+
+
         /**
-         * Shuffles an array in place using the Fisher-Yates (Knuth) algorithm.
-         * @param {Array} array - The array to shuffle.
+         * Mezcla un array usando el algoritmo Fisher-Yates
          */
         function shuffleArray(array) {
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]]; // Swap elements
+                [array[i], array[j]] = [array[j], array[i]];
             }
         }
 
         /**
-         * Displays a custom message box.
-         * @param {string} title - The title of the message box.
-         * @param {string} content - The content/message to display.
-         * @param {Array<Object>} buttons - An array of button objects { text, className, onClick }.
+         * Muestra el estado de carga
+         */
+        function showStatus(message, type) {
+            const t = translations[currentLanguage];
+            let translatedMessage = message;
+            
+            if (message.includes('Cargando preguntas...')) {
+                translatedMessage = t.loadingQuestions;
+            } else if (message.includes('preguntas cargadas correctamente!')) {
+                translatedMessage = `${t.questionsLoaded} ${allAvailableQuestions.length} ${t.questionsAvailable}`;
+            } else if (message.includes('Por favor, introduce una URL válida.')) {
+                translatedMessage = t.enterValidUrl;
+            }
+            
+            statusMessage.textContent = translatedMessage;
+            statusMessage.className = `status-message status-${type}`;
+            statusMessage.style.display = 'block';
+        }
+
+        /**
+         * Procesa el texto para renderizar LaTeX
+         */
+        function processLatexText(text) {
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                setTimeout(() => {
+                    window.MathJax.typesetPromise([document.querySelector('.question-text')]).catch((err) => {
+                        console.log('Error renderizando LaTeX:', err);
+                    });
+                }, 100);
+            }
+            return text;
+        }
+
+        /**
+         * Carga preguntas desde una URL JSON
+         */
+        async function loadQuestionsFromUrl(url) {
+            const t = translations[currentLanguage];
+            
+            try {
+                showStatus(t.loadingQuestions, 'success');
+                
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error(`Error HTTP: ${response.status}`);
+                }
+
+                const data = await response.json();
+                
+                // Validar estructura del JSON
+                if (!data.preguntas || !Array.isArray(data.preguntas) || data.preguntas.length < QUESTIONS_PER_GAME) {
+                    throw new Error(`El archivo debe contener al menos ${QUESTIONS_PER_GAME} preguntas en el array 'preguntas'`);
+                }
+
+                // Validar cada pregunta
+                for (let i = 0; i < data.preguntas.length; i++) {
+                    const q = data.preguntas[i];
+                    if (!q.question || !q.options || !q.correct || !q.difficulty) {
+                        throw new Error(`Pregunta ${i + 1} no tiene la estructura correcta`);
+                    }
+                    if (!q.options.A || !q.options.B || !q.options.C || !q.options.D) {
+                        throw new Error(`Pregunta ${i + 1} no tiene todas las opciones (A, B, C, D)`);
+                    }
+                }
+
+                allAvailableQuestions = data.preguntas;
+                questionsTopic = data.tema || "Preguntas cargadas";
+                questionsLoaded = true;
+
+                // Mostrar información del tema
+                topicContent.textContent = questionsTopic;
+                topicInfo.style.display = 'block';
+
+                showStatus(`${t.questionsLoaded} ${allAvailableQuestions.length} ${t.questionsAvailable}`, 'success');
+                startGameButton.disabled = false;
+
+                return true;
+
+            } catch (error) {
+                console.error('Error cargando preguntas:', error);
+                showStatus(`${t.error} ${error.message}`, 'error');
+                return false;
+            }
+        }
+
+        /**
+         * Comprueba parámetros URL para cargar JSON automáticamente
+         */
+        function checkUrlParameters() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const jsonUrl = urlParams.get('json') || urlParams.get('preguntas');
+            
+            if (jsonUrl) {
+                jsonUrlInput.value = jsonUrl;
+                loadQuestionsFromUrl(jsonUrl);
+            }
+        }
+
+        /**
+         * Muestra un mensaje modal personalizado
          */
         function showMessageBox(title, content, buttons) {
             messageBoxTitle.textContent = title;
-            messageBoxContent.textContent = content;
-            messageBoxButtons.innerHTML = ''; // Clear previous buttons
+            messageBoxContent.innerHTML = content;
+            messageBoxButtons.innerHTML = '';
 
             buttons.forEach(buttonInfo => {
                 const button = document.createElement('button');
@@ -699,62 +1189,56 @@
         }
 
         /**
-         * Hides the custom message box.
+         * Oculta el mensaje modal
          */
         function hideMessageBox() {
             messageBoxOverlay.classList.remove('show');
         }
 
         /**
-         * Shows the player name input modal.
+         * Muestra la entrada del nombre del jugador
          */
         function showPlayerNameInput() {
             playerNameModalOverlay.classList.add('show');
-            playerNameInput.value = ''; // Clear previous input
-            playerNameInput.focus(); // Focus on the input field
+            playerNameInput.value = '';
+            playerNameInput.focus();
         }
 
         /**
-         * Hides the player name input modal.
+         * Oculta la entrada del nombre del jugador
          */
         function hidePlayerNameInput() {
             playerNameModalOverlay.classList.remove('show');
         }
 
         /**
-         * Handles the submission of the player's name.
+         * Maneja el envío del nombre del jugador
          */
         function handleNameSubmission() {
             const enteredName = playerNameInput.value.trim();
             if (enteredName) {
                 playerName = enteredName;
             } else {
-                playerName = "Jugador"; // Revert to default if empty
+                playerName = "Jugador";
             }
             hidePlayerNameInput();
-            hasPlayerNameBeenSet = true; // Set flag to true as name is now stored
+            hasPlayerNameBeenSet = true;
 
-            // Update the game logo image to display the player's name permanently
             gameLogoImage.src = `https://placehold.co/300x100/000000/00FF00?text=${encodeURIComponent(playerName)}`;
             gameLogoImage.alt = `Nombre del jugador: ${playerName}`;
-            gameLogoImage.style.display = 'block'; // Ensure it's visible
+            gameLogoImage.style.display = 'block';
 
-            loadQuestion(); // Start loading the first question after name is submitted
+            loadQuestion();
         }
 
         /**
-         * Updates the prize ladder display, highlighting the current level.
+         * Actualiza la escalera de premios
          */
         function updatePrizeLadder() {
             const allPrizeItems = prizeLadderElement.querySelectorAll('.prize-level-item');
             allPrizeItems.forEach(item => item.classList.remove('current-level'));
 
-            // Highlight the current level based on the score
-            // The prize levels are displayed in reverse order (1 Million at top, 500 at bottom)
-            // So, if score is 1, we want to highlight the last item (index 11, which is "500")
-            // If score is 12, we want to highlight the first item (index 0, which is "1 MILLÓN")
             if (score > 0 && score <= QUESTIONS_PER_GAME) {
-                // Calculate the index from the end of the displayed list
                 const highlightIndex = prizeLevels.length - score;
                 if (highlightIndex >= 0 && highlightIndex < allPrizeItems.length) {
                     allPrizeItems[highlightIndex].classList.add('current-level');
@@ -762,47 +1246,55 @@
             }
         }
 
-
         /**
-         * Loads the current question into the game display.
+         * Carga la pregunta actual en la pantalla
          */
         function loadQuestion() {
             if (currentQuestionIndex >= questions.length) {
-                endGame(true); // Player won!
+                endGame(true);
                 return;
             }
 
             const currentQuestion = questions[currentQuestionIndex];
-            questionText.textContent = currentQuestion.question;
+            
+            // Procesar texto con LaTeX
+            questionText.innerHTML = processLatexText(currentQuestion.question);
 
-            // Ensure optionButtons is up-to-date before iterating
-            optionButtons = optionsGrid.querySelectorAll('.option-button'); // Re-query here just in case
+            optionButtons = optionsGrid.querySelectorAll('.option-button');
 
             optionButtons.forEach(button => {
                 const optionKey = button.dataset.option;
-                button.textContent = `${optionKey}) ${currentQuestion.options[optionKey]}`;
+                button.innerHTML = `${optionKey}) ${processLatexText(currentQuestion.options[optionKey])}`;
                 button.classList.remove('correct', 'incorrect');
-                button.disabled = false; // Re-enable all buttons
-                button.style.display = 'block'; // Ensure all options are visible
-                button.onclick = () => checkAnswer(optionKey); // Re-attach click listener
+                button.disabled = false;
+                button.style.display = 'block';
+                button.onclick = () => checkAnswer(optionKey);
             });
 
-            nextQuestionButton.style.display = 'none'; // Hide next question button initially
-            restartGameButton.style.display = 'none'; // Hide restart button
-            startGameButton.style.display = 'none'; // Hide start button
+            // Renderizar LaTeX en las opciones
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                setTimeout(() => {
+                    window.MathJax.typesetPromise([optionsGrid]).catch((err) => {
+                        console.log('Error renderizando LaTeX en opciones:', err);
+                    });
+                }, 100);
+            }
 
-            updatePrizeLadder(); // Update prize ladder on new question load
+            nextQuestionButton.style.display = 'none';
+            restartGameButton.style.display = 'none';
+            startGameButton.style.display = 'none';
+
+            updatePrizeLadder();
         }
 
         /**
-         * Checks if the selected answer is correct.
-         * @param {string} selectedOptionKey - The key of the selected option (A, B, C, D).
+         * Verifica si la respuesta seleccionada es correcta
          */
         function checkAnswer(selectedOptionKey) {
+            const t = translations[currentLanguage];
             const currentQuestion = questions[currentQuestionIndex];
             const isCorrect = selectedOptionKey === currentQuestion.correct;
 
-            // Disable all option buttons after an answer is selected
             optionButtons.forEach(button => {
                 button.disabled = true;
                 if (button.dataset.option === currentQuestion.correct) {
@@ -814,23 +1306,23 @@
 
             if (isCorrect) {
                 score++;
-                updatePrizeLadder(); // Update prize ladder immediately on correct answer
+                updatePrizeLadder();
                 showMessageBox(
-                    "¡Correcto!",
-                    `¡Has acertado, ${playerName}! Tu puntuación actual es: ${score}`,
-                    [{ text: "Continuar", className: "confirm", onClick: moveToNextQuestion }]
+                    t.correct,
+                    `${t.youGotIt} ${playerName}${t.currentScore} ${score}`,
+                    [{ text: t.continue, className: "confirm", onClick: moveToNextQuestion }]
                 );
             } else {
                 showMessageBox(
-                    "¡Incorrecto!",
-                    `La respuesta correcta era: ${currentQuestion.correct}) ${currentQuestion.options[currentQuestion.correct]}. ¡Ánimo, ${playerName}!`,
-                    [{ text: "Fin del Juego", className: "cancel", onClick: () => endGame(false) }]
+                    t.incorrect,
+                    `${t.correctAnswerWas} ${currentQuestion.correct}) ${currentQuestion.options[currentQuestion.correct]}. ${t.cheer} ${playerName}!`,
+                    [{ text: t.gameOver, className: "cancel", onClick: () => endGame(false) }]
                 );
             }
         }
 
         /**
-         * Moves to the next question or ends the game if all questions are answered.
+         * Pasa a la siguiente pregunta
          */
         function moveToNextQuestion() {
             currentQuestionIndex++;
@@ -842,56 +1334,62 @@
         }
 
         /**
-         * Ends the game and displays the final score.
-         * @param {boolean} won - True if the player won, false otherwise.
+         * Termina el juego
          */
         function endGame(won) {
+            const t = translations[currentLanguage];
             let title, content;
+            
             if (won) {
-                title = "¡Felicidades, " + playerName + "!";
-                content = `¡Has respondido todas las preguntas correctamente y te has convertido en millonario! Tu puntuación final es: ${score} de ${questions.length}.`;
+                title = `${t.congratulations} ${playerName}!`;
+                content = `${t.wonMessage} ${score} ${t.of} ${questions.length}.`;
             } else {
-                title = "Fin del Juego";
-                content = `¡Oh no, ${playerName}! Has perdido. Tu puntuación final es: ${score} de ${questions.length}. ¡Inténtalo de nuevo!`;
+                title = t.gameOver;
+                content = `${t.lostMessage.replace(',', `, ${playerName}`)} ${score} ${t.of} ${questions.length}. ${t.tryAgain}`;
             }
 
             showMessageBox(
                 title,
                 content,
-                [{ text: "Reiniciar Juego", className: "confirm", onClick: restartGame }]
+                [{ text: t.restartGame, className: "confirm", onClick: restartGame }]
             );
             restartGameButton.style.display = 'block';
             nextQuestionButton.style.display = 'none';
         }
 
         /**
-         * Resets the game to its initial state, selecting new questions if available.
+         * Reinicia el juego
          */
         function restartGame() {
-            // Increment game count only if it's a new unique game session
-            // This ensures gamesPlayedCount only increments when a full game (or attempt) is made
+            const t = translations[currentLanguage];
+            
+            if (!questionsLoaded) {
+                showMessageBox(
+                    t.error,
+                    t.mustLoadQuestions,
+                    [{ text: t.understood, className: "confirm" }]
+                );
+                return;
+            }
+
             if (gameStarted || gamesPlayedCount === 0) {
                 gamesPlayedCount++;
             }
 
-            // Determine the difficulty for the current game
             const currentDifficulty = difficultyMap[gamesPlayedCount];
-
-            // Filter questions by difficulty and ensure they haven't been played before
             const availableQuestionsForDifficulty = allAvailableQuestions.filter((q, index) =>
                 q.difficulty === currentDifficulty && !playedQuestionIndices.has(index)
             );
 
-            // Check if max games reached or not enough new questions for the current difficulty
             if (gamesPlayedCount > MAX_GAMES || availableQuestionsForDifficulty.length < QUESTIONS_PER_GAME) {
                 showMessageBox(
-                    "¡Juegos Completados!",
-                    `Has jugado ${MAX_GAMES} partidas únicas o hemos agotado todas las preguntas disponibles para esta dificultad. ¿Quieres empezar desde el principio con todas las preguntas disponibles de nuevo?`,
-                    [{ text: "Sí, reiniciar todo", className: "confirm", onClick: resetAllGames }]
+                    t.gamesCompleted,
+                    `${t.playedGames} ${MAX_GAMES} ${t.uniqueGames}`,
+                    [{ text: t.yesRestart, className: "confirm", onClick: resetAllGames }]
                 );
                 startGameButton.style.display = 'none';
                 restartGameButton.style.display = 'none';
-                return; // Stop here, wait for user to confirm full reset
+                return;
             }
 
             currentQuestionIndex = 0;
@@ -899,13 +1397,11 @@
             used5050 = false;
             usedCall = false;
             usedAudience = false;
-            gameStarted = false; // Reset gameStarted for the new session
+            gameStarted = false;
 
-            // Select 12 new unique questions for this game based on difficulty
-            shuffleArray(availableQuestionsForDifficulty); // Shuffle available questions for this difficulty
-            questions = availableQuestionsForDifficulty.slice(0, QUESTIONS_PER_GAME); // Take the first 12
+            shuffleArray(availableQuestionsForDifficulty);
+            questions = availableQuestionsForDifficulty.slice(0, QUESTIONS_PER_GAME);
 
-            // Add the indices of these selected questions to playedQuestionIndices
             questions.forEach(q => {
                 const originalIndex = allAvailableQuestions.findIndex(oq => oq === q);
                 if (originalIndex !== -1) {
@@ -920,28 +1416,24 @@
             startGameButton.style.display = 'block';
             nextQuestionButton.style.display = 'none';
             restartGameButton.style.display = 'none';
-            questionText.textContent = `Haz clic en 'Empezar Juego' para comenzar la partida ${gamesPlayedCount} de ${MAX_GAMES}.`;
+            questionText.textContent = `${t.clickStart} ${gamesPlayedCount} ${t.of} ${MAX_GAMES}.`;
 
-            // Re-create the buttons to ensure fresh event listeners and state
             optionsGrid.innerHTML = `
                 <button class="option-button" data-option="A"></button>
                 <button class="option-button" data-option="B"></button>
                 <button class="option-button" data-option="C"></button>
                 <button class="option-button" data-option="D"></button>
             `;
-            // IMPORTANT: Re-query option buttons after they are re-rendered
-            optionButtons = optionsGrid.querySelectorAll('.option-button'); // Reassign the global variable
+            optionButtons = optionsGrid.querySelectorAll('.option-button');
 
             optionButtons.forEach(button => {
-                button.disabled = true; // Initially disabled until game starts and question loads
+                button.disabled = true;
                 button.classList.remove('correct', 'incorrect');
-                // The loadQuestion function will set the text content and re-attach the onclick handler
             });
 
-            generatePrizeLadder(); // Generate and reset prize ladder
-            updatePrizeLadder(); // Initial update to show no level selected
+            generatePrizeLadder();
+            updatePrizeLadder();
 
-            // Update the logo display based on whether the name has been set
             if (hasPlayerNameBeenSet) {
                 gameLogoImage.src = `https://placehold.co/300x100/000000/00FF00?text=${encodeURIComponent(playerName)}`;
                 gameLogoImage.alt = `Nombre del jugador: ${playerName}`;
@@ -949,44 +1441,52 @@
                 gameLogoImage.src = `https://placehold.co/300x100/000000/00FF00?text=%C2%BFT%C3%BA%3F`;
                 gameLogoImage.alt = "Imagen de billetes de dinero con el texto ¿Tú?";
             }
-            gameLogoImage.style.display = 'block'; // Ensure the logo is visible
+            gameLogoImage.style.display = 'block';
         }
 
         /**
-         * Resets all game progress, including played question sets.
+         * Reinicia todos los juegos
          */
         function resetAllGames() {
-            playedQuestionIndices.clear(); // Clear all played questions
-            gamesPlayedCount = 0; // Reset game counter
-            hasPlayerNameBeenSet = false; // Allow name input again for a full reset
-            restartGame(); // Start a fresh game from the beginning
+            playedQuestionIndices.clear();
+            gamesPlayedCount = 0;
+            hasPlayerNameBeenSet = false;
+            restartGame();
         }
 
         /**
-         * Starts the game.
+         * Inicia el juego
          */
         function startGame() {
+            const t = translations[currentLanguage];
+            
+            if (!questionsLoaded) {
+                showMessageBox(
+                    t.error,
+                    t.mustLoadQuestions,
+                    [{ text: t.understood, className: "confirm" }]
+                );
+                return;
+            }
+
             gameStarted = true;
             startGameButton.style.display = 'none';
 
             if (!hasPlayerNameBeenSet) {
-                // Only show the initial logo animation and name input if name hasn't been set yet
                 setTimeout(() => {
-                    gameLogoImage.style.display = 'none'; // Hide the logo after 2 seconds
-                    showPlayerNameInput(); // Then show the name input modal
-                }, 2000); // 2 seconds
+                    gameLogoImage.style.display = 'none';
+                    showPlayerNameInput();
+                }, 2000);
             } else {
-                // If name is already set, just load the question immediately
                 loadQuestion();
             }
         }
 
         /**
-         * Generates the HTML for the prize ladder dynamically.
+         * Genera la escalera de premios
          */
         function generatePrizeLadder() {
-            prizeLadderElement.innerHTML = ''; // Clear existing ladder
-            // Display levels in reverse order for visual appeal (highest at top)
+            prizeLadderElement.innerHTML = '';
             const fullPrizeDisplayLevels = [
                 "1 MILLÓN", "500.000", "250.000", "125.000", "75.000",
                 "50.000", "25.000", "10.000", "5.000", "2.000", "1.000", "500"
@@ -1000,17 +1500,17 @@
             });
         }
 
-
-        // Lifeline functions
+        // Funciones de las ayudas
         lifeline5050Button.addEventListener('click', () => {
+            const t = translations[currentLanguage];
             if (!gameStarted || used5050) return;
 
             showMessageBox(
-                "¿Usar 50:50?",
-                "¿Estás seguro de que quieres usar la ayuda 50:50? Eliminará dos opciones incorrectas.",
+                t.use5050,
+                t.sure5050,
                 [
-                    { text: "Sí", className: "confirm", onClick: apply5050 },
-                    { text: "No", className: "cancel" }
+                    { text: t.yes, className: "confirm", onClick: apply5050 },
+                    { text: t.no, className: "cancel" }
                 ]
             );
         });
@@ -1025,7 +1525,6 @@
                 key => key !== correctOption
             );
 
-            // Randomly select two incorrect options to hide
             let optionsToHide = [];
             while (optionsToHide.length < 2) {
                 const randomIndex = Math.floor(Math.random() * incorrectOptions.length);
@@ -1038,25 +1537,27 @@
             optionButtons.forEach(button => {
                 if (optionsToHide.includes(button.dataset.option)) {
                     button.disabled = true;
-                    button.style.display = 'none'; // Hide the button
+                    button.style.display = 'none';
                 }
             });
         }
 
         lifelineCallButton.addEventListener('click', () => {
+            const t = translations[currentLanguage];
             if (!gameStarted || usedCall) return;
 
             showMessageBox(
-                "¿Usar Llamada?",
-                "¿Estás seguro de que quieres usar la ayuda de la llamada a un amigo? Te dará una pista.",
+                t.useCall,
+                t.sureCall,
                 [
-                    { text: "Sí", className: "confirm", onClick: applyCall },
-                    { text: "No", className: "cancel" }
+                    { text: t.yes, className: "confirm", onClick: applyCall },
+                    { text: t.no, className: "cancel" }
                 ]
             );
         });
 
         function applyCall() {
+            const t = translations[currentLanguage];
             usedCall = true;
             lifelineCallButton.disabled = true;
 
@@ -1064,26 +1565,28 @@
             const correctOptionText = currentQuestion.options[currentQuestion.correct];
 
             showMessageBox(
-                "Llamada a un Amigo",
-                `Tu amigo dice: "Estoy bastante seguro de que la respuesta es la opción ${currentQuestion.correct}, ${correctOptionText}."`,
-                [{ text: "Entendido", className: "confirm" }]
+                t.friendCall,
+                `${t.friendSays} ${currentQuestion.correct}, ${correctOptionText}."`,
+                [{ text: t.understood, className: "confirm" }]
             );
         }
 
         lifelineAudienceButton.addEventListener('click', () => {
+            const t = translations[currentLanguage];
             if (!gameStarted || usedAudience) return;
 
             showMessageBox(
-                "¿Usar Público?",
-                "¿Estás seguro de que quieres usar la ayuda del público? Te mostrará las preferencias del público.",
+                t.useAudience,
+                t.sureAudience,
                 [
-                    { text: "Sí", className: "confirm", onClick: applyAudience },
-                    { text: "No", className: "cancel" }
+                    { text: t.yes, className: "confirm", onClick: applyAudience },
+                    { text: t.no, className: "cancel" }
                 ]
             );
         });
 
         function applyAudience() {
+            const t = translations[currentLanguage];
             usedAudience = true;
             lifelineAudienceButton.disabled = true;
 
@@ -1091,16 +1594,13 @@
             const options = Object.keys(currentQuestion.options);
             const correctOption = currentQuestion.correct;
 
-            // Simulate audience votes
             const votes = {};
             let remainingPercentage = 100;
 
-            // Give the correct answer a high percentage
-            const correctPercentage = Math.floor(Math.random() * (70 - 40 + 1)) + 40; // 40-70%
+            const correctPercentage = Math.floor(Math.random() * (70 - 40 + 1)) + 40;
             votes[correctOption] = correctPercentage;
             remainingPercentage -= correctPercentage;
 
-            // Distribute remaining percentage among incorrect options
             const incorrectOptions = options.filter(opt => opt !== correctOption);
             for (let i = 0; i < incorrectOptions.length; i++) {
                 if (i === incorrectOptions.length - 1) {
@@ -1112,33 +1612,59 @@
                 }
             }
 
-            // Ensure sum is 100 (due to rounding, might need adjustment)
             let currentSum = Object.values(votes).reduce((a, b) => a + b, 0);
             if (currentSum !== 100) {
                 votes[correctOption] += (100 - currentSum);
             }
 
-            let audienceMessage = "El público vota:\n";
+            let audienceMessage = `${t.audienceVotes}<br>`;
             options.forEach(opt => {
-                audienceMessage += `${opt}: ${votes[opt]}%\n`;
+                audienceMessage += `${opt}: ${votes[opt]}%<br>`;
             });
 
             showMessageBox(
-                "Voto del Público",
+                t.audienceVote,
                 audienceMessage,
-                [{ text: "Entendido", className: "confirm" }]
+                [{ text: t.understood, className: "confirm" }]
             );
         }
 
         // Event Listeners
+        loadJsonButton.addEventListener('click', () => {
+            const t = translations[currentLanguage];
+            const url = jsonUrlInput.value.trim();
+            if (!url) {
+                showStatus(t.enterValidUrl, 'error');
+                return;
+            }
+            loadQuestionsFromUrl(url);
+        });
+
+        // Botones de idioma
+        document.getElementById('langCA').addEventListener('click', () => changeLanguage('ca'));
+        document.getElementById('langES').addEventListener('click', () => changeLanguage('es'));
+
         startGameButton.addEventListener('click', startGame);
         submitPlayerNameButton.addEventListener('click', handleNameSubmission);
 
+        // Permitir Enter en el campo de entrada
+        jsonUrlInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                loadJsonButton.click();
+            }
+        });
 
-        // Initial setup on window load
+        playerNameInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                submitPlayerNameButton.click();
+            }
+        });
+
+        // Configuración inicial
         window.onload = function() {
-            generatePrizeLadder(); // Generate the ladder when the page loads
-            restartGame(); // Set initial state
+            initializeLanguage();
+            generatePrizeLadder();
+            checkUrlParameters();
         };
     </script>
 </body>
