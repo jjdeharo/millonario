@@ -25,7 +25,7 @@ El juego está desarrollado en HTML, CSS y JavaScript puro; no requiere backend.
    Al abrir `index.html`, se inicializan la interfaz y el sistema de traducción.
 2. **Carga de preguntas**
 
-   * El usuario introduce la URL del archivo JSON.
+   * Si no se han especificado preguntas en la misma URL (véase más abajo) el usuario introduce la URL del archivo JSON.
    * Un `fetch` obtiene ese archivo y comprueba que su estructura sea válida.
    * Si todo es correcto, se habilita el botón **Empezar juego**.
 3. **Inicio del juego**
