@@ -152,10 +152,14 @@ Ejemplo:
    * En el cuadro grande, pega todas las preguntas generadas (en formato JSON)
    * Marca la opción **Create public gist** (gisto público)
    * Haz clic en **Create public gist**
+     ![image](https://github.com/user-attachments/assets/97f64fcb-6b16-49eb-b41d-428baf806b76)
+
 4. Una vez creado:
 
    * Pulsa en el botón **Raw** para ver solo el contenido del archivo
    * Copia la dirección (URL) que aparece en el navegador: es la que usarás en el juego
+     ![image](https://github.com/user-attachments/assets/9936acb7-5d4c-4400-9a76-1f5023ca9fae)
+
 
 ## ¿Cómo usar la URL del JSON en el juego?
 
