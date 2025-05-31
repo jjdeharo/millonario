@@ -16,8 +16,8 @@
             options: {
                 processEscapes: true,
                 processEnvironments: true,
-                ignoreHtmlClass: 'tex2jax_ignore', // Clase para ignorar elementos
-                processHtmlClass: 'tex2jax_process' // Clase para procesar elementos
+                ignoreHtmlClass: 'tex2jax_ignore', 
+                processHtmlClass: 'tex2jax_process' 
             }
         };
     </script>
@@ -85,13 +85,24 @@
             font-size: 1em;
         }
 
-        /* JSON Loader */
-        .json-loader {
+        /* JSON Loader Section Styling */
+        .json-loader-section {
             background-color: #34495e;
             border-radius: 10px;
             padding: 20px;
             margin-bottom: 20px;
             border: 1px solid #00ffff;
+            transition: opacity 0.5s ease, max-height 0.5s ease, padding 0.5s ease, margin-bottom 0.5s ease, border-width 0.5s ease;
+            overflow: hidden;
+        }
+
+        .json-loader-section.hidden {
+            opacity: 0;
+            max-height: 0;
+            padding-top: 0;
+            padding-bottom: 0;
+            margin-bottom: 0;
+            border-width: 0;
         }
 
         .json-input {
@@ -672,8 +683,7 @@
             <div id="topicContent" class="topic-content"></div>
         </div>
 
-        <div class="json-loader">
-            <input 
+        <div id="jsonLoaderSection" class="json-loader-section"> <input 
                 type="text" 
                 id="jsonUrlInput" 
                 class="json-input" 
@@ -762,7 +772,7 @@
     </div>
 
     <script>
-        // Sistema de traducción
+        // Translations
         const translations = {
             es: {
                 title: "¿QUIÉN QUIERE SER MILLONARIO?",
@@ -774,6 +784,9 @@
                 questionsAvailable: "preguntas disponibles.",
                 enterValidUrl: "Por favor, introduce una URL válida.",
                 error: "Error:",
+                jsonInvalid: "El archivo proporcionado no es un JSON válido o no se pudo procesar. Revisa la consola para más detalles.",
+                jsonStructureError: "El JSON no tiene la estructura esperada (tema, preguntas, etc.) o faltan datos en las preguntas. Revisa la consola para más detalles.",
+                fetchError: "No se pudo cargar el archivo desde la URL. Verifica la URL y que el archivo exista.",
                 lifeline5050: "50:50",
                 lifelineCall: "Llamada",
                 lifelineAudience: "Público",
@@ -836,6 +849,9 @@
                 questionsAvailable: "preguntes disponibles.",
                 enterValidUrl: "Si us plau, introdueix una URL vàlida.",
                 error: "Error:",
+                jsonInvalid: "El fitxer proporcionat no és un JSON vàlid o no s'ha pogut processar. Revisa la consola per a més detalls.",
+                jsonStructureError: "El JSON no té l'estructura esperada (tema, preguntes, etc.) o falten dades a les preguntes. Revisa la consola per a més detalls.",
+                fetchError: "No s'ha pogut carregar el fitxer des de la URL. Verifica la URL i que el fitxer existeixi.",
                 lifeline5050: "50:50",
                 lifelineCall: "Trucada",
                 lifelineAudience: "Públic",
@@ -892,100 +908,34 @@
 
         let currentLanguage = 'es';
 
-        function detectBrowserLanguage() {
-            const browserLang = navigator.language || navigator.userLanguage;
-            return browserLang.toLowerCase().startsWith('ca') ? 'ca' : 'es';
-        }
-        
-        function initializeLanguage() {
-            const savedLang = localStorage.getItem('gameLanguage');
-            currentLanguage = savedLang || detectBrowserLanguage();
-            updateLanguageButtons();
-            translatePage();
-        }
+        // DOM Elements
+        const questionText = document.getElementById('questionText');
+        const optionsGrid = document.getElementById('optionsGrid');
+        let optionButtons = optionsGrid.querySelectorAll('.option-button'); 
+        const lifeline5050Button = document.getElementById('lifeline5050');
+        const lifelineCallButton = document.getElementById('lifelineCall');
+        const lifelineAudienceButton = document.getElementById('lifelineAudience');
+        const nextQuestionButton = document.getElementById('nextQuestionButton');
+        const restartGameButton = document.getElementById('restartGameButton');
+        const startGameButton = document.getElementById('startGameButton');
+        const prizeLadderElement = document.getElementById('prizeLadder');
+        const jsonLoaderSection = document.getElementById('jsonLoaderSection'); // Get the loader section
+        const jsonUrlInput = document.getElementById('jsonUrlInput');
+        const loadJsonButton = document.getElementById('loadJsonButton');
+        const statusMessage = document.getElementById('statusMessage');
+        const topicInfo = document.getElementById('topicInfo');
+        const topicContent = document.getElementById('topicContent');
+        const messageBoxOverlay = document.getElementById('messageBoxOverlay');
+        const messageBoxTitle = document.getElementById('messageBoxTitle');
+        const messageBoxContent = document.getElementById('messageBoxContent');
+        const messageBoxButtons = document.getElementById('messageBoxButtons');
+        const gameLogoImage = document.getElementById('gameLogoImage');
+        const playerNameModalOverlay = document.getElementById('playerNameModalOverlay');
+        const playerNameInput = document.getElementById('playerNameInput');
+        const submitPlayerNameButton = document.getElementById('submitPlayerNameButton');
 
-        function updateLanguageButtons() {
-            document.querySelectorAll('.lang-button').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            document.getElementById(`lang${currentLanguage.toUpperCase()}`).classList.add('active');
-        }
-        
-        function changeLanguage(lang) {
-            currentLanguage = lang;
-            localStorage.setItem('gameLanguage', lang);
-            updateLanguageButtons();
-            translatePage();
-            if (window.MathJax && window.MathJax.typesetPromise) {
-                setTimeout(() => {
-                    window.MathJax.typesetPromise().catch((err) => {
-                        console.error('Error re-renderizando LaTeX después del cambio de idioma:', err);
-                    });
-                }, 100);
-            }
-        }
 
-        function translatePage() {
-            const t = translations[currentLanguage];
-            document.querySelectorAll('[data-i18n]').forEach(element => {
-                const key = element.getAttribute('data-i18n');
-                const keys = key.split('.');
-                let value = t;
-                for (const k of keys) { value = value?.[k]; if (!value) break; }
-                if (value) element.textContent = value;
-            });
-
-            document.title = t.title;
-            const h1Element = document.querySelector('h1');
-            if (h1Element) h1Element.textContent = t.title;
-            
-            const topicTitleElement = document.querySelector('.topic-title');
-            if (topicTitleElement) topicTitleElement.textContent = t.topic;
-            
-            const jsonUrlInputElement = document.getElementById('jsonUrlInput');
-            if (jsonUrlInputElement) jsonUrlInputElement.placeholder = t.loadQuestionsPlaceholder;
-            
-            const loadJsonButtonElement = document.getElementById('loadJsonButton');
-            if (loadJsonButtonElement) loadJsonButtonElement.textContent = t.loadQuestions;
-            
-            const nextQuestionButtonElement = document.getElementById('nextQuestionButton');
-            if (nextQuestionButtonElement) nextQuestionButtonElement.textContent = t.nextQuestion;
-
-            const restartGameButtonElement = document.getElementById('restartGameButton');
-            if (restartGameButtonElement) restartGameButtonElement.textContent = t.restartGame;
-            
-            const startGameButtonElement = document.getElementById('startGameButton');
-            if (startGameButtonElement) startGameButtonElement.textContent = t.startGame;
-
-            const playerNameBoxTitleElement = document.getElementById('playerNameBoxTitle');
-            if (playerNameBoxTitleElement) playerNameBoxTitleElement.textContent = t.welcome;
-
-            const playerNameBoxContentElement = document.getElementById('playerNameBoxContent');
-            if (playerNameBoxContentElement) playerNameBoxContentElement.textContent = t.enterName;
-            
-            const playerNameInputElement = document.getElementById('playerNameInput');
-            if (playerNameInputElement) playerNameInputElement.placeholder = t.yourNameHere;
-
-            const submitPlayerNameButtonElement = document.getElementById('submitPlayerNameButton');
-            if (submitPlayerNameButtonElement) submitPlayerNameButtonElement.textContent = t.start;
-
-            const lifelineButtons = document.querySelectorAll('.lifeline-button');
-            if (lifelineButtons.length >= 3) {
-                lifelineButtons[0].childNodes[lifelineButtons[0].childNodes.length -1].nodeValue = ` ${t.lifeline5050}`;
-                lifelineButtons[1].childNodes[lifelineButtons[1].childNodes.length -1].nodeValue = ` ${t.lifelineCall}`;
-                lifelineButtons[2].childNodes[lifelineButtons[2].childNodes.length -1].nodeValue = ` ${t.lifelineAudience}`;
-            }
-            
-            if (!questionsLoaded && questionText) { 
-                questionText.textContent = t.loadQuestionsFirst;
-                const initialOptionButtons = optionsGrid.querySelectorAll('.option-button');
-                initialOptionButtons.forEach(button => {
-                    const optionKey = button.dataset.option;
-                    button.textContent = `${optionKey}) ${t.optionLoadQuestions}`;
-                });
-            }
-        }
-
+        // Game State Variables
         let allAvailableQuestions = [];
         let questionsTopic = "";
         let questions = []; 
@@ -1006,38 +956,88 @@
 
         let currentQuestionIndex = 0;
         let score = 0;
-        let used5050 = false;
-        let usedCall = false;
-        let usedAudience = false;
+        let used5050 = false; usedCall = false; usedAudience = false;
         let gameStarted = false;
         let playerName = "Jugador";
         let hasPlayerNameBeenSet = false;
         let questionsLoaded = false;
 
-        const questionText = document.getElementById('questionText');
-        const optionsGrid = document.getElementById('optionsGrid');
-        let optionButtons = optionsGrid.querySelectorAll('.option-button'); 
-        const lifeline5050Button = document.getElementById('lifeline5050');
-        const lifelineCallButton = document.getElementById('lifelineCall');
-        const lifelineAudienceButton = document.getElementById('lifelineAudience');
-        const nextQuestionButton = document.getElementById('nextQuestionButton');
-        const restartGameButton = document.getElementById('restartGameButton');
-        const startGameButton = document.getElementById('startGameButton');
-        const prizeLadderElement = document.getElementById('prizeLadder');
-        const jsonUrlInput = document.getElementById('jsonUrlInput');
-        const loadJsonButton = document.getElementById('loadJsonButton');
-        const statusMessage = document.getElementById('statusMessage');
-        const topicInfo = document.getElementById('topicInfo');
-        const topicContent = document.getElementById('topicContent');
-        const messageBoxOverlay = document.getElementById('messageBoxOverlay');
-        const messageBoxTitle = document.getElementById('messageBoxTitle');
-        const messageBoxContent = document.getElementById('messageBoxContent');
-        const messageBoxButtons = document.getElementById('messageBoxButtons');
-        const gameLogoImage = document.getElementById('gameLogoImage');
-        const playerNameModalOverlay = document.getElementById('playerNameModalOverlay');
-        const playerNameInput = document.getElementById('playerNameInput');
-        const submitPlayerNameButton = document.getElementById('submitPlayerNameButton');
+        // --- Language and Translation Functions ---
+        function detectBrowserLanguage() {
+            const browserLang = navigator.language || navigator.userLanguage;
+            return browserLang.toLowerCase().startsWith('ca') ? 'ca' : 'es';
+        }
+        
+        function initializeLanguage() {
+            const savedLang = localStorage.getItem('gameLanguage');
+            currentLanguage = savedLang || detectBrowserLanguage();
+            updateLanguageButtons();
+            translatePage();
+        }
 
+        function updateLanguageButtons() {
+            document.querySelectorAll('.lang-button').forEach(btn => btn.classList.remove('active'));
+            const activeBtn = document.getElementById(`lang${currentLanguage.toUpperCase()}`);
+            if (activeBtn) activeBtn.classList.add('active');
+        }
+        
+        function changeLanguage(lang) {
+            currentLanguage = lang;
+            localStorage.setItem('gameLanguage', lang);
+            updateLanguageButtons();
+            translatePage();
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                setTimeout(() => {
+                    window.MathJax.typesetPromise().catch(err => console.error('Error re-rendering LaTeX after language change:', err));
+                }, 100);
+            }
+        }
+
+        function translatePage() {
+            const t = translations[currentLanguage];
+            document.querySelectorAll('[data-i18n]').forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                const keys = key.split('.');
+                let value = t;
+                for (const k of keys) { value = value?.[k]; if (!value) break; }
+                if (value) element.textContent = value;
+            });
+
+            document.title = t.title;
+            const h1Elem = document.querySelector('h1');
+            if (h1Elem) h1Elem.textContent = t.title;
+            
+            const topicTitleElem = document.querySelector('.topic-title');
+            if (topicTitleElem) topicTitleElem.textContent = t.topic;
+            
+            if (jsonUrlInput) jsonUrlInput.placeholder = t.loadQuestionsPlaceholder;
+            if (loadJsonButton) loadJsonButton.textContent = t.loadQuestions;
+            if (nextQuestionButton) nextQuestionButton.textContent = t.nextQuestion;
+            if (restartGameButton) restartGameButton.textContent = t.restartGame;
+            if (startGameButton) startGameButton.textContent = t.startGame;
+            if (playerNameBoxTitle) playerNameBoxTitle.textContent = t.welcome;
+            if (playerNameBoxContent) playerNameBoxContent.textContent = t.enterName;
+            if (playerNameInput) playerNameInput.placeholder = t.yourNameHere;
+            if (submitPlayerNameButton) submitPlayerNameButton.textContent = t.start;
+
+            const lifelineBtns = document.querySelectorAll('.lifeline-button');
+            if (lifelineBtns.length >= 3) {
+                lifelineBtns[0].childNodes[lifelineBtns[0].childNodes.length -1].nodeValue = ` ${t.lifeline5050}`;
+                lifelineBtns[1].childNodes[lifelineBtns[1].childNodes.length -1].nodeValue = ` ${t.lifelineCall}`;
+                lifelineBtns[2].childNodes[lifelineBtns[2].childNodes.length -1].nodeValue = ` ${t.lifelineAudience}`;
+            }
+            
+            if (!questionsLoaded && questionText) { 
+                questionText.textContent = t.loadQuestionsFirst;
+                const initialOptButtons = optionsGrid.querySelectorAll('.option-button');
+                initialOptButtons.forEach(button => {
+                    const optionKey = button.dataset.option;
+                    button.textContent = `${optionKey}) ${t.optionLoadQuestions}`;
+                });
+            }
+        }
+
+        // --- Utility Functions ---
         function shuffleArray(array) {
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
@@ -1048,9 +1048,15 @@
         function showStatus(message, type) {
             const t = translations[currentLanguage];
             let translatedMessage = message;
-            if (message.includes('Cargando preguntas...')) translatedMessage = t.loadingQuestions;
-            else if (message.includes('preguntas cargadas correctamente!')) translatedMessage = `${t.questionsLoaded} ${allAvailableQuestions.length} ${t.questionsAvailable}`;
-            else if (message.includes('Por favor, introduce una URL válida.')) translatedMessage = t.enterValidUrl;
+            // More specific translations for status messages if needed
+            if (message.startsWith(t.loadingQuestions.substring(0,10))) translatedMessage = t.loadingQuestions;
+            else if (message.startsWith(t.questionsLoaded.substring(0,10))) translatedMessage = `${t.questionsLoaded} ${allAvailableQuestions.length} ${t.questionsAvailable}`;
+            else if (message === t.enterValidUrl) translatedMessage = t.enterValidUrl;
+            else if (message.startsWith(t.jsonInvalid.substring(0,10))) translatedMessage = t.jsonInvalid;
+            else if (message.startsWith(t.jsonStructureError.substring(0,10))) translatedMessage = t.jsonStructureError;
+            else if (message.startsWith(t.fetchError.substring(0,10))) translatedMessage = t.fetchError;
+
+
             statusMessage.textContent = translatedMessage;
             statusMessage.className = `status-message status-${type}`;
             statusMessage.style.display = 'block';
@@ -1060,44 +1066,74 @@
             element.innerHTML = text; 
             if (window.MathJax && window.MathJax.typesetPromise) {
                 setTimeout(() => { 
-                    window.MathJax.typesetPromise([element]).catch((err) => {
-                        console.error('Error renderizando LaTeX en elemento:', element, err);
-                    });
+                    window.MathJax.typesetPromise([element]).catch(err => console.error('Error rendering LaTeX in element:', element, err));
                 }, 0); 
             }
         }
 
+        // --- Core Game Logic ---
         async function loadQuestionsFromUrl(url) {
             const t = translations[currentLanguage];
-            try {
-                showStatus(t.loadingQuestions, 'success');
-                const response = await fetch(url);
-                if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
-                const data = await response.json();
+            showStatus(t.loadingQuestions, 'info'); // Use 'info' for loading
+            jsonLoaderSection.classList.remove('hidden'); // Ensure loader is visible during attempt
 
-                if (!data.preguntas || !Array.isArray(data.preguntas) || data.preguntas.length < 1) { // Changed to 1, as QUESTIONS_PER_GAME might be too restrictive if a file has few questions but is valid for testing
-                    throw new Error(`El archivo debe contener al menos 1 pregunta en el array 'preguntas'. Se recomienda ${QUESTIONS_PER_GAME} para un juego completo.`);
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error(`${t.fetchError} (HTTP ${response.status})`);
                 }
+                
+                const rawText = await response.text();
+                let data;
+                try {
+                    data = JSON.parse(rawText);
+                } catch (parseError) {
+                    console.error("JSON Parse Error:", parseError, "\nRaw Text:", rawText.substring(0, 500) + "...");
+                    throw new Error(t.jsonInvalid);
+                }
+
+                // Structure validation
+                if (typeof data !== 'object' || data === null || !data.tema || typeof data.tema !== 'string' ||
+                    !Array.isArray(data.preguntas) || data.preguntas.length < 1) {
+                    console.error("JSON Structure Error: 'tema' or 'preguntas' array missing or invalid.", data);
+                    throw new Error(t.jsonStructureError);
+                }
+
                 for (let i = 0; i < data.preguntas.length; i++) {
                     const q = data.preguntas[i];
-                    if (!q.question || !q.options || !q.correct || !q.difficulty) throw new Error(`Pregunta ${i + 1} no tiene la estructura correcta (question, options, correct, difficulty).`);
-                    if (typeof q.options !== 'object' || !q.options.A || !q.options.B || !q.options.C || !q.options.D) throw new Error(`Pregunta ${i + 1} no tiene todas las opciones (A, B, C, D) en el objeto 'options'.`);
+                    if (!q || typeof q.question !== 'string' || typeof q.options !== 'object' || q.options === null ||
+                        !q.options.A || !q.options.B || !q.options.C || !q.options.D ||
+                        typeof q.correct !== 'string' || !['A', 'B', 'C', 'D'].includes(q.correct) ||
+                        typeof q.difficulty !== 'string' || !Object.values(difficultyMap).includes(q.difficulty)) {
+                        console.error(`Invalid structure for question ${i + 1}:`, q);
+                        throw new Error(`${t.jsonStructureError} (Error en pregunta ${i + 1})`);
+                    }
                 }
 
                 allAvailableQuestions = data.preguntas;
-                questionsTopic = data.tema || "Preguntas cargadas";
+                questionsTopic = data.tema;
                 questionsLoaded = true;
+
                 topicContent.textContent = questionsTopic;
                 topicInfo.style.display = 'block';
                 showStatus(`${t.questionsLoaded} ${allAvailableQuestions.length} ${t.questionsAvailable}`, 'success');
                 startGameButton.disabled = false;
-                resetAllGamesState(); 
+                jsonLoaderSection.classList.add('hidden'); // Hide loader on success
+                resetAllGamesState(); // Prepare for the first game with new questions
                 return true;
+
             } catch (error) {
-                console.error('Error cargando preguntas:', error);
-                showStatus(`${t.error} ${error.message}`, 'error');
+                console.error('Error loading or processing questions:', error);
+                // Use the error message directly if it's one of our translated ones, otherwise use generic
+                let displayError = error.message.startsWith(t.error) || 
+                                   error.message.startsWith(t.jsonInvalid.substring(0,10)) ||
+                                   error.message.startsWith(t.jsonStructureError.substring(0,10)) ||
+                                   error.message.startsWith(t.fetchError.substring(0,10)) 
+                                   ? error.message : `${t.error} ${error.message}`;
+                showStatus(displayError, 'error');
                 questionsLoaded = false;
                 startGameButton.disabled = true;
+                jsonLoaderSection.classList.remove('hidden'); // Ensure loader is visible on error
                 return false;
             }
         }
@@ -1128,7 +1164,7 @@
             messageBoxOverlay.classList.add('show');
             if (window.MathJax && window.MathJax.typesetPromise && content.match(/\$|\\\(|\\\[|\\begin\{/)) {
                  setTimeout(() => {
-                    window.MathJax.typesetPromise([messageBoxContent]).catch(err => console.error("Error MathJax en MessageBox:", err));
+                    window.MathJax.typesetPromise([messageBoxContent]).catch(err => console.error("Error MathJax in MessageBox:", err));
                 }, 50);
             }
         }
@@ -1169,53 +1205,37 @@
             }
         }
         
-        /**
-         * Carga la pregunta actual en la pantalla.
-         * IMPORTANTE: Asume que el texto de las opciones en el JSON ya incluye los delimitadores LaTeX (ej. "$e^x$").
-         */
         function loadQuestion() {
             const t = translations[currentLanguage];
             if (currentQuestionIndex >= questions.length || !questions[currentQuestionIndex]) {
-                console.warn("loadQuestion llamada sin pregunta válida o índice fuera de rango.");
-                if (gameStarted) endGame(true); // Considerar si 'true' (ganó ronda) es adecuado o si es un error.
+                console.warn("loadQuestion called without a valid question or index out of range.");
+                if (gameStarted) endGame(true); 
                 return;
             }
 
             const currentQuestion = questions[currentQuestionIndex];
             if (!currentQuestion || !currentQuestion.question || !currentQuestion.options) {
-                console.error("Pregunta actual o sus propiedades no son válidas:", currentQuestion);
-                if (gameStarted) endGame(false); // Terminar juego por error en datos.
+                console.error("Current question or its properties are invalid:", currentQuestion);
+                if (gameStarted) endGame(false); 
                 return;
             }
             
             processLatexText(currentQuestion.question, questionText);
-
             optionButtons = optionsGrid.querySelectorAll('.option-button');
 
             optionButtons.forEach(button => {
                 const optionKey = button.dataset.option;
                 const optionTextContent = currentQuestion.options[optionKey];
                 
-                if (optionTextContent !== undefined) {
-                    // El contenido se asigna directamente. Se espera que optionTextContent ya tenga delimitadores LaTeX si es necesario.
-                    button.innerHTML = `${optionKey}) ${optionTextContent}`;
-                } else {
-                    button.innerHTML = `${optionKey}) ${t.optionLoadQuestions}`; 
-                    console.warn(`Opción ${optionKey} no definida para la pregunta actual.`);
-                }
-                
+                button.innerHTML = optionTextContent !== undefined ? `${optionKey}) ${optionTextContent}` : `${optionKey}) ${t.optionLoadQuestions}`;
                 button.classList.remove('correct', 'incorrect');
                 button.disabled = false;
                 button.style.display = 'block';
                 button.onclick = () => checkAnswer(optionKey);
 
-                // Procesar LaTeX para este botón individualmente.
                 if (window.MathJax && window.MathJax.typesetPromise) {
                     setTimeout(() => {
-                        window.MathJax.typesetPromise([button]).catch((err) => {
-                            // Añadir más contexto al error para depuración.
-                            console.error(`Error renderizando LaTeX en botón ${optionKey}. Contenido: "${button.innerHTML}". Error: `, err);
-                        });
+                        window.MathJax.typesetPromise([button]).catch(err => console.error(`Error rendering LaTeX in button ${optionKey}. Content: "${button.innerHTML}". Error: `, err));
                     }, 0); 
                 }
             });
@@ -1224,7 +1244,6 @@
             restartGameButton.style.display = 'none';
             updatePrizeLadder();
         }
-
 
         function checkAnswer(selectedOptionKey) {
             const t = translations[currentLanguage];
@@ -1241,28 +1260,19 @@
                 score++;
                 updatePrizeLadder();
                 const prizeMoney = (score > 0 && score <= prizeLevels.length) ? prizeLevels[score-1] : score.toString();
-                showMessageBox(
-                    t.correct,
-                    `${t.youGotIt} ${playerName}${t.currentScore} ${prizeMoney}`, 
-                    [{ text: t.continue, className: "confirm", onClick: moveToNextQuestion }]
-                );
+                showMessageBox(t.correct, `${t.youGotIt} ${playerName}${t.currentScore} ${prizeMoney}`, 
+                    [{ text: t.continue, className: "confirm", onClick: moveToNextQuestion }]);
             } else {
                 const correctAnswerFullText = `${currentQuestion.correct}) ${currentQuestion.options[currentQuestion.correct]}`;
-                showMessageBox(
-                    t.incorrect,
-                    `${t.correctAnswerWas} ${correctAnswerFullText}.<br>${t.cheer} ${playerName}!`,
-                    [{ text: t.gameOver, className: "cancel", onClick: () => endGame(false) }]
-                );
+                showMessageBox(t.incorrect, `${t.correctAnswerWas} ${correctAnswerFullText}.<br>${t.cheer} ${playerName}!`,
+                    [{ text: t.gameOver, className: "cancel", onClick: () => endGame(false) }]);
             }
         }
 
         function moveToNextQuestion() {
             currentQuestionIndex++;
-            if (currentQuestionIndex < questions.length) {
-                loadQuestion();
-            } else {
-                endGame(true); 
-            }
+            if (currentQuestionIndex < questions.length) loadQuestion();
+            else endGame(true); 
         }
 
         function endGame(wonRound) {
@@ -1270,7 +1280,7 @@
             let title, content;
             const finalScoreText = (score > 0 && score <= prizeLevels.length) ? prizeLevels[score-1] : "0";
 
-            if (wonRound && score === QUESTIONS_PER_GAME) { 
+            if (wonRound && score === questions.length && questions.length >= QUESTIONS_PER_GAME ) { // Check if all questions in a full game were answered
                 title = `${t.congratulations} ${playerName}!`;
                 content = `${t.wonMessage} ${finalScoreText}.`;
             } else if (wonRound) { 
@@ -1281,11 +1291,7 @@
                 content = `${t.lostMessage.replace(',', `, ${playerName}`)} ${finalScoreText}. ${t.tryAgain}`;
             }
 
-            showMessageBox(
-                title,
-                content,
-                [{ text: t.restartGame, className: "confirm", onClick: requestNewGameRound }] 
-            );
+            showMessageBox(title, content, [{ text: t.restartGame, className: "confirm", onClick: requestNewGameRound }]);
             restartGameButton.style.display = 'block'; 
             nextQuestionButton.style.display = 'none';
             gameStarted = false; 
@@ -1293,10 +1299,8 @@
         
         function setupNewGameRound() {
             const t = translations[currentLanguage];
-            currentQuestionIndex = 0;
-            score = 0;
+            currentQuestionIndex = 0; score = 0;
             used5050 = false; usedCall = false; usedAudience = false;
-            
             gamesPlayedCount++; 
 
             const currentDifficulty = difficultyMap[gamesPlayedCount];
@@ -1311,38 +1315,25 @@
             if (gamesPlayedCount > MAX_GAMES || questionsForThisRoundSource.length < QUESTIONS_PER_GAME) {
                 const anyUnplayedQuestions = allAvailableQuestions.filter((q, index) => !playedQuestionIndices.has(index));
                 if (anyUnplayedQuestions.length >= QUESTIONS_PER_GAME) {
-                    if (gamesPlayedCount > MAX_GAMES) console.log("MAX_GAMES alcanzado, usando preguntas restantes de cualquier dificultad.");
-                    else console.log(`No hay suficientes preguntas para dificultad ${currentDifficulty} (ronda ${gamesPlayedCount}), usando preguntas restantes de cualquier dificultad.`);
                     questionsForThisRoundSource = anyUnplayedQuestions;
-                } else if (anyUnplayedQuestions.length > 0 && anyUnplayedQuestions.length < QUESTIONS_PER_GAME) {
-                     console.log(`No hay suficientes preguntas para una ronda completa (${QUESTIONS_PER_GAME}), usando las ${anyUnplayedQuestions.length} restantes.`);
-                    questionsForThisRoundSource = anyUnplayedQuestions; // Jugar con menos preguntas si es todo lo que queda
-                }
-                else {
-                    showMessageBox(
-                        t.gamesCompleted,
-                        `${t.playedGames} ${gamesPlayedCount - 1} ${t.uniqueGames}`,
-                        [{ text: t.yesRestart, className: "confirm", onClick: resetAllGamesStateAndRestart }]
-                    );
-                    questions = []; 
-                    startGameButton.style.display = 'none';
-                    restartGameButton.style.display = 'block'; 
+                } else if (anyUnplayedQuestions.length > 0) {
+                    questionsForThisRoundSource = anyUnplayedQuestions; 
+                } else {
+                    showMessageBox(t.gamesCompleted, `${t.playedGames} ${gamesPlayedCount - 1} ${t.uniqueGames}`,
+                        [{ text: t.yesRestart, className: "confirm", onClick: resetAllGamesStateAndRestart }]);
+                    questions = []; startGameButton.style.display = 'none'; restartGameButton.style.display = 'block'; 
                     return false; 
                 }
             }
 
             shuffleArray(questionsForThisRoundSource);
-            questions = questionsForThisRoundSource.slice(0, Math.min(QUESTIONS_PER_GAME, questionsForThisRoundSource.length)); // Tomar hasta QUESTIONS_PER_GAME o las que haya
+            questions = questionsForThisRoundSource.slice(0, Math.min(QUESTIONS_PER_GAME, questionsForThisRoundSource.length));
 
-            if (questions.length === 0 && allAvailableQuestions.length > 0) { // Si no se seleccionaron preguntas pero hay disponibles (ej. todas jugadas)
-                 showMessageBox(
-                        t.gamesCompleted,
-                        `${t.playedGames} ${gamesPlayedCount - 1} ${t.uniqueGames}`,
-                        [{ text: t.yesRestart, className: "confirm", onClick: resetAllGamesStateAndRestart }]
-                    );
+            if (questions.length === 0) { 
+                 showMessageBox(t.gamesCompleted, `${t.playedGames} ${gamesPlayedCount - 1} ${t.uniqueGames}`,
+                        [{ text: t.yesRestart, className: "confirm", onClick: resetAllGamesStateAndRestart }]);
                 return false;
             }
-
 
             questions.forEach(q => {
                 const originalIndex = allAvailableQuestions.indexOf(q);
@@ -1352,20 +1343,14 @@
             lifeline5050Button.disabled = false; lifelineCallButton.disabled = false; lifelineAudienceButton.disabled = false;
             nextQuestionButton.style.display = 'none'; restartGameButton.style.display = 'none'; 
             
-            optionsGrid.innerHTML = `
-                <button class="option-button tex2jax_process" data-option="A"></button>
-                <button class="option-button tex2jax_process" data-option="B"></button>
-                <button class="option-button tex2jax_process" data-option="C"></button>
-                <button class="option-button tex2jax_process" data-option="D"></button>
-            `;
+            optionsGrid.innerHTML = `<button class="option-button tex2jax_process" data-option="A"></button><button class="option-button tex2jax_process" data-option="B"></button><button class="option-button tex2jax_process" data-option="C"></button><button class="option-button tex2jax_process" data-option="D"></button>`;
             optionButtons = optionsGrid.querySelectorAll('.option-button');
             optionButtons.forEach(button => {
                 button.innerHTML = `${button.dataset.option}) ${t.optionLoadQuestions}`; 
                 button.disabled = true;
             });
             
-            generatePrizeLadder(); 
-            updatePrizeLadder();   
+            generatePrizeLadder(); updatePrizeLadder();   
             return true; 
         }
         
@@ -1399,14 +1384,14 @@
             else showPlayerNameInput();
         }
 
-        function resetAllGamesState() {
+        function resetAllGamesState() { // Called after successful load or full reset
             playedQuestionIndices.clear();
             gamesPlayedCount = 0; 
             gameStarted = false;
             const t = translations[currentLanguage];
-            if (questionText) questionText.textContent = t.loadQuestionsFirst; // Check if questionText exists
-            if (optionsGrid) { // Check if optionsGrid exists
-                 optionButtons = optionsGrid.querySelectorAll('.option-button'); // Re-fetch in case they were changed
+            if (questionText) questionText.innerHTML = t.clickStart; 
+            if (optionsGrid) {
+                 optionButtons = optionsGrid.querySelectorAll('.option-button'); 
                  optionButtons.forEach(button => {
                     const optionKey = button.dataset.option;
                     button.innerHTML = `${optionKey}) ${t.optionLoadQuestions}`;
@@ -1414,24 +1399,31 @@
                 });
             }
             
-            generatePrizeLadder();
-            updatePrizeLadder();
+            generatePrizeLadder(); updatePrizeLadder();
 
-            if (startGameButton) { // Check if startGameButton exists
+            if (startGameButton) { 
                 startGameButton.disabled = !questionsLoaded;
                 startGameButton.style.display = 'block';
             }
             if (restartGameButton) restartGameButton.style.display = 'none';
             if (nextQuestionButton) nextQuestionButton.style.display = 'none';
             
-            if (!hasPlayerNameBeenSet && gameLogoImage) { // Check if gameLogoImage exists
+            if (!hasPlayerNameBeenSet && gameLogoImage) { 
                  gameLogoImage.src = `https://placehold.co/300x100/000000/00FF00?text=%C2%BFT%C3%BA%3F`;
                  gameLogoImage.alt = "Imagen de billetes de dinero con el texto ¿Tú?";
             }
+            // Do NOT manage jsonLoaderSection visibility here, it's handled by specific actions.
         }
         
-        function resetAllGamesStateAndRestart() {
+        function resetAllGamesStateAndRestart() { // Called when user wants to load new questions
             resetAllGamesState();
+            jsonLoaderSection.classList.remove('hidden'); // Show loader for new JSON
+            questionsLoaded = false; // Mark as not loaded to allow new loading
+            startGameButton.disabled = true; // Disable start until new questions are loaded
+            topicInfo.style.display = 'none'; // Hide old topic
+            topicContent.textContent = '';
+            allAvailableQuestions = [];
+            questions = [];
         }
 
         function generatePrizeLadder() {
@@ -1444,6 +1436,7 @@
             });
         }
 
+        // --- Lifeline Functions ---
         lifeline5050Button.addEventListener('click', () => {
             const t = translations[currentLanguage];
             if (!gameStarted || used5050 || !questions[currentQuestionIndex]) return;
@@ -1514,7 +1507,7 @@
                 }
             }
             let currentSum = Object.values(votes).reduce((a, b) => a + b, 0);
-            if (currentSum !== 100 && votes[correctOption] !== undefined) { // check votes[correctOption] is not undefined
+            if (currentSum !== 100 && votes[correctOption] !== undefined) { 
                  votes[correctOption] += (100 - currentSum);
                  votes[correctOption] = Math.max(0, Math.min(100, votes[correctOption])); 
             }
@@ -1524,6 +1517,7 @@
             showMessageBox(t.audienceVote, audienceMessage, [{ text: t.understood, className: "confirm" }]);
         }
 
+        // --- Event Listeners ---
         loadJsonButton.addEventListener('click', () => {
             const url = jsonUrlInput.value.trim();
             if (!url) { showStatus(translations[currentLanguage].enterValidUrl, 'error'); return; }
@@ -1540,11 +1534,15 @@
         jsonUrlInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') loadJsonButton.click(); });
         playerNameInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') submitPlayerNameButton.click(); });
 
+        // --- Initial Setup ---
         window.onload = function() {
             initializeLanguage(); 
             generatePrizeLadder();
             checkUrlParameters(); 
-            if (!questionsLoaded) resetAllGamesState();
+            if (!questionsLoaded) {
+                resetAllGamesState(); // Ensure clean state if no URL params load questions
+                jsonLoaderSection.classList.remove('hidden'); // Make sure loader is visible initially if no questions loaded
+            }
             function waitForMathJax() {
                 if (window.MathJax && window.MathJax.typesetPromise) {
                     console.log('MathJax está listo.');
