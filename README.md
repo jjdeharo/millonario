@@ -45,8 +45,6 @@ El juego está desarrollado en HTML, CSS y JavaScript puro; no requiere backend.
 
 ## Creación del archivo JSON de preguntas
 
-> ⚠️ **Nota para lectores de este README**: Las expresiones LaTeX como `\(lpha\)` o `\(E = mc^2\)` no se renderizarán correctamente en GitHub y pueden verse como cuadros rojos o caracteres raros. Esto es normal. El formato está pensado para ser interpretado por MathJax dentro de la aplicación, no por GitHub. Puedes ignorar el aspecto visual en GitHub siempre que el JSON esté bien formado.
-
 El juego necesita un archivo con la estructura siguiente.
 **Importante**: el estándar JSON **no admite comentarios**; evita cualquier línea que empiece por `//` o `/* */`.
 
