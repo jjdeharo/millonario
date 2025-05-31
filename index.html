@@ -6,6 +6,7 @@
     <title>¿Quién Quiere Ser Millonario?</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>
         window.MathJax = {
             tex: {
@@ -14,18 +15,12 @@
             },
             options: {
                 processEscapes: true,
-                processEnvironments: true
-            },
-            startup: {
-                ready: () => {
-                    console.log('MathJax is loaded, but not yet initialized');
-                    MathJax.startup.defaultReady();
-                    console.log('MathJax is initialized, and the initial typeset is queued');
-                }
+                processEnvironments: true,
+                ignoreHtmlClass: 'tex2jax_ignore', // Clase para ignorar elementos
+                processHtmlClass: 'tex2jax_process' // Clase para procesar elementos
             }
         };
     </script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
         /* General styling */
         body {
@@ -40,7 +35,6 @@
             padding: 20px;
             box-sizing: border-box;
             overflow-y: auto;
-            padding-bottom: 60px;
         }
 
         .game-container {
@@ -462,6 +456,108 @@
             font-weight: bold;
         }
 
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+            }
+
+            .lifeline-button {
+                font-size: 0.9em;
+                padding: 10px 15px;
+            }
+
+            .question-text {
+                font-size: 1.4em;
+            }
+
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .option-button {
+                font-size: 1em;
+                padding: 12px 15px;
+            }
+
+            .control-button {
+                font-size: 1.1em;
+                padding: 12px 25px;
+            }
+
+            .message-box h2 {
+                font-size: 1.8em;
+            }
+
+            .message-box p {
+                font-size: 1.1em;
+            }
+
+            .game-container { /* Changed from .game-area-with-ladder for this rule */
+                flex-direction: column;
+                align-items: center;
+                padding: 20px; /* Added to game-container for consistency */
+            }
+             .game-area-with-ladder { /* Added to ensure flex-direction applies here */
+                flex-direction: column;
+            }
+
+
+            .prize-ladder {
+                position: relative;
+                width: 100%;
+                margin-top: 20px;
+                order: -1; /* This moves prize ladder to the top on mobile */
+            }
+
+            .prize-level-item {
+                font-size: 0.9em;
+                padding: 8px 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .game-container {
+                padding: 15px; /* Adjusted padding */
+                gap: 15px;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .lifelines {
+                gap: 10px;
+            }
+
+            .lifeline-button {
+                font-size: 0.8em;
+                padding: 8px 12px;
+            }
+
+            .question-area {
+                padding: 15px;
+            }
+
+            .question-text {
+                font-size: 1.2em;
+            }
+
+            .option-button {
+                font-size: 0.9em;
+                padding: 10px 12px;
+            }
+
+            .control-buttons {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .control-button {
+                width: 100%;
+            }
+        }
+
         /* Language Selector */
         .language-selector {
             position: fixed;
@@ -532,61 +628,12 @@
             color: #666;
         }
 
-        /* Responsive adjustments */
+        /* Adjust body padding for footer */
+        body {
+            padding-bottom: 70px; /* Increased to ensure footer doesn't overlap content */
+        }
+
         @media (max-width: 768px) {
-            h1 {
-                font-size: 2em;
-            }
-
-            .lifeline-button {
-                font-size: 0.9em;
-                padding: 10px 15px;
-            }
-
-            .question-text {
-                font-size: 1.4em;
-            }
-
-            .options-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .option-button {
-                font-size: 1em;
-                padding: 12px 15px;
-            }
-
-            .control-button {
-                font-size: 1.1em;
-                padding: 12px 25px;
-            }
-
-            .message-box h2 {
-                font-size: 1.8em;
-            }
-
-            .message-box p {
-                font-size: 1.1em;
-            }
-
-            .game-container {
-                flex-direction: column;
-                align-items: center;
-                padding: 20px;
-            }
-
-            .prize-ladder {
-                position: relative;
-                width: 100%;
-                margin-top: 20px;
-                order: -1;
-            }
-
-            .prize-level-item {
-                font-size: 0.9em;
-                padding: 8px 10px;
-            }
-
             .language-selector {
                 top: 10px;
                 right: 10px;
@@ -607,55 +654,12 @@
             }
 
             body {
-                padding-bottom: 50px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .game-container {
-                padding: 20px;
-                gap: 15px;
-            }
-
-            h1 {
-                font-size: 1.8em;
-            }
-
-            .lifelines {
-                gap: 10px;
-            }
-
-            .lifeline-button {
-                font-size: 0.8em;
-                padding: 8px 12px;
-            }
-
-            .question-area {
-                padding: 15px;
-            }
-
-            .question-text {
-                font-size: 1.2em;
-            }
-
-            .option-button {
-                font-size: 0.9em;
-                padding: 10px 12px;
-            }
-
-            .control-buttons {
-                flex-direction: column;
-                gap: 10px;
-            }
-
-            .control-button {
-                width: 100%;
+                padding-bottom: 60px; /* Adjusted for smaller screens */
             }
         }
     </style>
 </head>
 <body>
-    <!-- Language Selector -->
     <div class="language-selector">
         <button id="langCA" class="lang-button">CA</button>
         <button id="langES" class="lang-button active">ES</button>
@@ -664,13 +668,11 @@
     <div class="game-container">
         <h1>¿QUIÉN QUIERE SER MILLONARIO?</h1>
         
-        <!-- Topic Information -->
         <div id="topicInfo" class="topic-info" style="display: none;">
             <div class="topic-title">Tema:</div>
             <div id="topicContent" class="topic-content"></div>
         </div>
 
-        <!-- JSON Loader -->
         <div class="json-loader">
             <input 
                 type="text" 
@@ -708,12 +710,12 @@
                 </div>
 
                 <div class="question-area">
-                    <p id="questionText" class="question-text">Carga un archivo JSON con preguntas para comenzar...</p>
+                    <p id="questionText" class="question-text tex2jax_process">Carga un archivo JSON con preguntas para comenzar...</p>
                     <div id="optionsGrid" class="options-grid">
-                        <button class="option-button" data-option="A">A) Carga preguntas...</button>
-                        <button class="option-button" data-option="B">B) Carga preguntas...</button>
-                        <button class="option-button" data-option="C">C) Carga preguntas...</button>
-                        <button class="option-button" data-option="D">D) Carga preguntas...</button>
+                        <button class="option-button tex2jax_process" data-option="A">A) Carga preguntas...</button>
+                        <button class="option-button tex2jax_process" data-option="B">B) Carga preguntas...</button>
+                        <button class="option-button tex2jax_process" data-option="C">C) Carga preguntas...</button>
+                        <button class="option-button tex2jax_process" data-option="D">D) Carga preguntas...</button>
                     </div>
                 </div>
             </div>
@@ -729,11 +731,22 @@
         </div>
     </div>
 
+    <div class="footer">
+        <div class="footer-links">
+            <a href="https://labia.tiddlyhost.com" target="_blank" data-i18n="footer.lab">Laboratorio de aplicaciones educativas</a>
+            <span class="footer-separator">|</span>
+            <span data-i18n="footer.based">Basado en</span> <a href="https://github.com/eboixader/magnitunid" target="_blank">Ernesto Boixader</a>
+            <span class="footer-separator">|</span>
+            <a href="https://bilateria.org" target="_blank" data-i18n="footer.author">Aplicación hecha por Juan José de Haro</a>
+            <span class="footer-separator">|</span>
+            <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" data-i18n="footer.license">Licencia Creative Commons BY-SA</a>
+        </div>
+    </div>
+
     <div id="messageBoxOverlay" class="message-box-overlay">
         <div class="message-box">
             <h2 id="messageBoxTitle"></h2>
-            <p id="messageBoxContent"></p>
-            <div id="messageBoxButtons" class="message-box-buttons">
+            <p id="messageBoxContent" class="tex2jax_process"></p> <div id="messageBoxButtons" class="message-box-buttons">
             </div>
         </div>
     </div>
@@ -746,19 +759,6 @@
             <div class="message-box-buttons">
                 <button id="submitPlayerNameButton" class="message-box-button confirm">Empezar</button>
             </div>
-        </div>
-    </div>
-
-    <!-- Footer -->
-    <div class="footer">
-        <div class="footer-links">
-            <a href="https://labia.tiddlyhost.com" target="_blank" data-i18n="footer.lab">Laboratorio de aplicaciones educativas</a>
-            <span class="footer-separator">|</span>
-            <span data-i18n="footer.based">Basado en</span> <a href="https://github.com/eboixader/magnitunid" target="_blank">Ernesto Boixader</a>
-            <span class="footer-separator">|</span>
-            <a href="https://bilateria.org" target="_blank" data-i18n="footer.author">Aplicación hecha por Juan José de Haro</a>
-            <span class="footer-separator">|</span>
-            <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" data-i18n="footer.license">Licencia Creative Commons BY-SA</a>
         </div>
     </div>
 
@@ -804,7 +804,8 @@
                 playedGames: "Has jugado",
                 uniqueGames: "partidas únicas o hemos agotado todas las preguntas disponibles para esta dificultad. ¿Quieres empezar desde el principio con todas las preguntas disponibles de nuevo?",
                 yesRestart: "Sí, reiniciar todo",
-                clickStart: "Haz clic en 'Empezar Juego' para comenzar la partida",
+                clickStart: "Haz clic en 'Empezar Juego' para comenzar la partida.", // Added period
+                preparingGame: "Preparando el juego...",
                 use5050: "¿Usar 50:50?",
                 sure5050: "¿Estás seguro de que quieres usar la ayuda 50:50? Eliminará dos opciones incorrectas.",
                 yes: "Sí",
@@ -865,7 +866,8 @@
                 playedGames: "Has jugat",
                 uniqueGames: "partides úniques o hem esgotat totes les preguntes disponibles per a aquesta dificultat. Vols començar des del principi amb totes les preguntes disponibles de nou?",
                 yesRestart: "Sí, reiniciar tot",
-                clickStart: "Fes clic a 'Començar Joc' per començar la partida",
+                clickStart: "Fes clic a 'Començar Joc' per començar la partida.", // Added period
+                preparingGame: "Preparant el joc...",
                 use5050: "Usar 50:50?",
                 sure5050: "Estàs segur que vols usar l'ajuda 50:50? Eliminarà dues opcions incorrectes.",
                 yes: "Sí",
@@ -891,11 +893,114 @@
 
         let currentLanguage = 'es';
 
+        // Detectar idioma del navegador
+        function detectBrowserLanguage() {
+            const browserLang = navigator.language || navigator.userLanguage;
+            return browserLang.toLowerCase().startsWith('ca') ? 'ca' : 'es';
+        }
+        
+        // Cargar idioma guardado o detectar automáticamente
+        function initializeLanguage() {
+            const savedLang = localStorage.getItem('gameLanguage');
+            currentLanguage = savedLang || detectBrowserLanguage();
+            updateLanguageButtons();
+            translatePage();
+        }
+
+        // Actualizar botones de idioma
+        function updateLanguageButtons() {
+            document.querySelectorAll('.lang-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(`lang${currentLanguage.toUpperCase()}`).classList.add('active');
+        }
+        
+        // Cambiar idioma
+        function changeLanguage(lang) {
+            currentLanguage = lang;
+            localStorage.setItem('gameLanguage', lang);
+            updateLanguageButtons();
+            translatePage();
+            
+            // Re-renderizar LaTeX después del cambio de idioma
+            // MathJax will process elements with 'tex2jax_process' or the whole body if not specific.
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                setTimeout(() => {
+                    window.MathJax.typesetPromise().catch((err) => {
+                        console.error('Error re-renderizando LaTeX después del cambio de idioma:', err);
+                    });
+                }, 100);
+            }
+        }
+
+        // Traducir toda la página
+        function translatePage() {
+            const t = translations[currentLanguage];
+            
+            document.querySelectorAll('[data-i18n]').forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                const keys = key.split('.');
+                let value = t;
+                for (const k of keys) { value = value?.[k]; if (!value) break; }
+                if (value) element.textContent = value;
+            });
+
+            document.title = t.title;
+            const h1Element = document.querySelector('h1');
+            if (h1Element) h1Element.textContent = t.title;
+            
+            const topicTitleElement = document.querySelector('.topic-title');
+            if (topicTitleElement) topicTitleElement.textContent = t.topic;
+            
+            const jsonUrlInputElement = document.getElementById('jsonUrlInput');
+            if (jsonUrlInputElement) jsonUrlInputElement.placeholder = t.loadQuestionsPlaceholder;
+            
+            const loadJsonButtonElement = document.getElementById('loadJsonButton');
+            if (loadJsonButtonElement) loadJsonButtonElement.textContent = t.loadQuestions;
+            
+            const nextQuestionButtonElement = document.getElementById('nextQuestionButton');
+            if (nextQuestionButtonElement) nextQuestionButtonElement.textContent = t.nextQuestion;
+
+            const restartGameButtonElement = document.getElementById('restartGameButton');
+            if (restartGameButtonElement) restartGameButtonElement.textContent = t.restartGame;
+            
+            const startGameButtonElement = document.getElementById('startGameButton');
+            if (startGameButtonElement) startGameButtonElement.textContent = t.startGame;
+
+            const playerNameBoxTitleElement = document.getElementById('playerNameBoxTitle');
+            if (playerNameBoxTitleElement) playerNameBoxTitleElement.textContent = t.welcome;
+
+            const playerNameBoxContentElement = document.getElementById('playerNameBoxContent');
+            if (playerNameBoxContentElement) playerNameBoxContentElement.textContent = t.enterName;
+            
+            const playerNameInputElement = document.getElementById('playerNameInput');
+            if (playerNameInputElement) playerNameInputElement.placeholder = t.yourNameHere;
+
+            const submitPlayerNameButtonElement = document.getElementById('submitPlayerNameButton');
+            if (submitPlayerNameButtonElement) submitPlayerNameButtonElement.textContent = t.start;
+
+            const lifelineButtons = document.querySelectorAll('.lifeline-button');
+            if (lifelineButtons.length >= 3) {
+                lifelineButtons[0].childNodes[lifelineButtons[0].childNodes.length -1].nodeValue = ` ${t.lifeline5050}`;
+                lifelineButtons[1].childNodes[lifelineButtons[1].childNodes.length -1].nodeValue = ` ${t.lifelineCall}`;
+                lifelineButtons[2].childNodes[lifelineButtons[2].childNodes.length -1].nodeValue = ` ${t.lifelineAudience}`;
+            }
+            
+            if (!questionsLoaded && questionText) { // questionText might not be defined yet on initial load
+                questionText.textContent = t.loadQuestionsFirst;
+                const initialOptionButtons = optionsGrid.querySelectorAll('.option-button');
+                initialOptionButtons.forEach(button => {
+                    const optionKey = button.dataset.option;
+                    button.textContent = `${optionKey}) ${t.optionLoadQuestions}`;
+                });
+            }
+        }
+
         // Variables globales
         let allAvailableQuestions = [];
         let questionsTopic = "";
-        let questions = [];
-        let playedQuestionIndices = new Set();
+        let questions = []; // Preguntas para la ronda actual
+        let playedQuestionIndices = new Set(); // Indices de allAvailableQuestions que ya se usaron en alguna partida
         let gamesPlayedCount = 0;
         const MAX_GAMES = 5;
         const QUESTIONS_PER_GAME = 12;
@@ -927,7 +1032,7 @@
         // Elementos DOM
         const questionText = document.getElementById('questionText');
         const optionsGrid = document.getElementById('optionsGrid');
-        let optionButtons = optionsGrid.querySelectorAll('.option-button');
+        let optionButtons = optionsGrid.querySelectorAll('.option-button'); // Se reasigna en loadQuestion
         const lifeline5050Button = document.getElementById('lifeline5050');
         const lifelineCallButton = document.getElementById('lifelineCall');
         const lifelineAudienceButton = document.getElementById('lifelineAudience');
@@ -936,14 +1041,12 @@
         const startGameButton = document.getElementById('startGameButton');
         const prizeLadderElement = document.getElementById('prizeLadder');
         
-        // Elementos del cargador JSON
         const jsonUrlInput = document.getElementById('jsonUrlInput');
         const loadJsonButton = document.getElementById('loadJsonButton');
         const statusMessage = document.getElementById('statusMessage');
         const topicInfo = document.getElementById('topicInfo');
         const topicContent = document.getElementById('topicContent');
 
-        // Elementos del modal
         const messageBoxOverlay = document.getElementById('messageBoxOverlay');
         const messageBoxTitle = document.getElementById('messageBoxTitle');
         const messageBoxContent = document.getElementById('messageBoxContent');
@@ -952,116 +1055,6 @@
         const playerNameModalOverlay = document.getElementById('playerNameModalOverlay');
         const playerNameInput = document.getElementById('playerNameInput');
         const submitPlayerNameButton = document.getElementById('submitPlayerNameButton');
-
-        // Detectar idioma del navegador
-        function detectBrowserLanguage() {
-            const browserLang = navigator.language || navigator.userLanguage;
-            return browserLang.toLowerCase().startsWith('ca') ? 'ca' : 'es';
-        }
-
-        // Cargar idioma guardado o detectar automáticamente
-        function initializeLanguage() {
-            const savedLang = localStorage.getItem('gameLanguage');
-            currentLanguage = savedLang || detectBrowserLanguage();
-            updateLanguageButtons();
-            translatePage();
-        }
-
-        // Actualizar botones de idioma
-        function updateLanguageButtons() {
-            document.querySelectorAll('.lang-button').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            document.getElementById(`lang${currentLanguage.toUpperCase()}`).classList.add('active');
-        }
-
-        // Cambiar idioma
-        function changeLanguage(lang) {
-            currentLanguage = lang;
-            localStorage.setItem('gameLanguage', lang);
-            updateLanguageButtons();
-            translatePage();
-            
-            // Re-renderizar LaTeX después del cambio de idioma
-            if (window.MathJax && window.MathJax.typesetPromise) {
-                setTimeout(() => {
-                    window.MathJax.typesetPromise().catch((err) => {
-                        console.log('Error re-renderizando LaTeX después del cambio de idioma:', err);
-                    });
-                }, 100);
-            }
-        }
-
-        // Traducir toda la página
-        function translatePage() {
-            const t = translations[currentLanguage];
-            
-            // Traducir elementos con data-i18n
-            document.querySelectorAll('[data-i18n]').forEach(element => {
-                const key = element.getAttribute('data-i18n');
-                const keys = key.split('.');
-                let value = t;
-                
-                for (const k of keys) {
-                    value = value[k];
-                    if (!value) break;
-                }
-                
-                if (value) {
-                    element.textContent = value;
-                }
-            });
-
-            // Traducir elementos específicos
-            document.title = t.title;
-            document.querySelector('h1').textContent = t.title;
-            
-            if (document.getElementById('topicContent').textContent === 'Tema:') {
-                document.querySelector('.topic-title').textContent = t.topic;
-            }
-            
-            document.getElementById('jsonUrlInput').placeholder = t.loadQuestionsPlaceholder;
-            document.getElementById('loadJsonButton').textContent = t.loadQuestions;
-            document.getElementById('nextQuestionButton').textContent = t.nextQuestion;
-            document.getElementById('restartGameButton').textContent = t.restartGame;
-            document.getElementById('startGameButton').textContent = t.startGame;
-            document.getElementById('playerNameBoxTitle').textContent = t.welcome;
-            document.getElementById('playerNameBoxContent').textContent = t.enterName;
-            document.getElementById('playerNameInput').placeholder = t.yourNameHere;
-            document.getElementById('submitPlayerNameButton').textContent = t.start;
-
-            // Traducir ayudas
-            document.querySelectorAll('.lifeline-button')[0].innerHTML = `
-                <svg viewBox="0 0 24 24" width="24" height="24" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z" fill="white"/>
-                </svg>
-                ${t.lifeline5050}
-            `;
-            
-            document.querySelectorAll('.lifeline-button')[1].innerHTML = `
-                <svg viewBox="0 0 24 24" width="24" height="24" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M20 15.5c-1.25 0-2.45-.2-3.57-.57-.35-.11-.74-.03-1.01.24l-2.2 2.2c-2.83-1.44-5.15-3.75-6.59-6.59l2.2-2.2c.27-.27.35-.66.24-1.01C8.75 6.45 8.55 5.25 8.55 4c0-1.1.9-2 2-2h3.5c1.1 0 2 .9 2 2v3.5c0 1.1-.9 2-2 2h-3.5c-.55 0-1-.45-1-1s.45-1 1-1h.5c.28 0 .5-.22.5-.5s-.22-.5-.5-.5h-.5c-.55 0-1-.45-1-1s.45-1 1-1h.5c.28 0 .5-.22.5-.5s-.22-.5-.5-.5h-.5c-.55 0-1-.45-1-1s.45-1 1-1h.5c.28 0 .5-.22.5-.5s-.22-.5-.5-.5H10.5c-1.1 0-2 .9-2 2v3.5c0 1.1.9 2 2 2h3.5c.55 0 1 .45 1 1s-.45 1-1 1h-.5c-.28 0-.5.22-.5.5s.22.5.5.5h.5c.55 0 1 .45 1 1s-.45 1-1 1h-.5c-.28 0-.5.22-.5.5s.22.5.5.5H10.5c-1.1 0-2 .9-2 2v3.5c0 1.1.9 2 2 2h3.5c1.1 0 2-.9 2-2V15.5z" fill="white"/>
-                </svg>
-                ${t.lifelineCall}
-            `;
-            
-            document.querySelectorAll('.lifeline-button')[2].innerHTML = `
-                <svg viewBox="0 0 24 24" width="24" height="24" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z" fill="white"/>
-                </svg>
-                ${t.lifelineAudience}
-            `;
-
-            // Actualizar texto de pregunta inicial si no hay preguntas cargadas
-            if (!questionsLoaded) {
-                document.getElementById('questionText').textContent = t.loadQuestionsFirst;
-                const optionButtons = document.querySelectorAll('.option-button');
-                optionButtons.forEach(button => {
-                    const optionKey = button.dataset.option;
-                    button.textContent = `${optionKey}) ${t.optionLoadQuestions}`;
-                });
-            }
-        }
 
         /**
          * Mezcla un array usando el algoritmo Fisher-Yates
@@ -1080,100 +1073,66 @@
             const t = translations[currentLanguage];
             let translatedMessage = message;
             
-            if (message.includes('Cargando preguntas...')) {
-                translatedMessage = t.loadingQuestions;
-            } else if (message.includes('preguntas cargadas correctamente!')) {
-                translatedMessage = `${t.questionsLoaded} ${allAvailableQuestions.length} ${t.questionsAvailable}`;
-            } else if (message.includes('Por favor, introduce una URL válida.')) {
-                translatedMessage = t.enterValidUrl;
-            }
+            if (message.includes('Cargando preguntas...')) translatedMessage = t.loadingQuestions;
+            else if (message.includes('preguntas cargadas correctamente!')) translatedMessage = `${t.questionsLoaded} ${allAvailableQuestions.length} ${t.questionsAvailable}`;
+            else if (message.includes('Por favor, introduce una URL válida.')) translatedMessage = t.enterValidUrl;
             
             statusMessage.textContent = translatedMessage;
             statusMessage.className = `status-message status-${type}`;
             statusMessage.style.display = 'block';
         }
-
+        
         /**
-         * Procesa el texto para renderizar LaTeX
+         * Procesa el texto para renderizar LaTeX en un elemento específico.
+         * Esta función es para un solo elemento. Para grupos, usar typesetPromise directamente.
          */
-        function processLatexText(text, element, retryCount = 0) {
-            element.innerHTML = text;
-            
-            // Asegurar que MathJax esté disponible antes de usarlo
+        function processLatexText(text, element) {
+            element.innerHTML = text; // Asignar el texto que puede contener LaTeX
             if (window.MathJax && window.MathJax.typesetPromise) {
-                // Para botones, usar un retraso más largo para asegurar el renderizado
-                const delay = element.classList.contains('option-button') ? 100 : 50;
-                setTimeout(() => {
-                    window.MathJax.typesetPromise([element]).then(() => {
-                        // Forzar re-renderizado si es un botón y el contenido no parece haberse renderizado
-                        if (element.classList.contains('option-button') && element.innerHTML.includes('$')) {
-                            setTimeout(() => {
-                                window.MathJax.typesetPromise([element]).catch((err) => {
-                                    console.log('Error en segundo intento de renderizado LaTeX:', err);
-                                });
-                            }, 200);
-                        }
-                    }).catch((err) => {
-                        console.log('Error renderizando LaTeX:', err);
+                setTimeout(() => { // Dar tiempo al DOM para actualizarse
+                    window.MathJax.typesetPromise([element]).catch((err) => {
+                        console.error('Error renderizando LaTeX en elemento:', element, err);
                     });
-                }, delay);
-            } else if (retryCount < 10) {
-                // Si MathJax no está disponible, intentar de nuevo después de un breve retraso
-                // Máximo 10 reintentos para evitar bucles infinitos
-                setTimeout(() => processLatexText(text, element, retryCount + 1), 200);
-            } else {
-                console.log('MathJax no disponible después de varios intentos');
+                }, 0); // Un timeout de 0 puede ser suficiente para ponerlo al final de la cola de eventos
             }
         }
+
 
         /**
          * Carga preguntas desde una URL JSON
          */
         async function loadQuestionsFromUrl(url) {
             const t = translations[currentLanguage];
-            
             try {
                 showStatus(t.loadingQuestions, 'success');
-                
                 const response = await fetch(url);
-                if (!response.ok) {
-                    throw new Error(`Error HTTP: ${response.status}`);
-                }
-
+                if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
                 const data = await response.json();
-                
-                // Validar estructura del JSON
-                if (!data.preguntas || !Array.isArray(data.preguntas) || data.preguntas.length < QUESTIONS_PER_GAME) {
-                    throw new Error(`El archivo debe contener al menos ${QUESTIONS_PER_GAME} preguntas en el array 'preguntas'`);
-                }
 
-                // Validar cada pregunta
+                if (!data.preguntas || !Array.isArray(data.preguntas) || data.preguntas.length < QUESTIONS_PER_GAME) {
+                    throw new Error(`El archivo debe contener al menos ${QUESTIONS_PER_GAME} preguntas en el array 'preguntas'.`);
+                }
                 for (let i = 0; i < data.preguntas.length; i++) {
                     const q = data.preguntas[i];
-                    if (!q.question || !q.options || !q.correct || !q.difficulty) {
-                        throw new Error(`Pregunta ${i + 1} no tiene la estructura correcta`);
-                    }
-                    if (!q.options.A || !q.options.B || !q.options.C || !q.options.D) {
-                        throw new Error(`Pregunta ${i + 1} no tiene todas las opciones (A, B, C, D)`);
-                    }
+                    if (!q.question || !q.options || !q.correct || !q.difficulty) throw new Error(`Pregunta ${i + 1} no tiene la estructura correcta (question, options, correct, difficulty).`);
+                    if (typeof q.options !== 'object' || !q.options.A || !q.options.B || !q.options.C || !q.options.D) throw new Error(`Pregunta ${i + 1} no tiene todas las opciones (A, B, C, D) en el objeto 'options'.`);
                 }
 
                 allAvailableQuestions = data.preguntas;
                 questionsTopic = data.tema || "Preguntas cargadas";
                 questionsLoaded = true;
 
-                // Mostrar información del tema
                 topicContent.textContent = questionsTopic;
                 topicInfo.style.display = 'block';
-
                 showStatus(`${t.questionsLoaded} ${allAvailableQuestions.length} ${t.questionsAvailable}`, 'success');
                 startGameButton.disabled = false;
-
+                resetAllGamesState(); // Prepara para un nuevo conjunto de juegos
                 return true;
-
             } catch (error) {
                 console.error('Error cargando preguntas:', error);
                 showStatus(`${t.error} ${error.message}`, 'error');
+                questionsLoaded = false;
+                startGameButton.disabled = true;
                 return false;
             }
         }
@@ -1184,7 +1143,6 @@
         function checkUrlParameters() {
             const urlParams = new URLSearchParams(window.location.search);
             const jsonUrl = urlParams.get('json') || urlParams.get('preguntas');
-            
             if (jsonUrl) {
                 jsonUrlInput.value = jsonUrl;
                 loadQuestionsFromUrl(jsonUrl);
@@ -1196,7 +1154,7 @@
          */
         function showMessageBox(title, content, buttons) {
             messageBoxTitle.textContent = title;
-            messageBoxContent.innerHTML = content;
+            messageBoxContent.innerHTML = content; // Usar innerHTML para permitir HTML en el mensaje
             messageBoxButtons.innerHTML = '';
 
             buttons.forEach(buttonInfo => {
@@ -1205,124 +1163,107 @@
                 button.className = `message-box-button ${buttonInfo.className || ''}`;
                 button.onclick = () => {
                     hideMessageBox();
-                    if (buttonInfo.onClick) {
-                        buttonInfo.onClick();
-                    }
+                    if (buttonInfo.onClick) buttonInfo.onClick();
                 };
                 messageBoxButtons.appendChild(button);
             });
 
             messageBoxOverlay.classList.add('show');
+            // Si el contenido del mensaje tiene LaTeX, procesarlo
+            if (window.MathJax && window.MathJax.typesetPromise && content.match(/\$|\\\(|\\\[|\\begin\{/)) {
+                 setTimeout(() => {
+                    window.MathJax.typesetPromise([messageBoxContent]).catch(err => console.error("Error MathJax en MessageBox:", err));
+                }, 50);
+            }
         }
 
-        /**
-         * Oculta el mensaje modal
-         */
         function hideMessageBox() {
             messageBoxOverlay.classList.remove('show');
         }
 
-        /**
-         * Muestra la entrada del nombre del jugador
-         */
         function showPlayerNameInput() {
             playerNameModalOverlay.classList.add('show');
             playerNameInput.value = '';
             playerNameInput.focus();
         }
 
-        /**
-         * Oculta la entrada del nombre del jugador
-         */
         function hidePlayerNameInput() {
             playerNameModalOverlay.classList.remove('show');
         }
 
-        /**
-         * Maneja el envío del nombre del jugador
-         */
         function handleNameSubmission() {
             const enteredName = playerNameInput.value.trim();
-            if (enteredName) {
-                playerName = enteredName;
-            } else {
-                playerName = "Jugador";
-            }
+            playerName = enteredName || "Jugador";
             hidePlayerNameInput();
             hasPlayerNameBeenSet = true;
-
             gameLogoImage.src = `https://placehold.co/300x100/000000/00FF00?text=${encodeURIComponent(playerName)}`;
             gameLogoImage.alt = `Nombre del jugador: ${playerName}`;
             gameLogoImage.style.display = 'block';
-
-            // Solo cargar pregunta si hay preguntas disponibles y el juego está iniciado
-            if (questions.length > 0 && gameStarted) {
-                loadQuestion();
-            }
+            loadQuestion(); // Ahora que el nombre está, carga la primera pregunta de la ronda actual
         }
 
-        /**
-         * Actualiza la escalera de premios
-         */
         function updatePrizeLadder() {
             const allPrizeItems = prizeLadderElement.querySelectorAll('.prize-level-item');
             allPrizeItems.forEach(item => item.classList.remove('current-level'));
-
-            if (score > 0 && score <= QUESTIONS_PER_GAME) {
-                const highlightIndex = prizeLevels.length - score;
+            if (score > 0 && score <= QUESTIONS_PER_GAME) { // score es 1-indexed para premios
+                const highlightIndex = prizeLevels.length - score; // Los premios están en orden inverso en el array
                 if (highlightIndex >= 0 && highlightIndex < allPrizeItems.length) {
                     allPrizeItems[highlightIndex].classList.add('current-level');
                 }
             }
         }
-
+        
         /**
          * Carga la pregunta actual en la pantalla
          */
         function loadQuestion() {
+            const t = translations[currentLanguage];
             if (currentQuestionIndex >= questions.length) {
-                endGame(true);
+                // Esto no debería ocurrir si setupNewGameRound se maneja bien.
+                // Si ocurre, es que no hay preguntas para la ronda actual.
+                console.warn("loadQuestion llamada sin preguntas disponibles para la ronda.");
+                endGame(true); // Considerar si 'true' es correcto aquí. Probablemente fin de ronda.
                 return;
             }
 
             const currentQuestion = questions[currentQuestionIndex];
-            
-            // Procesar texto con LaTeX para la pregunta
             processLatexText(currentQuestion.question, questionText);
 
             optionButtons = optionsGrid.querySelectorAll('.option-button');
+            const elementsForMathJax = []; 
 
             optionButtons.forEach(button => {
                 const optionKey = button.dataset.option;
-                const optionText = `${optionKey}) ${currentQuestion.options[optionKey]}`;
+                const optionText = currentQuestion.options[optionKey];
+                
+                if (optionText !== undefined) {
+                    button.innerHTML = `${optionKey}) ${optionText}`;
+                } else {
+                    button.innerHTML = `${optionKey}) ${t.optionLoadQuestions}`; 
+                    console.warn(`Opción ${optionKey} no definida para la pregunta actual.`);
+                }
+                
                 button.classList.remove('correct', 'incorrect');
                 button.disabled = false;
                 button.style.display = 'block';
                 button.onclick = () => checkAnswer(optionKey);
-                
-                // Procesar LaTeX para cada botón individualmente
-                processLatexText(optionText, button);
+                elementsForMathJax.push(button);
             });
 
-            // Renderizar todo el contenedor de opciones después de procesar todos los botones
-            setTimeout(() => {
-                if (window.MathJax && window.MathJax.typesetPromise) {
-                    window.MathJax.typesetPromise([optionsGrid]).catch((err) => {
-                        console.log('Error renderizando LaTeX en opciones:', err);
+            if (window.MathJax && window.MathJax.typesetPromise && elementsForMathJax.length > 0) {
+                setTimeout(() => {
+                    window.MathJax.typesetPromise(elementsForMathJax).catch((err) => {
+                        console.error('Error renderizando LaTeX en botones de opción:', err);
                     });
-                }
-            }, 100);
+                }, 50); 
+            }
 
             nextQuestionButton.style.display = 'none';
             restartGameButton.style.display = 'none';
-            startGameButton.style.display = 'none';
-
             updatePrizeLadder();
         }
 
-        /**
-         * Verifica si la respuesta seleccionada es correcta
-         */
+
         function checkAnswer(selectedOptionKey) {
             const t = translations[currentLanguage];
             const currentQuestion = questions[currentQuestionIndex];
@@ -1330,11 +1271,8 @@
 
             optionButtons.forEach(button => {
                 button.disabled = true;
-                if (button.dataset.option === currentQuestion.correct) {
-                    button.classList.add('correct');
-                } else if (button.dataset.option === selectedOptionKey && !isCorrect) {
-                    button.classList.add('incorrect');
-                }
+                if (button.dataset.option === currentQuestion.correct) button.classList.add('correct');
+                else if (button.dataset.option === selectedOptionKey && !isCorrect) button.classList.add('incorrect');
             });
 
             if (isCorrect) {
@@ -1342,238 +1280,238 @@
                 updatePrizeLadder();
                 showMessageBox(
                     t.correct,
-                    `${t.youGotIt} ${playerName}${t.currentScore} ${score}`,
+                    `${t.youGotIt} ${playerName}${t.currentScore} ${prizeLevels[score-1] || score}`, // Usar prizeLevels
                     [{ text: t.continue, className: "confirm", onClick: moveToNextQuestion }]
                 );
             } else {
+                const correctAnswerText = `${currentQuestion.correct}) ${currentQuestion.options[currentQuestion.correct]}`;
                 showMessageBox(
                     t.incorrect,
-                    `${t.correctAnswerWas} ${currentQuestion.correct}) ${currentQuestion.options[currentQuestion.correct]}. ${t.cheer} ${playerName}!`,
+                    `${t.correctAnswerWas} ${correctAnswerText}.<br>${t.cheer} ${playerName}!`,
                     [{ text: t.gameOver, className: "cancel", onClick: () => endGame(false) }]
                 );
             }
         }
 
-        /**
-         * Pasa a la siguiente pregunta
-         */
         function moveToNextQuestion() {
             currentQuestionIndex++;
             if (currentQuestionIndex < questions.length) {
                 loadQuestion();
             } else {
-                endGame(true);
+                endGame(true); // Ganó esta ronda (todas las preguntas de la ronda contestadas)
             }
         }
 
-        /**
-         * Termina el juego
-         */
-        function endGame(won) {
+        function endGame(wonRound) {
             const t = translations[currentLanguage];
             let title, content;
-            
-            if (won) {
+            const finalScoreText = score > 0 ? prizeLevels[score-1] : "0";
+
+            if (wonRound && score === QUESTIONS_PER_GAME) { // Ganó el millón
                 title = `${t.congratulations} ${playerName}!`;
-                content = `${t.wonMessage} ${score} ${t.of} ${questions.length}.`;
-            } else {
+                content = `${t.wonMessage} ${finalScoreText}.`;
+            } else if (wonRound) { // Terminó la ronda pero no el millón (si hay menos de 12 preguntas)
+                 title = `${t.congratulations} ${playerName}!`;
+                 content = `Has completado esta ronda. Tu puntuación es: ${finalScoreText}.`;
+            }
+            else { // Perdió
                 title = t.gameOver;
-                content = `${t.lostMessage.replace(',', `, ${playerName}`)} ${score} ${t.of} ${questions.length}. ${t.tryAgain}`;
+                content = `${t.lostMessage.replace(',', `, ${playerName}`)} ${finalScoreText}. ${t.tryAgain}`;
             }
 
             showMessageBox(
                 title,
                 content,
-                [{ text: t.restartGame, className: "confirm", onClick: restartGame }]
+                [{ text: t.restartGame, className: "confirm", onClick: requestNewGameRound }] // Cambiado a requestNewGameRound
             );
-            restartGameButton.style.display = 'block';
+            restartGameButton.style.display = 'block'; // Mostrar botón para reiniciar (siguiente ronda o total)
             nextQuestionButton.style.display = 'none';
+            gameStarted = false; // Marcar que la ronda actual ha terminado
         }
 
         /**
-         * Reinicia el juego
+         * Prepara una nueva ronda de juego (selecciona preguntas, resetea estado de ronda)
          */
-        function restartGame() {
+        function setupNewGameRound() {
             const t = translations[currentLanguage];
-            
-            if (!questionsLoaded) {
-                showMessageBox(
-                    t.error,
-                    t.mustLoadQuestions,
-                    [{ text: t.understood, className: "confirm" }]
-                );
-                return;
-            }
-
-            // Incrementar contador de juegos para el siguiente juego
-            gamesPlayedCount++;
-
-            const currentDifficulty = difficultyMap[gamesPlayedCount];
-            const availableQuestionsForDifficulty = allAvailableQuestions.filter((q, index) =>
-                q.difficulty === currentDifficulty && !playedQuestionIndices.has(index)
-            );
-
-            if (gamesPlayedCount > MAX_GAMES || availableQuestionsForDifficulty.length < QUESTIONS_PER_GAME) {
-                showMessageBox(
-                    t.gamesCompleted,
-                    `${t.playedGames} ${MAX_GAMES} ${t.uniqueGames}`,
-                    [{ text: t.yesRestart, className: "confirm", onClick: resetAllGames }]
-                );
-                startGameButton.style.display = 'none';
-                restartGameButton.style.display = 'none';
-                return;
-            }
-
-            // Preparar las preguntas del nuevo juego
-            shuffleArray(availableQuestionsForDifficulty);
-            questions = availableQuestionsForDifficulty.slice(0, QUESTIONS_PER_GAME);
-
-            questions.forEach(q => {
-                const originalIndex = allAvailableQuestions.findIndex(oq => oq === q);
-                if (originalIndex !== -1) {
-                    playedQuestionIndices.add(originalIndex);
-                }
-            });
-
-            // Resetear estado del juego
             currentQuestionIndex = 0;
             score = 0;
             used5050 = false;
             usedCall = false;
             usedAudience = false;
-            gameStarted = false;
+            
+            gamesPlayedCount++; // Incrementar para la nueva ronda
+
+            const currentDifficulty = difficultyMap[gamesPlayedCount];
+            let availableQuestionsForDifficulty = [];
+
+            if (currentDifficulty) {
+                availableQuestionsForDifficulty = allAvailableQuestions.filter(q => 
+                    q.difficulty === currentDifficulty && !playedQuestionIndices.has(allAvailableQuestions.indexOf(q))
+                );
+            }
+            
+            // Si no hay preguntas para la dificultad actual o ya se superó MAX_GAMES, intentar con cualquier pregunta no jugada
+            if (gamesPlayedCount > MAX_GAMES || availableQuestionsForDifficulty.length < QUESTIONS_PER_GAME) {
+                const anyUnplayedQuestions = allAvailableQuestions.filter(q => !playedQuestionIndices.has(allAvailableQuestions.indexOf(q)));
+                if (anyUnplayedQuestions.length >= QUESTIONS_PER_GAME) {
+                    if (gamesPlayedCount > MAX_GAMES) console.log("MAX_GAMES alcanzado, usando preguntas restantes.");
+                    else console.log(`No hay suficientes preguntas para dificultad ${currentDifficulty} (ronda ${gamesPlayedCount}), usando preguntas restantes.`);
+                    availableQuestionsForDifficulty = anyUnplayedQuestions;
+                } else {
+                    // Realmente no hay suficientes preguntas para una nueva ronda completa
+                    showMessageBox(
+                        t.gamesCompleted,
+                        `${t.playedGames} ${gamesPlayedCount - 1} ${t.uniqueGames}`,
+                        [{ text: t.yesRestart, className: "confirm", onClick: resetAllGamesStateAndRestart }]
+                    );
+                    questions = []; // Asegurar que no hay preguntas
+                    startGameButton.style.display = 'none';
+                    restartGameButton.style.display = 'block'; // Permitir reiniciar todo
+                    return false; // Indicar que no se pudo configurar la ronda
+                }
+            }
+
+            shuffleArray(availableQuestionsForDifficulty);
+            questions = availableQuestionsForDifficulty.slice(0, QUESTIONS_PER_GAME);
+
+            questions.forEach(q => {
+                const originalIndex = allAvailableQuestions.indexOf(q);
+                if (originalIndex !== -1) playedQuestionIndices.add(originalIndex);
+            });
 
             lifeline5050Button.disabled = false;
             lifelineCallButton.disabled = false;
             lifelineAudienceButton.disabled = false;
 
-            startGameButton.style.display = 'block';
             nextQuestionButton.style.display = 'none';
-            restartGameButton.style.display = 'none';
-            questionText.textContent = `${t.clickStart} ${gamesPlayedCount} ${t.of} ${MAX_GAMES}.`;
-
+            restartGameButton.style.display = 'none'; // Se mostrará al final del juego
+            
+            // Actualizar elementos visuales para la nueva ronda
             optionsGrid.innerHTML = `
-                <button class="option-button" data-option="A"></button>
-                <button class="option-button" data-option="B"></button>
-                <button class="option-button" data-option="C"></button>
-                <button class="option-button" data-option="D"></button>
+                <button class="option-button tex2jax_process" data-option="A"></button>
+                <button class="option-button tex2jax_process" data-option="B"></button>
+                <button class="option-button tex2jax_process" data-option="C"></button>
+                <button class="option-button tex2jax_process" data-option="D"></button>
             `;
             optionButtons = optionsGrid.querySelectorAll('.option-button');
-
             optionButtons.forEach(button => {
+                button.textContent = `${button.dataset.option}) ${t.optionLoadQuestions}`; // Placeholder
                 button.disabled = true;
-                button.classList.remove('correct', 'incorrect');
             });
-
-            generatePrizeLadder();
-            updatePrizeLadder();
-
-            if (hasPlayerNameBeenSet) {
-                gameLogoImage.src = `https://placehold.co/300x100/000000/00FF00?text=${encodeURIComponent(playerName)}`;
-                gameLogoImage.alt = `Nombre del jugador: ${playerName}`;
-            } else {
-                gameLogoImage.src = `https://placehold.co/300x100/000000/00FF00?text=%C2%BFT%C3%BA%3F`;
-                gameLogoImage.alt = "Imagen de billetes de dinero con el texto ¿Tú?";
-            }
-            gameLogoImage.style.display = 'block';
+            
+            generatePrizeLadder(); // Asegurar que la escalera está fresca
+            updatePrizeLadder();   // Resetea el resaltado de la escalera
+            return true; // Ronda configurada exitosamente
         }
-
+        
         /**
-         * Reinicia todos los juegos
-         */
-        function resetAllGames() {
-            playedQuestionIndices.clear();
-            gamesPlayedCount = 0;
-            hasPlayerNameBeenSet = false;
-            restartGame();
-        }
-
-        /**
-         * Prepara las preguntas para el juego actual
-         */
-        function prepareGameQuestions() {
-            // Solo incrementar en el primer juego
-            if (gamesPlayedCount === 0) {
-                gamesPlayedCount = 1;
-            }
-
-            const currentDifficulty = difficultyMap[gamesPlayedCount];
-            const availableQuestionsForDifficulty = allAvailableQuestions.filter((q, index) =>
-                q.difficulty === currentDifficulty && !playedQuestionIndices.has(index)
-            );
-
-            if (availableQuestionsForDifficulty.length >= QUESTIONS_PER_GAME) {
-                shuffleArray(availableQuestionsForDifficulty);
-                questions = availableQuestionsForDifficulty.slice(0, QUESTIONS_PER_GAME);
-
-                questions.forEach(q => {
-                    const originalIndex = allAvailableQuestions.findIndex(oq => oq === q);
-                    if (originalIndex !== -1) {
-                        playedQuestionIndices.add(originalIndex);
-                    }
-                });
-
-                // Resetear estado del juego
-                currentQuestionIndex = 0;
-                score = 0;
-                used5050 = false;
-                usedCall = false;
-                usedAudience = false;
-
-                lifeline5050Button.disabled = false;
-                lifelineCallButton.disabled = false;
-                lifelineAudienceButton.disabled = false;
-                
-                console.log(`Juego preparado: ${questions.length} preguntas de dificultad ${currentDifficulty}`);
-            } else {
-                console.log(`No hay suficientes preguntas de dificultad ${currentDifficulty}`);
-            }
-        }
-
-        /**
-         * Inicia el juego
+         * Inicia el juego (llamado por el botón "Empezar juego")
          */
         function startGame() {
             const t = translations[currentLanguage];
-            
             if (!questionsLoaded) {
-                showMessageBox(
-                    t.error,
-                    t.mustLoadQuestions,
-                    [{ text: t.understood, className: "confirm" }]
-                );
+                showMessageBox(t.error, t.mustLoadQuestions, [{ text: t.understood, className: "confirm" }]);
                 return;
             }
 
-            // Primero preparar el juego (esto configura las preguntas)
-            if (!gameStarted) {
-                prepareGameQuestions();
+            if (!setupNewGameRound()) { // Intenta configurar la primera ronda
+                // Si no se pudo (ej. no hay preguntas), setupNewGameRound ya mostró un mensaje.
+                return;
             }
-
+            
             gameStarted = true;
             startGameButton.style.display = 'none';
 
             if (!hasPlayerNameBeenSet) {
-                setTimeout(() => {
-                    gameLogoImage.style.display = 'none';
-                    showPlayerNameInput();
-                }, 2000);
+                gameLogoImage.style.display = 'none'; // Ocultar logo temporalmente
+                showPlayerNameInput(); // Esto llevará a handleNameSubmission -> loadQuestion
             } else {
+                loadQuestion(); // Nombre ya establecido, cargar pregunta directamente
+            }
+        }
+        
+        /**
+         * Llamado por el botón "Reiniciar Juego" después de que una partida termina.
+         * Intenta configurar y empezar la siguiente ronda.
+         */
+        function requestNewGameRound() {
+            const t = translations[currentLanguage];
+            if (!questionsLoaded) {
+                showMessageBox(t.error, t.mustLoadQuestions, [{ text: t.understood, className: "confirm" }]);
+                return;
+            }
+
+            if (!setupNewGameRound()) { // Intenta configurar la siguiente ronda
+                // Si no se pudo (ej. no hay más preguntas), setupNewGameRound ya mostró el mensaje apropiado.
+                // El botón "Reiniciar juego" (que llama a esta función) podría cambiar a "Reiniciar todo"
+                // o ser manejado por el mensaje de "Juegos completados".
+                return;
+            }
+
+            gameStarted = true; // Marcar que una nueva ronda ha comenzado
+            // startGameButton ya debería estar oculto.
+            // restartGameButton se oculta aquí, ya que estamos iniciando una nueva ronda.
+            restartGameButton.style.display = 'none'; 
+
+            // Si el nombre del jugador ya fue establecido, cargar la pregunta.
+            // No es necesario volver a pedir el nombre para cada ronda.
+            if (hasPlayerNameBeenSet) {
                 loadQuestion();
+            } else {
+                // Esto sería inusual si el juego ya ha comenzado antes.
+                // Pero por si acaso, pedir nombre.
+                showPlayerNameInput();
             }
         }
 
+
         /**
-         * Genera la escalera de premios
+         * Resetea el estado para un nuevo conjunto de juegos (cuando se cargan nuevas preguntas o se reinicia todo)
          */
+        function resetAllGamesState() {
+            playedQuestionIndices.clear();
+            gamesPlayedCount = 0; 
+            // hasPlayerNameBeenSet = false; // Decidir si el nombre se resetea o se mantiene
+            gameStarted = false;
+
+            const t = translations[currentLanguage];
+            questionText.textContent = t.loadQuestionsFirst;
+            optionButtons.forEach(button => {
+                const optionKey = button.dataset.option;
+                button.innerHTML = `${optionKey}) ${t.optionLoadQuestions}`;
+                button.disabled = true;
+            });
+            
+            generatePrizeLadder();
+            updatePrizeLadder();
+
+            startGameButton.disabled = !questionsLoaded;
+            startGameButton.style.display = 'block';
+            restartGameButton.style.display = 'none';
+            nextQuestionButton.style.display = 'none';
+            
+            if (!hasPlayerNameBeenSet) {
+                 gameLogoImage.src = `https://placehold.co/300x100/000000/00FF00?text=%C2%BFT%C3%BA%3F`;
+                 gameLogoImage.alt = "Imagen de billetes de dinero con el texto ¿Tú?";
+            }
+        }
+        
+        /**
+         * Llamado por el botón "Sí, reiniciar todo" del mensaje de "Juegos Completados"
+         */
+        function resetAllGamesStateAndRestart() {
+            resetAllGamesState();
+            // No se inicia una nueva partida automáticamente, el usuario debe pulsar "Empezar Juego"
+        }
+
+
         function generatePrizeLadder() {
             prizeLadderElement.innerHTML = '';
-            const fullPrizeDisplayLevels = [
-                "1 MILLÓN", "500.000", "250.000", "125.000", "75.000",
-                "50.000", "25.000", "10.000", "5.000", "2.000", "1.000", "500"
-            ];
-
-            fullPrizeDisplayLevels.forEach((level, index) => {
+            // Los premios se muestran de abajo hacia arriba en la escalera visual,
+            // pero el array prizeLevels está de menor a mayor.
+            // Por lo tanto, al generar, podemos iterar normalmente y CSS flex-direction: column-reverse se encarga.
+            prizeLevels.forEach((level) => {
                 const prizeItem = document.createElement('div');
                 prizeItem.classList.add('prize-level-item');
                 prizeItem.textContent = level;
@@ -1584,175 +1522,143 @@
         // Funciones de las ayudas
         lifeline5050Button.addEventListener('click', () => {
             const t = translations[currentLanguage];
-            if (!gameStarted || used5050) return;
-
-            showMessageBox(
-                t.use5050,
-                t.sure5050,
-                [
-                    { text: t.yes, className: "confirm", onClick: apply5050 },
-                    { text: t.no, className: "cancel" }
-                ]
-            );
+            if (!gameStarted || used5050 || !questions[currentQuestionIndex]) return;
+            showMessageBox(t.use5050, t.sure5050, [
+                { text: t.yes, className: "confirm", onClick: apply5050 }, { text: t.no, className: "cancel" }
+            ]);
         });
 
         function apply5050() {
             used5050 = true;
             lifeline5050Button.disabled = true;
-
             const currentQuestion = questions[currentQuestionIndex];
             const correctOption = currentQuestion.correct;
-            const incorrectOptions = Object.keys(currentQuestion.options).filter(
-                key => key !== correctOption
-            );
-
-            let optionsToHide = [];
-            while (optionsToHide.length < 2) {
-                const randomIndex = Math.floor(Math.random() * incorrectOptions.length);
-                const optionToHide = incorrectOptions[randomIndex];
-                if (!optionsToHide.includes(optionToHide)) {
-                    optionsToHide.push(optionToHide);
-                }
-            }
-
+            const incorrectOptions = Object.keys(currentQuestion.options).filter(key => key !== correctOption);
+            shuffleArray(incorrectOptions); // Mezclar para que la eliminación sea aleatoria
+            
+            let hiddenCount = 0;
             optionButtons.forEach(button => {
-                if (optionsToHide.includes(button.dataset.option)) {
+                const optKey = button.dataset.option;
+                if (incorrectOptions.includes(optKey) && hiddenCount < 2) {
                     button.disabled = true;
-                    button.style.display = 'none';
+                    button.style.display = 'none'; // Ocultar botón
+                    hiddenCount++;
                 }
             });
         }
 
         lifelineCallButton.addEventListener('click', () => {
             const t = translations[currentLanguage];
-            if (!gameStarted || usedCall) return;
-
-            showMessageBox(
-                t.useCall,
-                t.sureCall,
-                [
-                    { text: t.yes, className: "confirm", onClick: applyCall },
-                    { text: t.no, className: "cancel" }
-                ]
-            );
+            if (!gameStarted || usedCall || !questions[currentQuestionIndex]) return;
+            showMessageBox(t.useCall, t.sureCall, [
+                { text: t.yes, className: "confirm", onClick: applyCall }, { text: t.no, className: "cancel" }
+            ]);
         });
 
         function applyCall() {
             const t = translations[currentLanguage];
             usedCall = true;
             lifelineCallButton.disabled = true;
-
             const currentQuestion = questions[currentQuestionIndex];
-            const correctOptionText = currentQuestion.options[currentQuestion.correct];
-
+            // Simulación: el amigo da la respuesta correcta o una muy probable
+            const friendChoice = currentQuestion.correct; 
+            const friendChoiceText = `${friendChoice}) ${currentQuestion.options[friendChoice]}`;
             showMessageBox(
                 t.friendCall,
-                `${t.friendSays} ${currentQuestion.correct}, ${correctOptionText}."`,
+                `${t.friendSays} ${friendChoiceText}.`,
                 [{ text: t.understood, className: "confirm" }]
             );
         }
 
         lifelineAudienceButton.addEventListener('click', () => {
             const t = translations[currentLanguage];
-            if (!gameStarted || usedAudience) return;
-
-            showMessageBox(
-                t.useAudience,
-                t.sureAudience,
-                [
-                    { text: t.yes, className: "confirm", onClick: applyAudience },
-                    { text: t.no, className: "cancel" }
-                ]
-            );
+            if (!gameStarted || usedAudience || !questions[currentQuestionIndex]) return;
+            showMessageBox(t.useAudience, t.sureAudience, [
+                { text: t.yes, className: "confirm", onClick: applyAudience }, { text: t.no, className: "cancel" }
+            ]);
         });
 
         function applyAudience() {
             const t = translations[currentLanguage];
             usedAudience = true;
             lifelineAudienceButton.disabled = true;
-
             const currentQuestion = questions[currentQuestionIndex];
             const options = Object.keys(currentQuestion.options);
             const correctOption = currentQuestion.correct;
-
             const votes = {};
             let remainingPercentage = 100;
 
-            const correctPercentage = Math.floor(Math.random() * (70 - 40 + 1)) + 40;
+            // Dar un porcentaje alto a la correcta
+            const correctPercentage = Math.floor(Math.random() * (30)) + 50; // Entre 50% y 80%
             votes[correctOption] = correctPercentage;
             remainingPercentage -= correctPercentage;
 
             const incorrectOptions = options.filter(opt => opt !== correctOption);
+            shuffleArray(incorrectOptions); // Para distribuir el resto aleatoriamente
+
             for (let i = 0; i < incorrectOptions.length; i++) {
                 if (i === incorrectOptions.length - 1) {
                     votes[incorrectOptions[i]] = remainingPercentage;
                 } else {
-                    const percentage = Math.floor(Math.random() * (remainingPercentage + 1));
-                    votes[incorrectOptions[i]] = percentage;
-                    remainingPercentage -= percentage;
+                    const percentage = Math.floor(Math.random() * (remainingPercentage / (incorrectOptions.length - i) * 1.5)); // Dar un poco más de variabilidad
+                    votes[incorrectOptions[i]] = Math.min(percentage, remainingPercentage);
+                    remainingPercentage -= votes[incorrectOptions[i]];
                 }
             }
-
+             // Ajustar si la suma no es 100
             let currentSum = Object.values(votes).reduce((a, b) => a + b, 0);
-            if (currentSum !== 100) {
-                votes[correctOption] += (100 - currentSum);
+            if (currentSum !== 100 && votes[correctOption]) {
+                 votes[correctOption] += (100 - currentSum);
+                 votes[correctOption] = Math.max(0, Math.min(100, votes[correctOption])); // Clamp
             }
 
-            let audienceMessage = `${t.audienceVotes}<br>`;
-            options.forEach(opt => {
-                audienceMessage += `${opt}: ${votes[opt]}%<br>`;
-            });
 
-            showMessageBox(
-                t.audienceVote,
-                audienceMessage,
-                [{ text: t.understood, className: "confirm" }]
-            );
+            let audienceMessage = `${t.audienceVotes}<br><div style="text-align: left; display: inline-block;">`;
+            options.forEach(opt => {
+                audienceMessage += `${opt}: ${votes[opt] || 0}%<br>`;
+            });
+            audienceMessage += `</div>`;
+            showMessageBox(t.audienceVote, audienceMessage, [{ text: t.understood, className: "confirm" }]);
         }
 
         // Event Listeners
         loadJsonButton.addEventListener('click', () => {
-            const t = translations[currentLanguage];
             const url = jsonUrlInput.value.trim();
             if (!url) {
-                showStatus(t.enterValidUrl, 'error');
+                showStatus(translations[currentLanguage].enterValidUrl, 'error');
                 return;
             }
             loadQuestionsFromUrl(url);
         });
 
-        // Botones de idioma
         document.getElementById('langCA').addEventListener('click', () => changeLanguage('ca'));
         document.getElementById('langES').addEventListener('click', () => changeLanguage('es'));
 
         startGameButton.addEventListener('click', startGame);
+        restartGameButton.addEventListener('click', requestNewGameRound); // El botón de reiniciar después de un juego ahora llama a requestNewGameRound
         submitPlayerNameButton.addEventListener('click', handleNameSubmission);
 
-        // Permitir Enter en el campo de entrada
-        jsonUrlInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                loadJsonButton.click();
-            }
-        });
-
-        playerNameInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                submitPlayerNameButton.click();
-            }
-        });
+        jsonUrlInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') loadJsonButton.click(); });
+        playerNameInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') submitPlayerNameButton.click(); });
 
         // Configuración inicial
         window.onload = function() {
-            initializeLanguage();
+            initializeLanguage(); // Esto también llama a translatePage
             generatePrizeLadder();
-            checkUrlParameters();
+            checkUrlParameters(); // Esto puede llamar a loadQuestionsFromUrl, que llama a resetAllGamesState
             
-            // Verificar que MathJax esté cargado
+            // Si no se cargaron preguntas por URL, asegurar un estado inicial limpio
+            if (!questionsLoaded) {
+                resetAllGamesState();
+            }
+
             function waitForMathJax() {
                 if (window.MathJax && window.MathJax.typesetPromise) {
-                    console.log('MathJax está listo para usar');
+                    console.log('MathJax está listo.');
+                     // Forzar un primer renderizado de toda la página por si hay LaTeX inicial
+                    MathJax.typesetPromise().catch(err => console.error("Error en el primer typeset de MathJax:", err));
                 } else {
-                    console.log('Esperando a que MathJax se cargue...');
+                    console.log('Esperando a MathJax...');
                     setTimeout(waitForMathJax, 100);
                 }
             }
