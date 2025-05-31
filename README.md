@@ -143,6 +143,7 @@ Ejemplo:
 ````
 
 ## Cómo subir el JSON a GitHub Gist y obtener la URL
+Una vez tengas las preguntas las podrás subir al servicio Gist que de forma gratuita permite tener archivos de texto accesibles desde todo Internet, lo que es ideal para alojar las preguntas.
 
 1. Entra en: [https://gist.github.com](https://gist.github.com)
 2. Accede con tu cuenta de GitHub (si no tienes una, puedes crearla gratuitamente).
