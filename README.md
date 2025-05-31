@@ -168,7 +168,7 @@ Solo tienes que añadir la dirección de tu archivo JSON al final de la URL del 
 
 ### Ejemplo
 
-Supón que tu archivo está en:
+Supón que tu archivo de preguntas está en:
 
 ```
 https://gist.githubusercontent.com/usuario/hash/raw/preguntas.json
