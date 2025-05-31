@@ -1,65 +1,63 @@
-# ¿Quién Quiere Ser Millonario? - Juego de Trivia
+# ¿Quién quiere ser millonario? - juego de trivia
 
-Este proyecto es una implementación web del popular juego de trivia "¿Quién Quiere Ser Millonario?". Permite cargar preguntas desde un archivo JSON externo, jugar con comodines y disfrutar de una experiencia interactiva.
+Este proyecto es una versión web del famoso concurso “¿Quién quiere ser millonario?”. Permite cargar preguntas desde un archivo JSON externo, usar comodines clásicos y disfrutar de una experiencia interactiva.
 
 ## Características
 
-* **Carga de Preguntas Dinámica**: Las preguntas se cargan desde un archivo JSON alojado externamente, lo que facilita la creación y personalización de los cuestionarios.
-* **Múltiples Niveles de Dificultad**: El juego está diseñado para soportar preguntas con diferentes niveles de dificultad, incrementando el desafío progresivamente.
-* **Comodines**: Incluye los comodines clásicos:
-    * 50:50: Elimina dos respuestas incorrectas.
-    * Llamada a un Amigo: Simula una llamada que sugiere una respuesta (generalmente la correcta).
-    * Voto del Público: Muestra un gráfico simulado de cómo votaría el público.
-* **Escala de Premios**: Visualiza el progreso del jugador a través de una escala de premios.
-* **Interfaz Bilingüe**: Soporte para Español (es) y Catalán (ca), con detección automática del idioma del navegador.
-* **Renderizado de LaTeX**: Soporte para mostrar fórmulas matemáticas utilizando MathJax.
-* **Personalización del Jugador**: Permite al jugador introducir su nombre.
-* **Responsive Design**: Adaptado para una buena visualización en diferentes tamaños de pantalla.
+- **Carga dinámica de preguntas**. El juego lee las preguntas desde un archivo JSON alojado en línea, lo que simplifica la creación y personalización de los cuestionarios.  
+- **Varios niveles de dificultad**. Las preguntas pueden clasificarse como `easy`, `medium` o `hard`, aumentando el reto de forma progresiva.  
+- **Comodines integrados**  
+  - **50:50** — elimina dos respuestas incorrectas.  
+  - **Llamada a un amigo** — simula una llamada que sugiere (normalmente) la respuesta correcta.  
+  - **Voto del público** — muestra un gráfico con el voto simulado del público.  
+- **Escala de premios**. El progreso se refleja en una barra con los importes alcanzados.  
+- **Interfaz bilingüe**. Soporta español (`es`) y catalán (`ca`) con detección automática del idioma del navegador.  
+- **Renderizado LaTeX**. Las fórmulas matemáticas se muestran mediante MathJax.  
+- **Nombre del jugador**. El usuario puede introducir su nombre antes de empezar.  
+- **Diseño adaptable**. Funciona correctamente en móviles, tabletas y pantallas de escritorio.
 
-## ¿Cómo Funciona el Programa?
+## ¿Cómo funciona el programa?
 
-El juego está construido con HTML, CSS y JavaScript puro. No requiere un backend complejo, ya que las preguntas se cargan desde un archivo JSON especificado por el usuario mediante una URL.
+El juego está desarrollado en HTML, CSS y JavaScript puro; no requiere backend.
 
-1.  **Inicio**: Al cargar la página (`index.html`), el juego inicializa la interfaz y el sistema de traducción.
-2.  **Carga de Preguntas**:
-    * El usuario introduce la URL de un archivo JSON que contiene las preguntas.
-    * El script de JavaScript (`<script>` dentro de `index.html`) realiza una petición `fetch` para obtener el archivo JSON.
-    * Valida el JSON para asegurar que tiene la estructura correcta y el contenido esperado.
-    * Si el JSON es válido, se oculta el cargador de JSON y se habilita el botón para empezar el juego.
-3.  **Inicio del Juego**:
-    * Al pulsar "Empezar juego", se pide al jugador que introduzca su nombre (si es la primera vez).
-    * Se seleccionan las preguntas para la primera ronda según la dificultad (`easy`).
-4.  **Desarrollo del Juego**:
-    * Se muestra la pregunta actual y las cuatro opciones.
-    * El jugador selecciona una opción.
-    * Se verifica si la respuesta es correcta.
-    * Si es correcta, el jugador avanza en la escala de premios y pasa a la siguiente pregunta.
-    * Si es incorrecta, el juego termina y se muestra la puntuación final.
-    * El jugador puede usar los comodines una vez por partida.
-5.  **Rondas Siguientes**: Al completar una ronda (o perder), el jugador puede optar por "Reiniciar juego", lo que iniciará una nueva ronda con preguntas del siguiente nivel de dificultad, si están disponibles.
-6.  **Fin de Partidas**: Si se completan todas las dificultades o no hay suficientes preguntas para una nueva ronda, se informa al jugador, ofreciendo la opción de reiniciar todo el progreso (lo que permitiría volver a jugar todas las preguntas o cargar un nuevo JSON).
+1. **Inicio**  
+   Al abrir `index.html`, se inicializan la interfaz y el sistema de traducción.  
+2. **Carga de preguntas**  
+   - El usuario introduce la URL del archivo JSON.  
+   - Un `fetch` obtiene ese archivo y comprueba que su estructura sea válida.  
+   - Si todo es correcto, se habilita el botón **Empezar juego**.  
+3. **Inicio del juego**  
+   - El jugador escribe su nombre (solo la primera vez).  
+   - Se cargan las preguntas `easy`.  
+4. **Turno de preguntas**  
+   - Se muestra una pregunta con cuatro opciones.  
+   - El jugador elige una respuesta.  
+   - Si acierta, avanza en la escala; si falla, la partida termina y se muestra la puntuación.  
+   - Cada comodín puede usarse una sola vez por partida.  
+5. **Rondas siguientes**  
+   Tras terminar una ronda (victoria o fallo), el jugador puede **Reiniciar juego**. Si hay preguntas `medium` o `hard`, se emplearán en la nueva partida.  
+6. **Fin de las partidas**  
+   Si se terminan todas las preguntas disponibles, se ofrece reiniciar todo el progreso o cargar un nuevo JSON.
 
-## Creación del Archivo JSON de Preguntas
+## Creación del archivo JSON de preguntas
 
-Para que el juego funcione, necesitas crear un archivo JSON con una estructura específica.
-
-### Estructura del JSON
+El juego necesita un archivo con la estructura siguiente:
 
 ```json
 {
-  "tema": "Nombre del tema de las preguntas",
+  "tema": "Nombre del tema",
   "preguntas": [
     {
-      "question": "Texto de la pregunta. Puede incluir LaTeX como <span class="math-inline">E\=mc^2</span>.",
+      "question": "Texto de la pregunta. Puede incluir LaTeX como \\(E = mc^2\\).",
       "options": {
-        "A": "Opción A. Puede ser texto o LaTeX, ej: <span class="math-inline">\\\\alpha</span>",
-        "B": "Opción B. Puede ser texto o LaTeX, ej: <span class="math-inline">\\\\beta</span>",
-        "C": "Opción C. Puede ser texto o LaTeX, ej: <span class="math-inline">\\\\gamma</span>",
-        "D": "Opción D. Puede ser texto o LaTeX, ej: <span class="math-inline">\\\\delta</span>"
+        "A": "Opción A (ej. \\(\\alpha\\))",
+        "B": "Opción B (ej. \\(\\beta\\))",
+        "C": "Opción C (ej. \\(\\gamma\\))",
+        "D": "Opción D (ej. \\(\\delta\\))"
       },
       "correct": "A",
       "difficulty": "easy"
     }
-    // ... más preguntas
+    // añade más objetos separados por comas
   ]
 }
