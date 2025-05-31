@@ -190,3 +190,7 @@ https://jjdeharo.github.io/millonario?preguntas=https://gist.githubusercontent.c
 ```
 
 Cuando lo hagas, el juego usará automáticamente ese archivo y mostrará las preguntas sin que tengas que pegar nada manualmente.
+
+Aquí tienes dos juegos funcionales:
+- [Derivadas de funciones](https://jjdeharo.github.io/millonario/?preguntas=https://gist.githubusercontent.com/jjdeharo/fd5eba4b4cd9d752800e61756adaa508/raw/ad07b2bb181ad0b21130284085e66df83f93523e/literatura.json).
+- [Literatura universal](https://jjdeharo.github.io/millonario/?preguntas=https://gist.githubusercontent.com/jjdeharo/fd5eba4b4cd9d752800e61756adaa508/raw/ad07b2bb181ad0b21130284085e66df83f93523e/literatura.json).
