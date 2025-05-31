@@ -6,7 +6,6 @@
     <title>¿Quién Quiere Ser Millonario?</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>
         window.MathJax = {
             tex: {
@@ -16,9 +15,17 @@
             options: {
                 processEscapes: true,
                 processEnvironments: true
+            },
+            startup: {
+                ready: () => {
+                    console.log('MathJax is loaded, but not yet initialized');
+                    MathJax.startup.defaultReady();
+                    console.log('MathJax is initialized, and the initial typeset is queued');
+                }
             }
         };
     </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
         /* General styling */
         body {
@@ -33,6 +40,7 @@
             padding: 20px;
             box-sizing: border-box;
             overflow-y: auto;
+            padding-bottom: 60px;
         }
 
         .game-container {
@@ -454,104 +462,6 @@
             font-weight: bold;
         }
 
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2em;
-            }
-
-            .lifeline-button {
-                font-size: 0.9em;
-                padding: 10px 15px;
-            }
-
-            .question-text {
-                font-size: 1.4em;
-            }
-
-            .options-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .option-button {
-                font-size: 1em;
-                padding: 12px 15px;
-            }
-
-            .control-button {
-                font-size: 1.1em;
-                padding: 12px 25px;
-            }
-
-            .message-box h2 {
-                font-size: 1.8em;
-            }
-
-            .message-box p {
-                font-size: 1.1em;
-            }
-
-            .game-container {
-                flex-direction: column;
-                align-items: center;
-                padding: 20px;
-            }
-
-            .prize-ladder {
-                position: relative;
-                width: 100%;
-                margin-top: 20px;
-                order: -1;
-            }
-
-            .prize-level-item {
-                font-size: 0.9em;
-                padding: 8px 10px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .game-container {
-                padding: 20px;
-                gap: 15px;
-            }
-
-            h1 {
-                font-size: 1.8em;
-            }
-
-            .lifelines {
-                gap: 10px;
-            }
-
-            .lifeline-button {
-                font-size: 0.8em;
-                padding: 8px 12px;
-            }
-
-            .question-area {
-                padding: 15px;
-            }
-
-            .question-text {
-                font-size: 1.2em;
-            }
-
-            .option-button {
-                font-size: 0.9em;
-                padding: 10px 12px;
-            }
-
-            .control-buttons {
-                flex-direction: column;
-                gap: 10px;
-            }
-
-            .control-button {
-                width: 100%;
-            }
-        }
-
         /* Language Selector */
         .language-selector {
             position: fixed;
@@ -622,12 +532,61 @@
             color: #666;
         }
 
-        /* Adjust body padding for footer */
-        body {
-            padding-bottom: 60px;
-        }
-
+        /* Responsive adjustments */
         @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+            }
+
+            .lifeline-button {
+                font-size: 0.9em;
+                padding: 10px 15px;
+            }
+
+            .question-text {
+                font-size: 1.4em;
+            }
+
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .option-button {
+                font-size: 1em;
+                padding: 12px 15px;
+            }
+
+            .control-button {
+                font-size: 1.1em;
+                padding: 12px 25px;
+            }
+
+            .message-box h2 {
+                font-size: 1.8em;
+            }
+
+            .message-box p {
+                font-size: 1.1em;
+            }
+
+            .game-container {
+                flex-direction: column;
+                align-items: center;
+                padding: 20px;
+            }
+
+            .prize-ladder {
+                position: relative;
+                width: 100%;
+                margin-top: 20px;
+                order: -1;
+            }
+
+            .prize-level-item {
+                font-size: 0.9em;
+                padding: 8px 10px;
+            }
+
             .language-selector {
                 top: 10px;
                 right: 10px;
@@ -649,6 +608,48 @@
 
             body {
                 padding-bottom: 50px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .game-container {
+                padding: 20px;
+                gap: 15px;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .lifelines {
+                gap: 10px;
+            }
+
+            .lifeline-button {
+                font-size: 0.8em;
+                padding: 8px 12px;
+            }
+
+            .question-area {
+                padding: 15px;
+            }
+
+            .question-text {
+                font-size: 1.2em;
+            }
+
+            .option-button {
+                font-size: 0.9em;
+                padding: 10px 12px;
+            }
+
+            .control-buttons {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .control-button {
+                width: 100%;
             }
         }
     </style>
@@ -728,19 +729,6 @@
         </div>
     </div>
 
-    <!-- Footer -->
-    <div class="footer">
-        <div class="footer-links">
-            <a href="https://labia.tiddlyhost.com" target="_blank" data-i18n="footer.lab">Laboratorio de aplicaciones educativas</a>
-            <span class="footer-separator">|</span>
-            <span data-i18n="footer.based">Basado en</span> <a href="https://github.com/eboixader/magnitunid" target="_blank">Ernesto Boixader</a>
-            <span class="footer-separator">|</span>
-            <a href="https://bilateria.org" target="_blank" data-i18n="footer.author">Aplicación hecha por Juan José de Haro</a>
-            <span class="footer-separator">|</span>
-            <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" data-i18n="footer.license">Licencia Creative Commons BY-SA</a>
-        </div>
-    </div>
-
     <div id="messageBoxOverlay" class="message-box-overlay">
         <div class="message-box">
             <h2 id="messageBoxTitle"></h2>
@@ -758,6 +746,19 @@
             <div class="message-box-buttons">
                 <button id="submitPlayerNameButton" class="message-box-button confirm">Empezar</button>
             </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <div class="footer-links">
+            <a href="https://labia.tiddlyhost.com" target="_blank" data-i18n="footer.lab">Laboratorio de aplicaciones educativas</a>
+            <span class="footer-separator">|</span>
+            <span data-i18n="footer.based">Basado en</span> <a href="https://github.com/eboixader/magnitunid" target="_blank">Ernesto Boixader</a>
+            <span class="footer-separator">|</span>
+            <a href="https://bilateria.org" target="_blank" data-i18n="footer.author">Aplicación hecha por Juan José de Haro</a>
+            <span class="footer-separator">|</span>
+            <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" data-i18n="footer.license">Licencia Creative Commons BY-SA</a>
         </div>
     </div>
 
@@ -890,6 +891,68 @@
 
         let currentLanguage = 'es';
 
+        // Variables globales
+        let allAvailableQuestions = [];
+        let questionsTopic = "";
+        let questions = [];
+        let playedQuestionIndices = new Set();
+        let gamesPlayedCount = 0;
+        const MAX_GAMES = 5;
+        const QUESTIONS_PER_GAME = 12;
+
+        const prizeLevels = [
+            "500", "1.000", "2.000", "5.000", "10.000",
+            "25.000", "50.000", "75.000", "125.000", "250.000",
+            "500.000", "1 MILLÓN"
+        ];
+
+        const difficultyMap = {
+            1: 'easy',
+            2: 'medium',
+            3: 'hard',
+            4: 'very-hard',
+            5: 'expert'
+        };
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let used5050 = false;
+        let usedCall = false;
+        let usedAudience = false;
+        let gameStarted = false;
+        let playerName = "Jugador";
+        let hasPlayerNameBeenSet = false;
+        let questionsLoaded = false;
+
+        // Elementos DOM
+        const questionText = document.getElementById('questionText');
+        const optionsGrid = document.getElementById('optionsGrid');
+        let optionButtons = optionsGrid.querySelectorAll('.option-button');
+        const lifeline5050Button = document.getElementById('lifeline5050');
+        const lifelineCallButton = document.getElementById('lifelineCall');
+        const lifelineAudienceButton = document.getElementById('lifelineAudience');
+        const nextQuestionButton = document.getElementById('nextQuestionButton');
+        const restartGameButton = document.getElementById('restartGameButton');
+        const startGameButton = document.getElementById('startGameButton');
+        const prizeLadderElement = document.getElementById('prizeLadder');
+        
+        // Elementos del cargador JSON
+        const jsonUrlInput = document.getElementById('jsonUrlInput');
+        const loadJsonButton = document.getElementById('loadJsonButton');
+        const statusMessage = document.getElementById('statusMessage');
+        const topicInfo = document.getElementById('topicInfo');
+        const topicContent = document.getElementById('topicContent');
+
+        // Elementos del modal
+        const messageBoxOverlay = document.getElementById('messageBoxOverlay');
+        const messageBoxTitle = document.getElementById('messageBoxTitle');
+        const messageBoxContent = document.getElementById('messageBoxContent');
+        const messageBoxButtons = document.getElementById('messageBoxButtons');
+        const gameLogoImage = document.getElementById('gameLogoImage');
+        const playerNameModalOverlay = document.getElementById('playerNameModalOverlay');
+        const playerNameInput = document.getElementById('playerNameInput');
+        const submitPlayerNameButton = document.getElementById('submitPlayerNameButton');
+
         // Detectar idioma del navegador
         function detectBrowserLanguage() {
             const browserLang = navigator.language || navigator.userLanguage;
@@ -1000,70 +1063,6 @@
             }
         }
 
-        // Variables globales
-        let allAvailableQuestions = [];
-        let questionsTopic = "";
-        let questions = [];
-        let playedQuestionIndices = new Set();
-        let gamesPlayedCount = 0;
-        const MAX_GAMES = 5;
-        const QUESTIONS_PER_GAME = 12;
-
-        const prizeLevels = [
-            "500", "1.000", "2.000", "5.000", "10.000",
-            "25.000", "50.000", "75.000", "125.000", "250.000",
-            "500.000", "1 MILLÓN"
-        ];
-
-        const difficultyMap = {
-            1: 'easy',
-            2: 'medium',
-            3: 'hard',
-            4: 'very-hard',
-            5: 'expert'
-        };
-
-        let currentQuestionIndex = 0;
-        let score = 0;
-        let used5050 = false;
-        let usedCall = false;
-        let usedAudience = false;
-        let gameStarted = false;
-        let playerName = "Jugador";
-        let hasPlayerNameBeenSet = false;
-        let questionsLoaded = false;
-
-        // Elementos DOM
-        const questionText = document.getElementById('questionText');
-        const optionsGrid = document.getElementById('optionsGrid');
-        let optionButtons = optionsGrid.querySelectorAll('.option-button');
-        const lifeline5050Button = document.getElementById('lifeline5050');
-        const lifelineCallButton = document.getElementById('lifelineCall');
-        const lifelineAudienceButton = document.getElementById('lifelineAudience');
-        const nextQuestionButton = document.getElementById('nextQuestionButton');
-        const restartGameButton = document.getElementById('restartGameButton');
-        const startGameButton = document.getElementById('startGameButton');
-        const prizeLadderElement = document.getElementById('prizeLadder');
-        
-        // Elementos del cargador JSON
-        const jsonUrlInput = document.getElementById('jsonUrlInput');
-        const loadJsonButton = document.getElementById('loadJsonButton');
-        const statusMessage = document.getElementById('statusMessage');
-        const topicInfo = document.getElementById('topicInfo');
-        const topicContent = document.getElementById('topicContent');
-
-        // Elementos del modal
-        const messageBoxOverlay = document.getElementById('messageBoxOverlay');
-        const messageBoxTitle = document.getElementById('messageBoxTitle');
-        const messageBoxContent = document.getElementById('messageBoxContent');
-        const messageBoxButtons = document.getElementById('messageBoxButtons');
-        const gameLogoImage = document.getElementById('gameLogoImage');
-        const playerNameModalOverlay = document.getElementById('playerNameModalOverlay');
-        const playerNameInput = document.getElementById('playerNameInput');
-        const submitPlayerNameButton = document.getElementById('submitPlayerNameButton');
-
-
-
         /**
          * Mezcla un array usando el algoritmo Fisher-Yates
          */
@@ -1097,20 +1096,33 @@
         /**
          * Procesa el texto para renderizar LaTeX
          */
-        function processLatexText(text, element) {
+        function processLatexText(text, element, retryCount = 0) {
             element.innerHTML = text;
             
             // Asegurar que MathJax esté disponible antes de usarlo
             if (window.MathJax && window.MathJax.typesetPromise) {
-                // Usar setTimeout para permitir que el DOM se actualice primero
+                // Para botones, usar un retraso más largo para asegurar el renderizado
+                const delay = element.classList.contains('option-button') ? 100 : 50;
                 setTimeout(() => {
-                    window.MathJax.typesetPromise([element]).catch((err) => {
+                    window.MathJax.typesetPromise([element]).then(() => {
+                        // Forzar re-renderizado si es un botón y el contenido no parece haberse renderizado
+                        if (element.classList.contains('option-button') && element.innerHTML.includes('$')) {
+                            setTimeout(() => {
+                                window.MathJax.typesetPromise([element]).catch((err) => {
+                                    console.log('Error en segundo intento de renderizado LaTeX:', err);
+                                });
+                            }, 200);
+                        }
+                    }).catch((err) => {
                         console.log('Error renderizando LaTeX:', err);
                     });
-                }, 50);
-            } else {
+                }, delay);
+            } else if (retryCount < 10) {
                 // Si MathJax no está disponible, intentar de nuevo después de un breve retraso
-                setTimeout(() => processLatexText(text, element), 100);
+                // Máximo 10 reintentos para evitar bucles infinitos
+                setTimeout(() => processLatexText(text, element, retryCount + 1), 200);
+            } else {
+                console.log('MathJax no disponible después de varios intentos');
             }
         }
 
@@ -1243,7 +1255,10 @@
             gameLogoImage.alt = `Nombre del jugador: ${playerName}`;
             gameLogoImage.style.display = 'block';
 
-            loadQuestion();
+            // Solo cargar pregunta si hay preguntas disponibles y el juego está iniciado
+            if (questions.length > 0 && gameStarted) {
+                loadQuestion();
+            }
         }
 
         /**
@@ -1272,7 +1287,7 @@
 
             const currentQuestion = questions[currentQuestionIndex];
             
-            // Procesar texto con LaTeX
+            // Procesar texto con LaTeX para la pregunta
             processLatexText(currentQuestion.question, questionText);
 
             optionButtons = optionsGrid.querySelectorAll('.option-button');
@@ -1280,12 +1295,23 @@
             optionButtons.forEach(button => {
                 const optionKey = button.dataset.option;
                 const optionText = `${optionKey}) ${currentQuestion.options[optionKey]}`;
-                processLatexText(optionText, button);
                 button.classList.remove('correct', 'incorrect');
                 button.disabled = false;
                 button.style.display = 'block';
                 button.onclick = () => checkAnswer(optionKey);
+                
+                // Procesar LaTeX para cada botón individualmente
+                processLatexText(optionText, button);
             });
+
+            // Renderizar todo el contenedor de opciones después de procesar todos los botones
+            setTimeout(() => {
+                if (window.MathJax && window.MathJax.typesetPromise) {
+                    window.MathJax.typesetPromise([optionsGrid]).catch((err) => {
+                        console.log('Error renderizando LaTeX en opciones:', err);
+                    });
+                }
+            }, 100);
 
             nextQuestionButton.style.display = 'none';
             restartGameButton.style.display = 'none';
@@ -1379,9 +1405,8 @@
                 return;
             }
 
-            if (gameStarted || gamesPlayedCount === 0) {
-                gamesPlayedCount++;
-            }
+            // Incrementar contador de juegos para el siguiente juego
+            gamesPlayedCount++;
 
             const currentDifficulty = difficultyMap[gamesPlayedCount];
             const availableQuestionsForDifficulty = allAvailableQuestions.filter((q, index) =>
@@ -1399,13 +1424,7 @@
                 return;
             }
 
-            currentQuestionIndex = 0;
-            score = 0;
-            used5050 = false;
-            usedCall = false;
-            usedAudience = false;
-            gameStarted = false;
-
+            // Preparar las preguntas del nuevo juego
             shuffleArray(availableQuestionsForDifficulty);
             questions = availableQuestionsForDifficulty.slice(0, QUESTIONS_PER_GAME);
 
@@ -1415,6 +1434,14 @@
                     playedQuestionIndices.add(originalIndex);
                 }
             });
+
+            // Resetear estado del juego
+            currentQuestionIndex = 0;
+            score = 0;
+            used5050 = false;
+            usedCall = false;
+            usedAudience = false;
+            gameStarted = false;
 
             lifeline5050Button.disabled = false;
             lifelineCallButton.disabled = false;
@@ -1462,6 +1489,48 @@
         }
 
         /**
+         * Prepara las preguntas para el juego actual
+         */
+        function prepareGameQuestions() {
+            // Solo incrementar en el primer juego
+            if (gamesPlayedCount === 0) {
+                gamesPlayedCount = 1;
+            }
+
+            const currentDifficulty = difficultyMap[gamesPlayedCount];
+            const availableQuestionsForDifficulty = allAvailableQuestions.filter((q, index) =>
+                q.difficulty === currentDifficulty && !playedQuestionIndices.has(index)
+            );
+
+            if (availableQuestionsForDifficulty.length >= QUESTIONS_PER_GAME) {
+                shuffleArray(availableQuestionsForDifficulty);
+                questions = availableQuestionsForDifficulty.slice(0, QUESTIONS_PER_GAME);
+
+                questions.forEach(q => {
+                    const originalIndex = allAvailableQuestions.findIndex(oq => oq === q);
+                    if (originalIndex !== -1) {
+                        playedQuestionIndices.add(originalIndex);
+                    }
+                });
+
+                // Resetear estado del juego
+                currentQuestionIndex = 0;
+                score = 0;
+                used5050 = false;
+                usedCall = false;
+                usedAudience = false;
+
+                lifeline5050Button.disabled = false;
+                lifelineCallButton.disabled = false;
+                lifelineAudienceButton.disabled = false;
+                
+                console.log(`Juego preparado: ${questions.length} preguntas de dificultad ${currentDifficulty}`);
+            } else {
+                console.log(`No hay suficientes preguntas de dificultad ${currentDifficulty}`);
+            }
+        }
+
+        /**
          * Inicia el juego
          */
         function startGame() {
@@ -1474,6 +1543,11 @@
                     [{ text: t.understood, className: "confirm" }]
                 );
                 return;
+            }
+
+            // Primero preparar el juego (esto configura las preguntas)
+            if (!gameStarted) {
+                prepareGameQuestions();
             }
 
             gameStarted = true;
