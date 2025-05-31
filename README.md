@@ -69,6 +69,7 @@ El juego necesita un archivo con la estructura siguiente.
 ---
 
 ## Prompt para generar JSON de preguntas – ¿Quién quiere ser millonario?
+Utiliza tu IA favorita para crear las preguntas con el prompt que hay a continuación.
 
 ````markdown
 ### Paso 1 – preguntar al usuario
