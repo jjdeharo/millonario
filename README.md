@@ -19,14 +19,14 @@ Este proyecto, creado a partir de una bifurcación del original de [Ernesto Boix
 
 ## ¿Cómo funciona el programa?
 
-El juego está desarrollado en HTML, CSS y JavaScript puro; no requiere backend.
+El juego está desarrollado en HTML, CSS y JavaScript puro.
 
 1. **Inicio**
    Al abrir `index.html`, se inicializan la interfaz y el sistema de traducción.
 2. **Carga de preguntas**
 
    * Si no se han especificado preguntas en la misma URL (véase más abajo) el usuario introduce la URL del archivo JSON.
-   * Un `fetch` obtiene ese archivo y comprueba que su estructura sea válida.
+   * Se obtiene ese archivo y comprueba que su estructura sea válida.
    * Si todo es correcto, se habilita el botón **Empezar juego**.
 3. **Inicio del juego**
 
@@ -46,7 +46,6 @@ El juego está desarrollado en HTML, CSS y JavaScript puro; no requiere backend.
 ## Creación del archivo JSON de preguntas
 
 El juego necesita un archivo con la estructura siguiente.
-**Importante**: el estándar JSON **no admite comentarios**; evita cualquier línea que empiece por `//` o `/* */`.
 
 ```json
 {
