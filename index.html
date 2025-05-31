@@ -14,8 +14,6 @@
                 displayMath: [['$$', '$$'], ['\\[', '\\]']]
             },
             options: {
-                processEscapes: true,
-                processEnvironments: true,
                 ignoreHtmlClass: 'tex2jax_ignore',
                 processHtmlClass: 'tex2jax_process'
             }
@@ -119,6 +117,20 @@
         .status-message { margin-top: 10px; font-size: 0.9em; padding: 8px; border-radius: 8px; }
         .status-success { background-color: rgba(46, 204, 113, 0.15); color: #1D8348; border: 1px solid #2ECC71; }
         .status-error { background-color: rgba(231, 76, 60, 0.15); color: #B03A2E; border: 1px solid #E74C3C; }
+        
+        .instructions-link {
+            margin-top: 15px;
+            font-size: 0.9em;
+            color: #555555;
+        }
+        .instructions-link a {
+            color: #2980B9;
+            text-decoration: underline;
+        }
+        .instructions-link a:hover {
+            color: #D35400;
+        }
+
 
         .game-image {
             width: 100%; max-width: 250px;
@@ -358,6 +370,7 @@
             <input type="text" id="jsonUrlInput" class="json-input" data-i18n-placeholder="loadQuestionsPlaceholder">
             <button id="loadJsonButton" class="load-json-button" data-i18n="loadQuestions">Cargar preguntas</button>
             <div id="statusMessage" class="status-message" style="display: none;"></div>
+            <p id="instructionsLinkMessage" class="instructions-link" style="display: none;"></p>
         </div>
 
         <img id="gameLogoImage" src="https://placehold.co/250x120/F5F7FA/D35400?text=%C2%BFT%C3%BA%3F&font=roboto" alt="Millonario Logo" class="game-image" onerror="this.onerror=null;this.src='https://placehold.co/250x120/EEEEEE/333333?text=Logo+Juego';">
@@ -449,7 +462,9 @@
                 questionsAvailable: "preguntas disponibles en total.",
                 notEnoughQuestionsForGame: "No hay suficientes preguntas de todas las dificultades para una partida completa (15 preguntas). Por favor, carga un archivo JSON con más variedad.",
                 errorLoadingNotEnoughPerDifficulty: "Error al cargar: No hay suficientes preguntas para la dificultad '{difficulty}' (se necesitan {needed}, disponibles {available}). Carga un JSON más completo.",
-                currentQuestionLevelText: "Pregunta {current} de {total}", // Nueva traducción
+                currentQuestionLevelText: "Pregunta {current} de {total}",
+                instructionsText: "Para crear tus propias preguntas y usarlas en el programa,",
+                instructionsLinkText: "consulta las instrucciones aquí.",
                 enterValidUrl: "Por favor, introduce una URL válida.",
                 error: "Error:",
                 jsonInvalid: "El archivo JSON no es válido o no se pudo procesar.",
@@ -515,6 +530,8 @@
                 notEnoughQuestionsForGame: "No hi ha prou preguntes de totes les dificultats per a una partida completa (15 preguntes). Si us plau, carrega un fitxer JSON amb més varietat.",
                 errorLoadingNotEnoughPerDifficulty: "Error en carregar: No hi ha prou preguntes per a la dificultat '{difficulty}' (es necessiten {needed}, disponibles {available}). Carrega un JSON més complet.",
                 currentQuestionLevelText: "Pregunta {current} de {total}", 
+                instructionsText: "Per crear les teves pròpies preguntes i usar-les al programa,",
+                instructionsLinkText: "consulta les instruccions aquí.",
                 enterValidUrl: "URL no vàlida.",
                 error: "Error:",
                 jsonInvalid: "JSON no vàlid.",
@@ -599,6 +616,8 @@
         const playerNameInput = document.getElementById('playerNameInput');
         const submitPlayerNameButton = document.getElementById('submitPlayerNameButton');
         const currentQuestionLevelEl = document.getElementById('currentQuestionLevel'); 
+        const instructionsLinkMessageEl = document.getElementById('instructionsLinkMessage');
+
 
         // --- Game Configuration (Spain Format) ---
         const QUESTIONS_PER_FULL_GAME = 15;
@@ -683,9 +702,20 @@
                     button.innerHTML = ''; 
                     button.appendChild(document.createTextNode(`${prefix}) ${t_fn(i18nKeyForInitialText)}`));
                 });
+                 if (instructionsLinkMessageEl) {
+                    if (!jsonSuccessfullyLoaded) {
+                        instructionsLinkMessageEl.innerHTML = `${t_fn('instructionsText')} <a href="https://github.com/jjdeharo/millonario/blob/main/README.md" target="_blank">${t_fn('instructionsLinkText')}</a>`;
+                        instructionsLinkMessageEl.style.display = 'block';
+                    } else {
+                        instructionsLinkMessageEl.style.display = 'none';
+                    }
+                }
+            } else {
+                 if (instructionsLinkMessageEl) instructionsLinkMessageEl.style.display = 'none';
             }
 
-            document.title = t_fn('title'); // This sets the browser tab title
+
+            document.title = t_fn('title'); 
 
             if (currentQuestionLevelEl) {
                 if (gameInProgress) {
@@ -713,11 +743,10 @@
             } else {
                 currentLanguage = detectBrowserLanguage();
             }
-            // Ensure currentLanguage is one of the valid ones, defaulting to 'es' if something went wrong
             if (currentLanguage !== 'es' && currentLanguage !== 'ca') {
                 currentLanguage = 'es'; 
             }
-            localStorage.setItem('gameLanguage', currentLanguage); // Re-save to ensure it's valid or set if first time
+            localStorage.setItem('gameLanguage', currentLanguage); 
 
             updateLanguageButtons();
             translatePage();
@@ -773,6 +802,7 @@
         async function loadQuestionsFromUrl(url) {
             showStatus('loadingQuestions', 'info');
             jsonLoaderSection.classList.remove('hidden');
+            if (instructionsLinkMessageEl) instructionsLinkMessageEl.style.display = 'block'; // Keep visible during loading attempt
             jsonSuccessfullyLoaded = false;
             startGameButton.disabled = true;
 
@@ -805,6 +835,7 @@
                 questionTextEl.textContent = t('clickStart');
                 if(currentQuestionLevelEl) currentQuestionLevelEl.style.display = 'none'; 
                 jsonLoaderSection.classList.add('hidden');
+                if (instructionsLinkMessageEl) instructionsLinkMessageEl.style.display = 'none'; // Hide on success
                 resetFullGameState(); 
                 return true;
 
@@ -814,6 +845,10 @@
                 jsonSuccessfullyLoaded = false;
                 startGameButton.disabled = true;
                 jsonLoaderSection.classList.remove('hidden');
+                 if (instructionsLinkMessageEl) { // Ensure it's visible on error
+                    instructionsLinkMessageEl.innerHTML = `${t('instructionsText')} <a href="https://github.com/jjdeharo/millonario/blob/main/README.md" target="_blank">${t('instructionsLinkText')}</a>`;
+                    instructionsLinkMessageEl.style.display = 'block';
+                }
                 return false;
             }
         }
@@ -1091,8 +1126,14 @@
 
             if (jsonSuccessfullyLoaded) {
                  if (questionTextEl) questionTextEl.textContent = t('clickStart');
+                 if (instructionsLinkMessageEl) instructionsLinkMessageEl.style.display = 'none';
+
             } else {
                 if (questionTextEl) questionTextEl.textContent = t('loadQuestionsFirst');
+                if (instructionsLinkMessageEl) {
+                     instructionsLinkMessageEl.innerHTML = `${t('instructionsText')} <a href="https://github.com/jjdeharo/millonario/blob/main/README.md" target="_blank">${t('instructionsLinkText')}</a>`;
+                    instructionsLinkMessageEl.style.display = 'block';
+                }
             }
             
             generatePrizeLadder(); 
@@ -1121,6 +1162,7 @@
             startGameButton.style.display = 'none';
             restartGameButton.style.display = 'none';
             if(currentQuestionLevelEl) currentQuestionLevelEl.style.display = 'block'; 
+            if (instructionsLinkMessageEl) instructionsLinkMessageEl.style.display = 'none';
             
             currentQuestionIndex = 0;
             score = 0;
@@ -1253,7 +1295,9 @@
 
             if (!jsonSuccessfullyLoaded) { 
                 resetFullGameState(); 
-                jsonLoaderSection.classList.remove('hidden'); 
+                jsonLoaderSection.classList.remove('hidden'); // Asegurar que se muestra si no hay JSON
+            } else {
+                if (instructionsLinkMessageEl) instructionsLinkMessageEl.style.display = 'none'; // Ocultar si hay JSON
             }
             
             function waitForMathJax() {
