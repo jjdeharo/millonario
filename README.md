@@ -178,19 +178,13 @@ https://gist.githubusercontent.com/usuario/hash/raw/preguntas.json
 Y que el juego está en:
 
 ```
-https://ejemplo.com/index.html
+https://jjdeharo.github.io/millonario
 ```
 
 Entonces puedes abrir directamente el juego con las preguntas cargadas así:
 
 ```
-https://ejemplo.com/index.html?json=https://gist.githubusercontent.com/usuario/hash/raw/preguntas.json
-```
-
-O también:
-
-```
-https://ejemplo.com/index.html?preguntas=https://gist.githubusercontent.com/usuario/hash/raw/preguntas.json
+https://jjdeharo.github.io/millonario?preguntas=https://gist.githubusercontent.com/usuario/hash/raw/preguntas.json
 ```
 
 Cuando lo hagas, el juego usará automáticamente ese archivo y mostrará las preguntas sin que tengas que pegar nada manualmente.
