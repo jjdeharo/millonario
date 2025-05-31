@@ -347,7 +347,7 @@
     </div>
 
     <div class="game-container">
-        <h1>¿QUIÉN QUIERE SER MILLONARIO?</h1>
+        <h1 data-i18n="title">¿QUIÉN QUIERE SER MILLONARIO?</h1>
 
         <div id="topicInfo" class="topic-info" style="display: none;">
             <div class="topic-title" data-i18n="topic">Tema:</div>
@@ -495,7 +495,7 @@
                 useCall: "¿Usar Llamada?",
                 sureCall: "¿Seguro que quieres usar la llamada?",
                 friendCall: "Llamada a un amigo",
-                friendSays: "Tu amigo dice: \"Creo que es la opción {answer}\".", // Placeholder añadido
+                friendSays: "Tu amigo dice: \"Creo que es la opción {answer}\".", 
                 understood: "Entendido",
                 useAudience: "¿Usar Público?",
                 sureAudience: "¿Seguro que quieres usar el comodín del público?",
@@ -560,7 +560,7 @@
                 useCall: "Usar Trucada?",
                 sureCall: "Vols usar la trucada?",
                 friendCall: "Trucada a un amic",
-                friendSays: "El teu amic diu: \"Crec que és l'opció {answer}\".", // Placeholder añadido
+                friendSays: "El teu amic diu: \"Crec que és l'opció {answer}\".", 
                 understood: "Entès",
                 useAudience: "Usar Públic?",
                 sureAudience: "Vols usar el comodí del públic?",
@@ -656,30 +656,23 @@
         }
         
         function translatePage() {
-            const t_fn = (key, replacements = {}) => t(key, replacements); // Alias for brevity
+            const t_fn = (key, replacements = {}) => t(key, replacements);
 
-            // Translate general UI elements based on data-i18n
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.dataset.i18n;
-                // Crucial: If game is in progress, DO NOT re-translate the actual question text
-                // or the option button's dynamic content (which is set by displayQuestion).
-                // The data-i18n on option buttons is for their *initial* state text.
                 if (gameInProgress && (el.id === 'questionText' || el.classList.contains('option-button'))) {
-                    return; // Skip these specific elements during an active game
+                    return; 
                 }
-                // If it's an option button and game is NOT in progress, it's handled below.
                 if (!gameInProgress && el.classList.contains('option-button')) {
                     return;
                 }
                 el.textContent = t_fn(key);
             });
 
-            // Translate placeholders
             document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
                 translateAttribute(el, 'placeholder', el.dataset.i18nPlaceholder);
             });
 
-            // Set initial/default texts for question area and option buttons if game is NOT in progress
             if (!gameInProgress) {
                 if (questionTextEl) {
                     questionTextEl.textContent = jsonSuccessfullyLoaded ? t_fn('clickStart') : t_fn('loadQuestionsFirst');
@@ -687,14 +680,13 @@
                 optionButtons.forEach(button => {
                     const prefix = button.dataset.optionPrefix;
                     const i18nKeyForInitialText = button.dataset.i18n || 'optionLoadQuestions';
-                    button.innerHTML = ''; // Clear previous content
+                    button.innerHTML = ''; 
                     button.appendChild(document.createTextNode(`${prefix}) ${t_fn(i18nKeyForInitialText)}`));
                 });
             }
 
-            document.title = t_fn('title');
+            document.title = t_fn('title'); // This sets the browser tab title
 
-            // Update current question level display (this IS language dependent)
             if (currentQuestionLevelEl) {
                 if (gameInProgress) {
                     currentQuestionLevelEl.textContent = t_fn('currentQuestionLevelText', { current: currentQuestionIndex + 1, total: QUESTIONS_PER_FULL_GAME });
@@ -704,16 +696,29 @@
                 }
             }
             
-            // Re-render MathJax for any elements that might have been translated and contain LaTeX.
-            // This is a general call; specific MathJax updates happen when content is set.
             if (window.MathJax && window.MathJax.typesetPromise) {
                  setTimeout(() => window.MathJax.typesetPromise().catch(err => console.error('MathJax error during translatePage:', err)), 100);
             }
         }
         
+        function detectBrowserLanguage() {
+            const browserLang = (navigator.language || navigator.userLanguage || 'es').toLowerCase();
+            return browserLang.startsWith('ca') ? 'ca' : 'es';
+        }
+
         function initializeLanguage() {
             const savedLang = localStorage.getItem('gameLanguage');
-            currentLanguage = savedLang || (navigator.language || navigator.userLanguage).toLowerCase().startsWith('ca') ? 'ca' : 'es';
+            if (savedLang && (savedLang === 'es' || savedLang === 'ca')) {
+                currentLanguage = savedLang;
+            } else {
+                currentLanguage = detectBrowserLanguage();
+            }
+            // Ensure currentLanguage is one of the valid ones, defaulting to 'es' if something went wrong
+            if (currentLanguage !== 'es' && currentLanguage !== 'ca') {
+                currentLanguage = 'es'; 
+            }
+            localStorage.setItem('gameLanguage', currentLanguage); // Re-save to ensure it's valid or set if first time
+
             updateLanguageButtons();
             translatePage();
         }
@@ -734,8 +739,6 @@
                 generatePrizeLadder(); 
                 updatePrizeLadderUI(); 
             }
-            // If game is in progress, ensure MathJax is re-rendered for question and options
-            // as their surrounding might have changed or MathJax needs a nudge.
             if (gameInProgress && window.MathJax && window.MathJax.typesetPromise) {
                 const elementsToTypeset = [questionTextEl];
                 optionButtons.forEach(btn => {
@@ -1079,9 +1082,8 @@
             
             optionButtons.forEach(button => {
                 const prefix = button.dataset.optionPrefix;
-                // Al resetear, usamos la clave i18n del botón para el texto inicial.
                 const i18nKeyForInitialText = button.dataset.i18n || 'optionLoadQuestions';
-                button.innerHTML = ''; // Limpiar contenido anterior (incluyendo spans de MathJax)
+                button.innerHTML = ''; 
                 button.appendChild(document.createTextNode(`${prefix}) ${t(i18nKeyForInitialText)}`));
                 button.disabled = true;
                 button.className = 'option-button tex2jax_process'; 
@@ -1172,7 +1174,7 @@
             const friendChoiceText = `${friendChoice}) <span class="tex2jax_process">${question.options[friendChoice]}</span>`;
             showMessageBox('friendCall', 'friendSays', 
                 [{ textKey: 'understood', className: 'info' }], 
-                { answer: friendChoiceText } // Usar el placeholder {answer}
+                { answer: friendChoiceText } 
             );
         }
 
