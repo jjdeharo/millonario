@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>¿Quién Quiere Ser Millonario?</title>
+    <title>¿Quién Quiere Ser Millonario? - Edición España</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Roboto:wght@400;700;900&display=swap" rel="stylesheet">
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -22,11 +22,11 @@
         };
     </script>
     <style>
-        /* General styling */
+        /* General styling - Light Theme */
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #F5F7FA 0%, #E0E5EC 100%); /* Nuevo gradiente de fondo claro */
-            color: #333333; /* Color de texto principal oscuro para contraste */
+            background: linear-gradient(135deg, #F5F7FA 0%, #E0E5EC 100%);
+            color: #333333;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -38,694 +38,305 @@
         }
 
         .game-container {
-            background-color: rgba(255, 255, 255, 0.9); /* Fondo del contenedor blanco semitransparente */
+            background-color: rgba(255, 255, 255, 0.9);
             backdrop-filter: blur(5px);
             border-radius: 25px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1), 0 0 0 2px rgba(0, 0, 0, 0.05); /* Sombra y borde sutiles */
-            padding: 35px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1), 0 0 0 2px rgba(0, 0, 0, 0.05);
+            padding: 30px;
             width: 100%;
-            max-width: 950px;
+            max-width: 1000px;
             text-align: center;
             display: flex;
             flex-direction: column;
-            gap: 30px;
+            gap: 25px;
             position: relative;
             overflow: hidden;
         }
 
-        /* Title */
         h1 {
             font-family: 'Roboto', sans-serif;
             font-weight: 900;
-            font-size: 3em;
-            color: #D35400; /* Color naranja oscuro para el título */
-            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Sombra de texto sutil */
-            margin-bottom: 25px;
+            font-size: 2.8em;
+            color: #D35400;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
             letter-spacing: 1.5px;
             line-height: 1.1;
         }
 
-        /* Topic display */
         .topic-info {
-            background-color: rgba(230, 230, 240, 0.8); /* Fondo de tema claro */
+            background-color: rgba(230, 230, 240, 0.8);
             border-radius: 12px;
-            padding: 18px;
-            margin-bottom: 20px;
+            padding: 15px;
+            margin-bottom: 15px;
             border: 1px solid rgba(0, 0, 0, 0.1);
         }
 
         .topic-title {
-            color: #D35400; /* Naranja oscuro */
-            font-size: 1.3em;
+            color: #D35400;
+            font-size: 1.2em;
             font-weight: bold;
-            margin-bottom: 8px;
+            margin-bottom: 5px;
         }
 
         .topic-content {
-            color: #4A4A4A; /* Color de contenido de tema oscuro */
-            font-size: 1.05em;
+            color: #4A4A4A;
+            font-size: 1em;
         }
 
-        /* JSON Loader Section Styling */
         .json-loader-section {
-            background-color: rgba(240, 240, 245, 0.8); /* Fondo del cargador JSON claro */
+            background-color: rgba(240, 240, 245, 0.8);
             border-radius: 12px;
-            padding: 25px;
-            margin-bottom: 20px;
+            padding: 20px;
+            margin-bottom: 15px;
             border: 1px solid rgba(0, 0, 0, 0.1);
             transition: opacity 0.5s ease, max-height 0.5s ease, padding 0.5s ease, margin-bottom 0.5s ease, border-width 0.5s ease;
             overflow: hidden;
         }
-
-        .json-loader-section.hidden {
-            opacity: 0;
-            max-height: 0;
-            padding-top: 0;
-            padding-bottom: 0;
-            margin-bottom: 0;
-            border-width: 0;
-        }
+        .json-loader-section.hidden { opacity: 0; max-height: 0; padding-top: 0; padding-bottom: 0; margin-bottom: 0; border-width: 0; }
 
         .json-input {
             width: 100%;
-            padding: 12px;
-            margin-bottom: 18px;
+            padding: 10px;
+            margin-bottom: 15px;
             border-radius: 8px;
-            border: 1px solid #B0BEC5; /* Borde gris para input */
-            background-color: #FFFFFF; /* Fondo del input blanco */
+            border: 1px solid #B0BEC5;
+            background-color: #FFFFFF;
             color: #333333;
-            font-size: 1.05em;
+            font-size: 1em;
             box-sizing: border-box;
         }
-
-        .json-input::placeholder {
-            color: #757575;
-        }
+        .json-input::placeholder { color: #757575; }
 
         .load-json-button {
-            background: linear-gradient(145deg, #2980B9, #3498DB); /* Gradiente azul oscuro */
-            color: white;
-            border: none;
-            border-radius: 8px;
-            padding: 12px 25px;
-            font-size: 1.05em;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            background: linear-gradient(145deg, #2980B9, #3498DB);
+            color: white; border: none; border-radius: 8px; padding: 10px 20px;
+            font-size: 1em; font-weight: bold; cursor: pointer; transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
+        .load-json-button:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); filter: brightness(1.1); }
 
-        .load-json-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-            filter: brightness(1.1);
-        }
+        .status-message { margin-top: 10px; font-size: 0.9em; padding: 8px; border-radius: 8px; }
+        .status-success { background-color: rgba(46, 204, 113, 0.15); color: #1D8348; border: 1px solid #2ECC71; }
+        .status-error { background-color: rgba(231, 76, 60, 0.15); color: #B03A2E; border: 1px solid #E74C3C; }
 
-        .status-message {
-            margin-top: 12px;
-            font-size: 0.95em;
-            padding: 10px;
-            border-radius: 8px;
-        }
-
-        .status-success {
-            background-color: rgba(46, 204, 113, 0.15); /* Fondo verde claro */
-            color: #1D8348; /* Verde oscuro */
-            border: 1px solid #2ECC71;
-        }
-
-        .status-error {
-            background-color: rgba(231, 76, 60, 0.15); /* Fondo rojo claro */
-            color: #B03A2E; /* Rojo oscuro */
-            border: 1px solid #E74C3C;
-        }
-
-        /* Game image */
         .game-image {
-            width: 100%;
-            max-width: 280px;
-            height: auto;
-            border-radius: 15px;
-            margin: 0 auto 25px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-            display: block;
-            object-fit: cover;
-            border: 2px solid rgba(0, 0, 0, 0.08);
+            width: 100%; max-width: 250px;
+            height: auto; border-radius: 12px;
+            margin: 0 auto 20px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+            display: block; object-fit: cover; border: 1px solid rgba(0, 0, 0, 0.08);
         }
 
-        /* Lifelines */
         .lifelines {
-            display: flex;
-            justify-content: center;
-            gap: 18px;
-            margin-bottom: 25px;
+            display: flex; justify-content: center; gap: 15px;
+            margin-bottom: 15px; /* Reducido para dar espacio al nivel de pregunta */
             flex-wrap: wrap;
         }
 
         .lifeline-button {
-            background: linear-gradient(145deg, #1A5276, #1F618D); /* Azul más corporativo */
-            color: white;
-            border: none;
-            border-radius: 12px;
-            padding: 14px 22px;
-            font-size: 1.15em;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(26, 82, 118, 0.3);
+            background: linear-gradient(145deg, #1A5276, #1F618D);
+            color: white; border: none; border-radius: 10px;
+            padding: 12px 18px;
+            font-size: 1.05em;
+            cursor: pointer; transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(26, 82, 118, 0.3);
+            font-weight: bold; display: flex; align-items: center; gap: 8px;
+        }
+        .lifeline-button:hover:not(:disabled) { transform: translateY(-2px) scale(1.02); box-shadow: 0 6px 18px rgba(26, 82, 118, 0.4); }
+        .lifeline-button:disabled { background: #BDC3C7; color: #7F8C8D; cursor: not-allowed; box-shadow: none; opacity: 0.8; }
+        .lifeline-button svg { width: 20px; height: 20px; fill: white; }
+        
+        .current-question-level-display {
+            font-size: 1.1em;
             font-weight: bold;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            color: #D35400; /* Naranja oscuro, como el título */
+            margin-bottom: 10px;
+            text-align: center;
         }
 
-        .lifeline-button:hover:not(:disabled) {
-            background: linear-gradient(145deg, #1F618D, #1A5276);
-            transform: translateY(-3px) scale(1.03);
-            box-shadow: 0 8px 20px rgba(26, 82, 118, 0.4);
-        }
-
-        .lifeline-button:disabled {
-            background: #BDC3C7; /* Gris claro para deshabilitado */
-            color: #7F8C8D;
-            cursor: not-allowed;
-            box-shadow: none;
-            opacity: 0.8;
-        }
-
-        .lifeline-button svg {
-            width: 22px;
-            height: 22px;
-            fill: white;
-        }
-
-        /* Question area */
         .question-area {
-            background-color: rgba(250, 250, 250, 0.9); /* Fondo del área de pregunta muy claro */
-            border-radius: 18px;
-            padding: 30px;
-            margin-bottom: 30px;
-            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.05), 0 5px 15px rgba(0,0,0,0.08);
+            background-color: rgba(250, 250, 250, 0.9);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.04), 0 4px 12px rgba(0,0,0,0.07);
             border: 1px solid rgba(0, 0, 0, 0.1);
         }
 
         .question-text {
-            font-size: 1.9em;
-            margin-bottom: 25px;
-            font-weight: 700;
-            line-height: 1.45;
-            color: #2C3E50; /* Color de texto de pregunta oscuro (azul marino) */
+            font-size: 1.7em;
+            margin-bottom: 20px;
+            font-weight: 700; line-height: 1.4; color: #2C3E50;
         }
 
-        /* Options grid */
-        .options-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 18px;
-        }
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
 
         .option-button {
-            background-color: #FFFFFF; /* Fondo de botón de opción blanco */
-            color: #34495E; /* Texto azul oscuro */
-            border: 2px solid #A6ACAF; /* Borde gris */
-            border-radius: 12px;
-            padding: 18px 22px;
+            background-color: #FFFFFF; color: #34495E;
+            border: 2px solid #A6ACAF; border-radius: 10px;
+            padding: 15px 20px;
+            font-size: 1.15em;
+            cursor: pointer; transition: all 0.3s ease;
+            text-align: left; font-weight: 600;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.04);
+        }
+        .option-button:hover:not(:disabled) { background-color: #F4F6F6; transform: translateY(-2px) scale(1.02); box-shadow: 0 5px 12px rgba(0, 0, 0, 0.08); border-color: #3498DB; }
+        .option-button:disabled { background-color: #EAECEE; color: #909497; cursor: not-allowed; border-color: #D5DBDB; box-shadow: none; }
+        .option-button.correct { background: linear-gradient(145deg, #2ECC71, #28B463); border-color: #27AE60; box-shadow: 0 0 15px rgba(46, 204, 113, 0.5); color: white; }
+        .option-button.incorrect { background: linear-gradient(145deg, #E74C3C, #CB4335); border-color: #C0392B; box-shadow: 0 0 15px rgba(231, 76, 60, 0.5); color: white; }
+
+        .control-buttons { display: flex; justify-content: center; gap: 15px; margin-top: 20px; }
+
+        .control-button, .walk-away-button {
+            background: linear-gradient(145deg, #F39C12, #E67E22);
+            color: white; border: none; border-radius: 10px;
+            padding: 15px 30px;
             font-size: 1.25em;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-align: left;
-            font-weight: 600;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            cursor: pointer; transition: all 0.3s ease;
+            font-weight: bold; box-shadow: 0 4px 15px rgba(243, 156, 18, 0.3);
+        }
+        .control-button:hover:not(:disabled), .walk-away-button:hover:not(:disabled) { transform: translateY(-2px) scale(1.03); box-shadow: 0 6px 20px rgba(243, 156, 18, 0.4); }
+        .control-button:disabled, .walk-away-button:disabled { background: #BDC3C7; color: #7F8C8D; cursor: not-allowed; box-shadow: none; }
+
+        .walk-away-button {
+            background: linear-gradient(145deg, #7F8C8D, #95A5A6);
+        }
+         .walk-away-button:hover:not(:disabled) {
+            background: linear-gradient(145deg, #95A5A6, #7F8C8D);
+            box-shadow: 0 6px 20px rgba(127, 140, 141, 0.4);
         }
 
-        .option-button:hover:not(:disabled) {
-            background-color: #F4F6F6; /* Color de hover gris muy claro */
-            transform: translateY(-2px) scale(1.02);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-            border-color: #3498DB; /* Borde azul al hacer hover */
-        }
+        .message-box-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.6); display: flex; justify-content: center; align-items: center; z-index: 1000; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; }
+        .message-box-overlay.show { opacity: 1; visibility: visible; }
+        .message-box { background-color: #FFFFFF; border-radius: 18px; padding: 30px; max-width: 500px; width: 90%; box-shadow: 0 5px 25px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0,0,0,0.05); text-align: center; transform: scale(0.9); transition: transform 0.3s ease; color: #333333; }
+        .message-box-overlay.show .message-box { transform: scale(1); }
+        .message-box h2 { color: #D35400; font-size: 2em; margin-bottom: 20px; }
+        .message-box p { font-size: 1.25em; margin-bottom: 30px; line-height: 1.5; color: #4A4A4A; }
+        .message-box-buttons { display: flex; justify-content: center; gap: 15px; }
+        .message-box-button { color: white; border: none; border-radius: 8px; padding: 12px 25px; font-size: 1.05em; font-weight: bold; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 3px 8px rgba(0,0,0,0.1); }
+        .message-box-button.confirm { background: linear-gradient(145deg, #2ECC71, #28B463); }
+        .message-box-button.confirm:hover { filter: brightness(1.1); transform: translateY(-2px); }
+        .message-box-button.cancel { background: linear-gradient(145deg, #E74C3C, #CB4335); }
+        .message-box-button.cancel:hover { filter: brightness(1.1); transform: translateY(-2px); }
+        .message-box-button.info { background: linear-gradient(145deg, #3498DB, #2980B9); }
+        .message-box-button.info:hover { filter: brightness(1.1); transform: translateY(-2px); }
 
-        .option-button:disabled {
-            background-color: #EAECEE;
-            color: #909497;
-            cursor: not-allowed;
-            border-color: #D5DBDB;
-            box-shadow: none;
-        }
+        .player-name-input { width: calc(100% - 40px); padding: 10px; margin-bottom: 20px; border-radius: 8px; border: 2px solid #A6ACAF; background-color: #FDFEFE; color: #333333; font-size: 1.1em; text-align: center; box-sizing: border-box; }
+        .player-name-input::placeholder { color: #757575; }
 
-        .option-button.correct {
-            background: linear-gradient(145deg, #2ECC71, #28B463); /* Gradiente verde */
-            border-color: #27AE60;
-            box-shadow: 0 0 20px rgba(46, 204, 113, 0.5);
-            color: white;
-        }
-
-        .option-button.incorrect {
-            background: linear-gradient(145deg, #E74C3C, #CB4335); /* Gradiente rojo */
-            border-color: #C0392B;
-            box-shadow: 0 0 20px rgba(231, 76, 60, 0.5);
-            color: white;
-        }
-
-        /* Control buttons */
-        .control-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 25px;
-            margin-top: 25px;
-        }
-
-        .control-button {
-            background: linear-gradient(145deg, #F39C12, #E67E22); /* Gradiente naranja */
-            color: white;
-            border: none;
-            border-radius: 12px;
-            padding: 18px 35px;
-            font-size: 1.35em;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: bold;
-            box-shadow: 0 5px 18px rgba(243, 156, 18, 0.3);
-        }
-
-        .control-button:hover:not(:disabled) {
-            background: linear-gradient(145deg, #E67E22, #F39C12);
-            transform: translateY(-3px) scale(1.03);
-            box-shadow: 0 8px 25px rgba(243, 156, 18, 0.4);
-        }
-
-        .control-button:disabled {
-            background: #BDC3C7; /* Gris claro */
-            color: #7F8C8D;
-            cursor: not-allowed;
-            box-shadow: none;
-        }
-
-        /* Message Box */
-        .message-box-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.6); /* Fondo de overlay */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
-        }
-
-        .message-box-overlay.show {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .message-box {
-            background-color: #FFFFFF; /* Fondo de message box blanco */
-            border-radius: 18px;
-            padding: 35px;
-            max-width: 550px;
-            width: 90%;
-            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0,0,0,0.05);
-            text-align: center;
-            transform: scale(0.9);
-            transition: transform 0.3s ease;
-            color: #333333; /* Texto oscuro para message box */
-        }
-
-        .message-box-overlay.show .message-box {
-            transform: scale(1);
-        }
-
-        .message-box h2 {
-            color: #D35400; /* Naranja oscuro */
-            font-size: 2.3em;
-            margin-bottom: 25px;
-        }
-
-        .message-box p {
-            font-size: 1.35em;
-            margin-bottom: 35px;
-            line-height: 1.55;
-            color: #4A4A4A; /* Gris oscuro para texto */
-        }
-
-        .message-box-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 18px;
-        }
-
-        .message-box-button {
-            color: white;
-            border: none;
-            border-radius: 10px;
-            padding: 14px 28px;
-            font-size: 1.15em;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
-
-        .message-box-button.confirm {
-            background: linear-gradient(145deg, #2ECC71, #28B463);
-        }
-        .message-box-button.confirm:hover {
-            filter: brightness(1.1);
-            transform: translateY(-2px);
-        }
-
-        .message-box-button.cancel {
-            background: linear-gradient(145deg, #E74C3C, #CB4335);
-        }
-        .message-box-button.cancel:hover {
-            filter: brightness(1.1);
-            transform: translateY(-2px);
-        }
-
-        .message-box-button.info {
-            background: linear-gradient(145deg, #3498DB, #2980B9);
-        }
-        .message-box-button.info:hover {
-            filter: brightness(1.1);
-            transform: translateY(-2px);
-        }
-
-
-        /* Player Name Input Styling */
-        .player-name-input {
-            width: calc(100% - 44px);
-            padding: 12px;
-            margin-bottom: 25px;
-            border-radius: 10px;
-            border: 2px solid #A6ACAF; /* Borde gris */
-            background-color: #FDFEFE;
-            color: #333333;
-            font-size: 1.15em;
-            text-align: center;
-            box-sizing: border-box;
-        }
-
-        .player-name-input::placeholder {
-            color: #757575;
-        }
-
-        /* Prize Ladder Styling */
-        .game-area-with-ladder {
-            display: flex;
-            width: 100%;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 35px;
-        }
-
-        .main-game-content {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 30px;
-        }
+        .game-area-with-ladder { display: flex; width: 100%; justify-content: space-between; align-items: flex-start; gap: 25px; }
+        .main-game-content { flex-grow: 1; display: flex; flex-direction: column; gap: 20px; /* Reducido para acomodar nivel pregunta */ }
 
         .prize-ladder {
-            background-color: rgba(245, 245, 245, 0.85); /* Fondo de escalera de premios claro */
-            border-radius: 18px;
-            padding: 20px 15px;
-            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.04), 0 3px 10px rgba(0,0,0,0.06);
+            background-color: rgba(245, 245, 245, 0.85);
+            border-radius: 15px;
+            padding: 15px 10px;
+            box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.03), 0 2px 8px rgba(0,0,0,0.05);
             border: 1px solid rgba(0, 0, 0, 0.08);
-            min-width: 180px;
+            min-width: 200px;
             display: flex;
             flex-direction: column;
             align-items: stretch;
-            gap: 8px;
+            gap: 4px;
         }
 
         .prize-level-item {
-            background-color: #FFFFFF; /* Fondo de nivel de premio blanco */
-            color: #566573; /* Texto gris azulado */
-            border: 1px solid #D5D8DC; /* Borde gris claro */
-            border-radius: 10px;
-            padding: 10px 18px;
-            font-size: 1.05em;
-            font-weight: 600;
-            text-align: center;
-            transition: all 0.3s ease;
-            cursor: default;
+            background-color: #FFFFFF; color: #566573;
+            border: 1px solid #D5D8DC; border-radius: 8px;
+            padding: 7px 12px;
+            font-size: 0.9em;
+            font-weight: 600; text-align: right;
+            transition: all 0.3s ease; cursor: default;
+            display: flex;
+            justify-content: space-between;
         }
-
-        /* Order for prize ladder items (remains the same logic) */
-        .prize-ladder .prize-level-item:nth-child(1) { order: 12; } /* 1 MILLÓN */
-        .prize-ladder .prize-level-item:nth-child(2) { order: 11; } /* 500.000 */
-        .prize-ladder .prize-level-item:nth-child(3) { order: 10; } /* 250.000 */
-        .prize-ladder .prize-level-item:nth-child(4) { order: 9; }  /* 125.000 */
-        .prize-ladder .prize-level-item:nth-child(5) { order: 8; }  /* 75.000 */
-        .prize-ladder .prize-level-item:nth-child(6) { order: 7; }  /* 50.000 */
-        .prize-ladder .prize-level-item:nth-child(7) { order: 6; }  /* 25.000 */
-        .prize-ladder .prize-level-item:nth-child(8) { order: 5; }  /* 10.000 */
-        .prize-ladder .prize-level-item:nth-child(9) { order: 4; }  /* 5.000 */
-        .prize-ladder .prize-level-item:nth-child(10) { order: 3; } /* 2.000 */
-        .prize-ladder .prize-level-item:nth-child(11) { order: 2; } /* 1.000 */
-        .prize-ladder .prize-level-item:nth-child(12) { order: 1; } /* 500 */
-
-
-        .prize-level-item.current-level {
-            background: linear-gradient(145deg, #F5B041, #F39C12); /* Gradiente naranja para nivel actual */
-            color: #FFFFFF; /* Texto blanco */
-            box-shadow: 0 0 20px rgba(243, 156, 18, 0.5), inset 0 0 8px rgba(255, 255, 255, 0.2);
-            transform: scale(1.08);
+        .prize-level-item .level-number {
+            color: #AAB7B8;
+            margin-right: 8px;
+            font-weight: normal;
+        }
+        .prize-level-item.safe-haven {
+            color: #1A5276;
             font-weight: bold;
-            border-color: #E67E22; /* Borde naranja oscuro */
+        }
+        .prize-level-item.current-level {
+            background: linear-gradient(145deg, #F5B041, #F39C12);
+            color: #FFFFFF;
+            box-shadow: 0 0 12px rgba(243, 156, 18, 0.5), inset 0 0 6px rgba(255, 255, 255, 0.2);
+            transform: scale(1.05);
+            font-weight: bold;
+            border-color: #E67E22;
+        }
+         .prize-level-item.current-level .level-number {
+            color: rgba(255,255,255,0.8);
         }
 
-        /* Responsive adjustments */
-        @media (max-width: 820px) {
-            .game-area-with-ladder {
-                flex-direction: column;
-            }
+        @media (max-width: 950px) {
+            .game-area-with-ladder { flex-direction: column; }
             .prize-ladder {
-                width: 100%;
-                margin-top: 25px;
-                order: -1;
-                flex-direction: row;
-                flex-wrap: wrap;
-                justify-content: center;
-                padding: 15px;
+                width: 100%; margin-top: 20px; order: -1;
+                flex-direction: row; flex-wrap: wrap;
+                justify-content: center; padding: 10px; gap: 5px;
             }
             .prize-level-item {
-                flex-basis: calc(33.33% - 10px);
-                font-size: 0.9em;
-                padding: 8px 10px;
+                flex-basis: calc(33.33% - 6px);
+                font-size: 0.85em; padding: 6px 8px;
                 order: 0 !important;
+                text-align: center;
+                justify-content: center;
             }
-             h1 {
-                font-size: 2.2em;
-            }
-            .question-text {
-                font-size: 1.5em;
-            }
-            .option-button {
-                font-size: 1.1em;
-            }
+            .prize-level-item .level-number { display: none; }
+             h1 { font-size: 2.2em; }
+            .question-text { font-size: 1.5em; }
+            .option-button { font-size: 1.1em; }
         }
 
-
         @media (max-width: 768px) {
-            h1 {
-                font-size: 2em;
-            }
-
-            .lifeline-button {
-                font-size: 0.9em;
-                padding: 10px 15px;
-            }
-
-            .question-text {
-                font-size: 1.4em;
-            }
-
-            .options-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .option-button {
-                font-size: 1em;
-                padding: 12px 15px;
-            }
-
-            .control-button {
-                font-size: 1.1em;
-                padding: 12px 25px;
-            }
-
-            .message-box h2 {
-                font-size: 1.8em;
-            }
-
-            .message-box p {
-                font-size: 1.1em;
-            }
-
-            .game-container {
-                padding: 20px;
-            }
+            h1 { font-size: 2em; }
+            .lifeline-button { font-size: 0.9em; padding: 10px 15px; }
+            .question-text { font-size: 1.4em; }
+            .options-grid { grid-template-columns: 1fr; }
+            .option-button { font-size: 1em; padding: 12px 15px; }
+            .control-button, .walk-away-button { font-size: 1.1em; padding: 12px 25px; }
+            .message-box h2 { font-size: 1.8em; }
+            .message-box p { font-size: 1.1em; }
+            .game-container { padding: 20px; }
+            .prize-level-item { flex-basis: calc(50% - 6px); }
         }
 
         @media (max-width: 480px) {
-            .game-container {
-                padding: 15px;
-                gap: 15px;
-                border-radius: 20px;
-            }
-
-            h1 {
-                font-size: 1.7em;
-            }
-
-            .lifelines {
-                gap: 8px;
-            }
-
-            .lifeline-button {
-                font-size: 0.85em;
-                padding: 9px 13px;
-                border-radius: 10px;
-            }
-
-            .question-area {
-                padding: 20px;
-                border-radius: 15px;
-            }
-
-            .question-text {
-                font-size: 1.25em;
-            }
-
-            .option-button {
-                font-size: 0.95em;
-                padding: 12px 14px;
-                border-radius: 10px;
-            }
-
-            .control-buttons {
-                flex-direction: column;
-                gap: 12px;
-            }
-
-            .control-button {
-                width: 100%;
-                font-size: 1.05em;
-                padding: 14px;
-                border-radius: 10px;
-            }
-             .prize-ladder {
-                gap: 5px;
-            }
-            .prize-level-item {
-                flex-basis: calc(50% - 5px);
-                font-size: 0.85em;
-            }
+            .game-container { padding: 15px; gap: 15px; border-radius: 20px; }
+            h1 { font-size: 1.6em; }
+            .lifelines { gap: 8px; }
+            .lifeline-button { font-size: 0.8em; padding: 8px 12px; border-radius: 8px; }
+            .question-area { padding: 15px; border-radius: 12px; }
+            .question-text { font-size: 1.2em; }
+            .option-button { font-size: 0.9em; padding: 10px 12px; border-radius: 8px; }
+            .control-buttons { flex-direction: column; gap: 10px; }
+            .control-button, .walk-away-button { width: 100%; font-size: 1em; padding: 12px; border-radius: 8px; }
+            .prize-ladder { gap: 4px; }
+            .prize-level-item { flex-basis: calc(50% - 4px); font-size: 0.8em; padding: 5px 7px; }
         }
 
-        /* Language Selector */
-        .language-selector {
-            position: fixed;
-            top: 15px;
-            right: 15px;
-            display: flex;
-            gap: 8px;
-            z-index: 100;
-        }
+        .language-selector { position: fixed; top: 15px; right: 15px; display: flex; gap: 8px; z-index: 100; }
+        .lang-button { background-color: rgba(255, 255, 255, 0.8); color: #333333; border: 2px solid #B0BEC5; border-radius: 8px; padding: 9px 14px; font-size: 0.95em; cursor: pointer; transition: all 0.3s ease; font-weight: bold; }
+        .lang-button:hover { background-color: #FFFFFF; transform: translateY(-2px); border-color: #2980B9; }
+        .lang-button.active { background-color: #D35400; color: #FFFFFF; border-color: #D35400; }
 
-        .lang-button {
-            background-color: rgba(255, 255, 255, 0.8); /* Fondo de botón de idioma claro */
-            color: #333333; /* Texto oscuro */
-            border: 2px solid #B0BEC5; /* Borde gris */
-            border-radius: 8px;
-            padding: 9px 14px;
-            font-size: 0.95em;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: bold;
-        }
-
-        .lang-button:hover {
-            background-color: #FFFFFF;
-            transform: translateY(-2px);
-            border-color: #2980B9; /* Borde azul en hover */
-        }
-
-        .lang-button.active {
-            background-color: #D35400; /* Naranja oscuro para activo */
-            color: #FFFFFF; /* Texto blanco */
-            border-color: #D35400;
-        }
-
-        /* Footer */
-        .footer {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background-color: rgba(240, 240, 245, 0.95); /* Fondo de footer claro */
-            border-top: 1px solid rgba(0, 0, 0, 0.1);
-            padding: 12px 20px;
-            text-align: center;
-            font-size: 0.9em;
-            color: #555555; /* Color de texto de footer gris oscuro */
-            z-index: 50;
-        }
-
-        .footer a {
-            color: #2980B9; /* Color de enlace de footer azul */
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        .footer a:hover {
-            color: #D35400; /* Color de hover de enlace naranja */
-        }
-
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-
-        .footer-separator {
-            color: #AAAAAA;
-        }
-
-        body {
-            padding-bottom: 70px;
-        }
+        .footer { position: fixed; bottom: 0; left: 0; right: 0; background-color: rgba(240, 240, 245, 0.95); border-top: 1px solid rgba(0, 0, 0, 0.1); padding: 12px 20px; text-align: center; font-size: 0.9em; color: #555555; z-index: 50; }
+        .footer a { color: #2980B9; text-decoration: none; transition: color 0.3s ease; }
+        .footer a:hover { color: #D35400; }
+        .footer-links { display: flex; justify-content: center; align-items: center; gap: 15px; flex-wrap: wrap; }
+        .footer-separator { color: #AAAAAA; }
+        body { padding-bottom: 70px; }
 
         @media (max-width: 768px) {
-            .language-selector {
-                top: 10px;
-                right: 10px;
-            }
-
-            .lang-button {
-                padding: 7px 11px;
-                font-size: 0.85em;
-            }
-
-            .footer {
-                padding: 10px 15px;
-                font-size: 0.85em;
-            }
-
-            .footer-links {
-                gap: 10px;
-            }
-
-            body {
-                padding-bottom: 60px;
-            }
+            .language-selector { top: 10px; right: 10px; }
+            .lang-button { padding: 7px 11px; font-size: 0.85em; }
+            .footer { padding: 10px 15px; font-size: 0.85em; }
+            .footer-links { gap: 10px; }
+            body { padding-bottom: 60px; }
         }
     </style>
 </head>
@@ -739,53 +350,47 @@
         <h1>¿QUIÉN QUIERE SER MILLONARIO?</h1>
 
         <div id="topicInfo" class="topic-info" style="display: none;">
-            <div class="topic-title">Tema:</div>
+            <div class="topic-title" data-i18n="topic">Tema:</div>
             <div id="topicContent" class="topic-content"></div>
         </div>
 
-        <div id="jsonLoaderSection" class="json-loader-section"> <input
-                type="text"
-                id="jsonUrlInput"
-                class="json-input"
-                placeholder="Introduce la URL del archivo JSON con las preguntas..."
-            >
-            <button id="loadJsonButton" class="load-json-button">Cargar preguntas</button>
+        <div id="jsonLoaderSection" class="json-loader-section">
+            <input type="text" id="jsonUrlInput" class="json-input" data-i18n-placeholder="loadQuestionsPlaceholder">
+            <button id="loadJsonButton" class="load-json-button" data-i18n="loadQuestions">Cargar preguntas</button>
             <div id="statusMessage" class="status-message" style="display: none;"></div>
         </div>
 
-        <img id="gameLogoImage" src="https://placehold.co/280x150/F5F7FA/D35400?text=%C2%BFT%C3%BA%3F&font=roboto" alt="Imagen de billetes de dinero con el texto ¿Tú?" class="game-image" onerror="this.onerror=null;this.src='https://placehold.co/280x150/EEEEEE/333333?text=Logo+Juego';">
+        <img id="gameLogoImage" src="https://placehold.co/250x120/F5F7FA/D35400?text=%C2%BFT%C3%BA%3F&font=roboto" alt="Millonario Logo" class="game-image" onerror="this.onerror=null;this.src='https://placehold.co/250x120/EEEEEE/333333?text=Logo+Juego';">
 
         <div class="game-area-with-ladder">
             <div class="main-game-content">
+                <p id="currentQuestionLevel" class="current-question-level-display" style="display: none;"></p>
                 <div class="lifelines">
                     <button id="lifeline5050" class="lifeline-button">
-                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M18.03 7.97c-1.36-1.36-3.2-2.22-5.28-2.43V2h-1.5v3.54c-2.08.21-3.92 1.07-5.28 2.43L4.22 6.22 3.16 7.28l1.75 1.75C3.64 10.94 3 13.2 3 15.5H0v1.5h3c0 2.3.64 4.56 1.91 6.47l-1.75 1.75 1.06 1.06 1.75-1.75c1.91 1.27 4.17 1.91 6.47 1.91s4.56-.64 6.47-1.91l1.75 1.75 1.06-1.06-1.75-1.75c1.27-1.91 1.91-4.17 1.91-6.47h3v-1.5h-3c0-2.3-.64-4.56-1.91-6.47l1.75-1.75-1.06-1.06-1.75 1.75zM12 21c-1.49 0-2.89-.42-4.08-1.15l6.53-6.53C15.2 12.36 15.5 11.45 15.5 10.5V5.75c.89.62 1.65 1.38 2.27 2.27L12 13.77V21zm-1.5-9.23L4.15 18.12C3.42 16.93 3 15.53 3 14h4.75c.95 0 1.86.3 2.61.85L12 16.5V21c-1.05 0-2.06-.16-3-.45v-5.28zM10.5 9V4.25c-.89-.62-1.65-1.38-2.27-2.27L14 7.73V9h-3.5zm1.5 1.73l6.35-6.35C17.58 3.42 16.18 3 14.75 3H12v4.75c0 .95.3 1.86.85 2.61L14.5 12H10c-.95 0-1.86-.3-2.61-.85L9 9.5V3c1.05 0 2.06.16 3 .45v5.28l-1.5 1.5z"/>
-                        </svg>
-                        50:50
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.03 7.97c-1.36-1.36-3.2-2.22-5.28-2.43V2h-1.5v3.54c-2.08.21-3.92 1.07-5.28 2.43L4.22 6.22 3.16 7.28l1.75 1.75C3.64 10.94 3 13.2 3 15.5H0v1.5h3c0 2.3.64 4.56 1.91 6.47l-1.75 1.75 1.06 1.06 1.75-1.75c1.91 1.27 4.17 1.91 6.47 1.91s4.56-.64 6.47-1.91l1.75 1.75 1.06-1.06-1.75-1.75c1.27-1.91 1.91-4.17 1.91-6.47h3v-1.5h-3c0-2.3-.64-4.56-1.91-6.47l1.75-1.75-1.06-1.06-1.75 1.75zM12 21c-1.49 0-2.89-.42-4.08-1.15l6.53-6.53C15.2 12.36 15.5 11.45 15.5 10.5V5.75c.89.62 1.65 1.38 2.27 2.27L12 13.77V21zm-1.5-9.23L4.15 18.12C3.42 16.93 3 15.53 3 14h4.75c.95 0 1.86.3 2.61.85L12 16.5V21c-1.05 0-2.06-.16-3-.45v-5.28zM10.5 9V4.25c-.89-.62-1.65-1.38-2.27-2.27L14 7.73V9h-3.5zm1.5 1.73l6.35-6.35C17.58 3.42 16.18 3 14.75 3H12v4.75c0 .95.3 1.86.85 2.61L14.5 12H10c-.95 0-1.86-.3-2.61-.85L9 9.5V3c1.05 0 2.06.16 3 .45v5.28l-1.5 1.5z"/></svg>
+                        <span data-i18n="lifeline5050">50:50</span>
                     </button>
                     <button id="lifelineCall" class="lifeline-button">
-                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.24.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
-                        </svg>
-                        Llamada
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.24.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+                        <span data-i18n="lifelineCall">Llamada</span>
                     </button>
                     <button id="lifelineAudience" class="lifeline-button">
-                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
-                        </svg>
-                        Público
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+                        <span data-i18n="lifelineAudience">Público</span>
                     </button>
                 </div>
 
                 <div class="question-area">
-                    <p id="questionText" class="question-text tex2jax_process">Carga un archivo JSON con preguntas para comenzar...</p>
+                    <p id="questionText" class="question-text tex2jax_process" data-i18n="loadQuestionsFirst">Carga un archivo JSON...</p>
                     <div id="optionsGrid" class="options-grid">
-                        <button class="option-button tex2jax_process" data-option="A">A) Carga preguntas...</button>
-                        <button class="option-button tex2jax_process" data-option="B">B) Carga preguntas...</button>
-                        <button class="option-button tex2jax_process" data-option="C">C) Carga preguntas...</button>
-                        <button class="option-button tex2jax_process" data-option="D">D) Carga preguntas...</button>
+                        <button class="option-button tex2jax_process" data-option="A" data-i18n="optionLoadQuestions" data-option-prefix="A">A) Carga preguntas...</button>
+                        <button class="option-button tex2jax_process" data-option="B" data-i18n="optionLoadQuestions" data-option-prefix="B">B) Carga preguntas...</button>
+                        <button class="option-button tex2jax_process" data-option="C" data-i18n="optionLoadQuestions" data-option-prefix="C">C) Carga preguntas...</button>
+                        <button class="option-button tex2jax_process" data-option="D" data-i18n="optionLoadQuestions" data-option-prefix="D">D) Carga preguntas...</button>
                     </div>
+                </div>
+                 <div class="control-buttons">
+                    <button id="walkAwayButton" class="walk-away-button" style="display: none;" data-i18n="walkAway">Plantarse</button>
                 </div>
             </div>
 
@@ -794,45 +399,45 @@
         </div>
 
         <div class="control-buttons">
-            <button id="nextQuestionButton" class="control-button" style="display: none;">Siguiente pregunta</button>
-            <button id="restartGameButton" class="control-button" style="display: none;">Reiniciar juego</button>
-            <button id="startGameButton" class="control-button" disabled>Empezar juego</button>
+            <button id="nextQuestionButton" class="control-button" style="display: none;" data-i18n="nextQuestion">Siguiente pregunta</button>
+            <button id="restartGameButton" class="control-button" style="display: none;" data-i18n="restartGame">Reiniciar juego</button>
+            <button id="startGameButton" class="control-button" disabled data-i18n="startGame">Empezar juego</button>
         </div>
     </div>
 
     <div class="footer">
         <div class="footer-links">
-            <a href="https://labia.tiddlyhost.com" target="_blank" data-i18n="footer.lab">Laboratorio de aplicaciones educativas</a>
+            <a href="https://labia.tiddlyhost.com" target="_blank" data-i18n="footer.lab">Laboratorio...</a>
             <span class="footer-separator">|</span>
-            <span data-i18n="footer.based">Basado en</span> <a href="https://github.com/eboixader/magnitunid" target="_blank">Ernesto Boixader</a>
+            <span data-i18n="footer.based">Basado en</span> <a href="https://github.com/eboixader/magnitunid" target="_blank">E. Boixader</a>
             <span class="footer-separator">|</span>
-            <a href="https://bilateria.org" target="_blank" data-i18n="footer.author">Aplicación hecha por Juan José de Haro</a>
+            <a href="https://bilateria.org" target="_blank" data-i18n="footer.author">J.J. de Haro</a>
             <span class="footer-separator">|</span>
-            <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" data-i18n="footer.license">Licencia Creative Commons BY-SA</a>
+            <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" data-i18n="footer.license">CC BY-SA</a>
         </div>
     </div>
 
     <div id="messageBoxOverlay" class="message-box-overlay">
         <div class="message-box">
             <h2 id="messageBoxTitle"></h2>
-            <p id="messageBoxContent" class="tex2jax_process"></p> <div id="messageBoxButtons" class="message-box-buttons">
-            </div>
+            <p id="messageBoxContent" class="tex2jax_process"></p>
+            <div id="messageBoxButtons" class="message-box-buttons"></div>
         </div>
     </div>
 
     <div id="playerNameModalOverlay" class="message-box-overlay">
         <div class="message-box">
-            <h2 id="playerNameBoxTitle">¡Bienvenido!</h2>
-            <p id="playerNameBoxContent">Por favor, introduce tu nombre para empezar a jugar:</p>
-            <input type="text" id="playerNameInput" class="player-name-input" placeholder="Tu nombre aquí..." maxlength="20">
+            <h2 id="playerNameBoxTitle" data-i18n="welcome">¡Bienvenido!</h2>
+            <p id="playerNameBoxContent" data-i18n="enterName">Introduce tu nombre:</p>
+            <input type="text" id="playerNameInput" class="player-name-input" data-i18n-placeholder="yourNameHere" maxlength="20">
             <div class="message-box-buttons">
-                <button id="submitPlayerNameButton" class="message-box-button confirm">Empezar</button>
+                <button id="submitPlayerNameButton" class="message-box-button confirm" data-i18n="start">Empezar</button>
             </div>
         </div>
     </div>
 
     <script>
-        // Translations (se mantienen igual, no es necesario modificarlas para el cambio de aspecto)
+        // --- Translations ---
         const translations = {
             es: {
                 title: "¿QUIÉN QUIERE SER MILLONARIO?",
@@ -841,200 +446,246 @@
                 loadQuestions: "Cargar preguntas",
                 loadingQuestions: "Cargando preguntas...",
                 questionsLoaded: "¡Preguntas cargadas correctamente!",
-                questionsAvailable: "preguntas disponibles.",
+                questionsAvailable: "preguntas disponibles en total.",
+                notEnoughQuestionsForGame: "No hay suficientes preguntas de todas las dificultades para una partida completa (15 preguntas). Por favor, carga un archivo JSON con más variedad.",
+                errorLoadingNotEnoughPerDifficulty: "Error al cargar: No hay suficientes preguntas para la dificultad '{difficulty}' (se necesitan {needed}, disponibles {available}). Carga un JSON más completo.",
+                currentQuestionLevelText: "Pregunta {current} de {total}", // Nueva traducción
                 enterValidUrl: "Por favor, introduce una URL válida.",
                 error: "Error:",
-                jsonInvalid: "El archivo proporcionado no es un JSON válido o no se pudo procesar. Revisa la consola para más detalles.",
-                jsonStructureError: "El JSON no tiene la estructura esperada (tema, preguntas, etc.) o faltan datos en las preguntas. Revisa la consola para más detalles.",
-                fetchError: "No se pudo cargar el archivo desde la URL. Verifica la URL y que el archivo exista.",
+                jsonInvalid: "El archivo JSON no es válido o no se pudo procesar.",
+                jsonStructureError: "El JSON no tiene la estructura esperada o faltan datos.",
+                fetchError: "No se pudo cargar el archivo. Verifica la URL.",
                 lifeline5050: "50:50",
                 lifelineCall: "Llamada",
                 lifelineAudience: "Público",
-                loadQuestionsFirst: "Carga un archivo JSON con preguntas para comenzar...",
+                loadQuestionsFirst: "Carga un archivo JSON para comenzar...",
                 optionLoadQuestions: "Carga preguntas...",
                 nextQuestion: "Siguiente pregunta",
-                restartGame: "Reiniciar juego",
+                restartGame: "Jugar de nuevo",
                 startGame: "Empezar juego",
-                welcome: "¡Bienvenido!",
+                walkAway: "Plantarse",
+                confirmWalkAway: "¿Seguro que quieres plantarte?",
+                walkAwayMessage: "¡Te plantas con {amount}!",
+                welcome: "¡Bienvenido/a!",
                 enterName: "Por favor, introduce tu nombre para empezar a jugar:",
                 yourNameHere: "Tu nombre aquí...",
                 start: "Empezar",
                 correct: "¡Correcto!",
                 youGotIt: "¡Has acertado,",
-                currentScore: "! Tu puntuación actual es:",
+                currentPrize: "! Has ganado {amount}.",
                 continue: "Continuar",
                 incorrect: "¡Incorrecto!",
                 correctAnswerWas: "La respuesta correcta era:",
                 cheer: "¡Ánimo,",
                 gameOver: "Fin del juego",
-                congratulations: "¡Felicidades,",
-                wonMessage: "¡Has respondido todas las preguntas correctamente y te has convertido en millonario! Tu puntuación final es:",
-                roundCompleted: "¡Has completado esta ronda! Tu puntuación es:",
+                gameOverLost: "¡Oh no, {playerName}! Has perdido.",
+                prizeWonWithSafeHaven: "Has llegado a un seguro. ¡Ganas {amount}!",
+                prizeWonNoSafeHaven: "Tu puntuación final es 0 €.",
+                congratulations: "¡ENHORABUENA, {playerName}!",
+                wonMillionMessage: "¡Has respondido las 15 preguntas correctamente y te has convertido en MILLONARIO! ¡Ganas 1.000.000 €!",
+                playedAllQuestions: "¡Has jugado todas las preguntas disponibles! Carga un nuevo JSON o reinicia.",
                 of: "de",
-                lostMessage: "¡Oh no,! Has perdido. Tu puntuación final es:",
                 tryAgain: "¡Inténtalo de nuevo!",
-                gamesCompleted: "¡Juegos completados!",
-                playedGames: "Has jugado",
-                uniqueGames: "partidas únicas o hemos agotado todas las preguntas disponibles para esta dificultad. ¿Quieres empezar desde el principio con todas las preguntas disponibles de nou?",
-                yesRestart: "Sí, reiniciar todo",
-                clickStart: "Haz clic en 'Empezar Juego' para comenzar la partida.",
+                clickStart: "Haz clic en 'Empezar Juego'.",
                 preparingGame: "Preparando el juego...",
                 use5050: "¿Usar 50:50?",
-                sure5050: "¿Estás seguro de que quieres usar la ayuda 50:50? Eliminará dos opciones incorrectas.",
+                sure5050: "¿Seguro que quieres usar el comodín 50:50?",
                 yes: "Sí",
                 no: "No",
-                useCall: "¿Usar llamada?",
-                sureCall: "¿Estás seguro de que quieres usar la ayuda de la llamada a un amigo? Te dará una pista.",
+                useCall: "¿Usar Llamada?",
+                sureCall: "¿Seguro que quieres usar la llamada?",
                 friendCall: "Llamada a un amigo",
-                friendSays: "Tu amigo dice: \"Estoy bastante seguro de que la respuesta es la opción",
+                friendSays: "Tu amigo dice: \"Creo que es la opción",
                 understood: "Entendido",
-                useAudience: "¿Usar público?",
-                sureAudience: "¿Estás seguro de que quieres usar la ayuda del público? Te mostrará las preferències del público.",
+                useAudience: "¿Usar Público?",
+                sureAudience: "¿Seguro que quieres usar el comodín del público?",
                 audienceVote: "Voto del público",
                 audienceVotes: "El público vota:",
-                mustLoadQuestions: "Debes cargar preguntas antes de empezar el juego.",
-                footer: {
-                    lab: "Laboratorio de aplicaciones educativas",
-                    based: "Basado en",
-                    author: "Aplicación hecha por Juan José de Haro",
-                    license: "Licencia Creative Commons BY-SA"
-                }
+                mustLoadQuestions: "Debes cargar preguntas antes de empezar.",
+                footer: { lab: "Lab. Apps Educativas", based: "Basado en", author: "J.J. de Haro", license: "CC BY-SA" }
             },
-            ca: {
+            ca: { 
                 title: "QUI VOL SER MILIONARI?",
                 topic: "Tema:",
-                loadQuestionsPlaceholder: "Introdueix la URL del fitxer JSON amb les preguntes...",
+                loadQuestionsPlaceholder: "Introdueix la URL del JSON...",
                 loadQuestions: "Carregar preguntes",
-                loadingQuestions: "Carregant preguntes...",
-                questionsLoaded: "Preguntes carregades correctament!",
-                questionsAvailable: "preguntes disponibles.",
-                enterValidUrl: "Si us plau, introdueix una URL vàlida.",
+                loadingQuestions: "Carregant...",
+                questionsLoaded: "Preguntes carregades!",
+                questionsAvailable: "preguntes disponibles en total.",
+                notEnoughQuestionsForGame: "No hi ha prou preguntes de totes les dificultats per a una partida completa (15 preguntes). Si us plau, carrega un fitxer JSON amb més varietat.",
+                errorLoadingNotEnoughPerDifficulty: "Error en carregar: No hi ha prou preguntes per a la dificultat '{difficulty}' (es necessiten {needed}, disponibles {available}). Carrega un JSON més complet.",
+                currentQuestionLevelText: "Pregunta {current} de {total}", // Nueva traducción
+                enterValidUrl: "URL no vàlida.",
                 error: "Error:",
-                jsonInvalid: "El fitxer proporcionat no és un JSON vàlid o no s'ha pogut processar. Revisa la consola per a més detalls.",
-                jsonStructureError: "El JSON no té l'estructura esperada (tema, preguntes, etc.) o falten dades a les preguntes. Revisa la consola per a més detalls.",
-                fetchError: "No s'ha pogut carregar el fitxer des de la URL. Verifica la URL i que el fitxer existeixi.",
+                jsonInvalid: "JSON no vàlid.",
+                jsonStructureError: "Estructura JSON incorrecta.",
+                fetchError: "Error en carregar URL.",
                 lifeline5050: "50:50",
                 lifelineCall: "Trucada",
                 lifelineAudience: "Públic",
-                loadQuestionsFirst: "Carrega un fitxer JSON amb preguntes per començar...",
+                loadQuestionsFirst: "Carrega preguntes JSON...",
                 optionLoadQuestions: "Carrega preguntes...",
-                nextQuestion: "Següent pregunta",
-                restartGame: "Reiniciar joc",
+                nextQuestion: "Següent",
+                restartGame: "Jugar de nou",
                 startGame: "Començar joc",
-                welcome: "Benvingut!",
-                enterName: "Si us plau, introdueix el teu nom per començar a jugar:",
-                yourNameHere: "El teu nom aquí...",
+                walkAway: "Plantar-se",
+                confirmWalkAway: "Segur que vols plantar-te?",
+                walkAwayMessage: "Et plantes amb {amount}!",
+                welcome: "Benvingut/da!",
+                enterName: "Introdueix el teu nom:",
+                yourNameHere: "El teu nom...",
                 start: "Començar",
                 correct: "Correcte!",
                 youGotIt: "Has encertat,",
-                currentScore: "! La teva puntuació actual és:",
+                currentPrize: "! Has guanyat {amount}.",
                 continue: "Continuar",
                 incorrect: "Incorrecte!",
                 correctAnswerWas: "La resposta correcta era:",
                 cheer: "Ànim,",
                 gameOver: "Fi del joc",
-                congratulations: "Felicitats,",
-                wonMessage: "Has respost totes les preguntes correctament i t'has convertit en milionari! La teva puntuació final és:",
-                roundCompleted: "Has completat aquesta ronda! La teva puntuació és:",
+                gameOverLost: "Oh no, {playerName}! Has perdut.",
+                prizeWonWithSafeHaven: "Has arribat a un segur. Guanyes {amount}!",
+                prizeWonNoSafeHaven: "La teva puntuació final és 0 €.",
+                congratulations: "ENHORABONA, {playerName}!",
+                wonMillionMessage: "Has respost les 15 preguntes i ets MILIONARI! Guanyes 1.000.000 €!",
+                playedAllQuestions: "Has jugat totes les preguntes. Carrega'n de noves o reinicia.",
                 of: "de",
-                lostMessage: "Oh no,! Has perdut. La teva puntuació final és:",
-                tryAgain: "Torna-ho a intentar!",
-                gamesCompleted: "Jocs completats!",
-                playedGames: "Has jugat",
-                uniqueGames: "partides úniques o hem esgotat totes les preguntes disponibles per a aquesta dificultat. Vols començar des del principi amb totes les preguntes disponibles de nou?",
-                yesRestart: "Sí, reiniciar tot",
-                clickStart: "Fes clic a 'Començar Joc' per començar la partida.",
+                tryAgain: "Torna a intentar!",
+                clickStart: "Fes clic a 'Començar Joc'.",
                 preparingGame: "Preparant el joc...",
                 use5050: "Usar 50:50?",
-                sure5050: "Estàs segur que vols usar l'ajuda 50:50? Eliminarà dues opcions incorrectes.",
+                sure5050: "Vols usar el comodí 50:50?",
                 yes: "Sí",
                 no: "No",
-                useCall: "Usar trucada?",
-                sureCall: "Estàs segur que vols usar l'ajuda de la trucada a un amic? Et donarà una pista.",
+                useCall: "Usar Trucada?",
+                sureCall: "Vols usar la trucada?",
                 friendCall: "Trucada a un amic",
-                friendSays: "El teu amic diu: \"Estic bastant segur que la resposta és l'opció",
+                friendSays: "El teu amic diu: \"Crec que és l'opció",
                 understood: "Entès",
-                useAudience: "Usar públic?",
-                sureAudience: "Estàs segur que vols usar l'ajuda del públic? Et mostrarà les preferències del públic.",
+                useAudience: "Usar Públic?",
+                sureAudience: "Vols usar el comodí del públic?",
                 audienceVote: "Vot del públic",
                 audienceVotes: "El públic vota:",
-                mustLoadQuestions: "Has de carregar preguntes abans de començar el joc.",
-                footer: {
-                    lab: "Laboratori d'aplicacions educatives",
-                    based: "Basat en",
-                    author: "Aplicació feta per Juan José de Haro",
-                    license: "Llicència Creative Commons BY-SA"
-                }
+                mustLoadQuestions: "Has de carregar preguntes.",
+                footer: { lab: "Lab. Apps Educatives", based: "Basat en", author: "J.J. de Haro", license: "CC BY-SA" }
             }
         };
-
         let currentLanguage = 'es';
 
-        // DOM Elements
-        const questionText = document.getElementById('questionText');
-        const optionsGrid = document.getElementById('optionsGrid');
-        let optionButtons = optionsGrid.querySelectorAll('.option-button');
+        // --- DOM Elements ---
+        const questionTextEl = document.getElementById('questionText');
+        const optionsGridEl = document.getElementById('optionsGrid');
+        let optionButtons = Array.from(optionsGridEl.querySelectorAll('.option-button'));
         const lifeline5050Button = document.getElementById('lifeline5050');
         const lifelineCallButton = document.getElementById('lifelineCall');
         const lifelineAudienceButton = document.getElementById('lifelineAudience');
         const nextQuestionButton = document.getElementById('nextQuestionButton');
         const restartGameButton = document.getElementById('restartGameButton');
         const startGameButton = document.getElementById('startGameButton');
+        const walkAwayButton = document.getElementById('walkAwayButton');
         const prizeLadderElement = document.getElementById('prizeLadder');
         const jsonLoaderSection = document.getElementById('jsonLoaderSection');
         const jsonUrlInput = document.getElementById('jsonUrlInput');
         const loadJsonButton = document.getElementById('loadJsonButton');
-        const statusMessage = document.getElementById('statusMessage');
-        const topicInfo = document.getElementById('topicInfo');
-        const topicContent = document.getElementById('topicContent');
+        const statusMessageEl = document.getElementById('statusMessage');
+        const topicInfoEl = document.getElementById('topicInfo');
+        const topicContentEl = document.getElementById('topicContent');
         const messageBoxOverlay = document.getElementById('messageBoxOverlay');
-        const messageBoxTitle = document.getElementById('messageBoxTitle');
-        const messageBoxContent = document.getElementById('messageBoxContent');
-        const messageBoxButtons = document.getElementById('messageBoxButtons');
+        const messageBoxTitleEl = document.getElementById('messageBoxTitle');
+        const messageBoxContentEl = document.getElementById('messageBoxContent');
+        const messageBoxButtonsEl = document.getElementById('messageBoxButtons');
         const gameLogoImage = document.getElementById('gameLogoImage');
         const playerNameModalOverlay = document.getElementById('playerNameModalOverlay');
         const playerNameInput = document.getElementById('playerNameInput');
         const submitPlayerNameButton = document.getElementById('submitPlayerNameButton');
+        const currentQuestionLevelEl = document.getElementById('currentQuestionLevel'); // Nuevo elemento
 
-
-        // Game State Variables
-        let allAvailableQuestions = [];
-        let questionsTopic = "";
-        let questions = [];
-        let playedQuestionIndices = new Set();
-        let gamesPlayedCount = 0;
-        const MAX_GAMES = 5;
-        const QUESTIONS_PER_GAME = 12;
-
-        const prizeLevels = [
-            "500", "1.000", "2.000", "5.000", "10.000",
-            "25.000", "50.000", "75.000", "125.000", "250.000",
-            "500.000", "1 MILLÓN"
+        // --- Game Configuration (Spain Format) ---
+        const QUESTIONS_PER_FULL_GAME = 15;
+        const prizeLevels = [ 
+            "100 €", "200 €", "300 €", "500 €", "1.000 €", 
+            "2.000 €", "4.000 €", "8.000 €", "16.000 €", "30.000 €", 
+            "60.000 €", "100.000 €", "250.000 €", "500.000 €", "1.000.000 €"
         ];
+        const SAFE_HAVEN_1_INDEX = 4; 
+        const SAFE_HAVEN_2_INDEX = 9; 
 
-        const difficultyMap = {
-            1: 'easy', 2: 'medium', 3: 'hard', 4: 'very-hard', 5: 'expert'
+        const difficultyProgression = [ 
+            'easy', 'easy', 'easy',            
+            'medium', 'medium', 'medium',      
+            'hard', 'hard', 'hard',            
+            'very-hard', 'very-hard', 'very-hard', 
+            'expert', 'expert', 'expert'       
+        ];
+         const questionsNeededPerDifficulty = {
+            'easy': 3, 'medium': 3, 'hard': 3, 'very-hard': 3, 'expert': 3
         };
 
-        let currentQuestionIndex = 0;
-        let score = 0;
+        let allQuestionsLoaded = []; 
+        let questionsTopic = "";
+        let currentQuestionsForGame = []; 
+        let currentQuestionIndex = 0; 
+        let score = 0; 
         let used5050 = false;
         let usedCall = false;
         let usedAudience = false;
-        let gameStarted = false;
-        let playerName = "Jugador";
+        let gameInProgress = false;
+        let playerName = "Jugador/a";
         let hasPlayerNameBeenSet = false;
-        let questionsLoaded = false;
+        let jsonSuccessfullyLoaded = false;
+        let playedQuestionsThisSession = new Set(); 
 
         // --- Language and Translation Functions ---
-        function detectBrowserLanguage() {
-            const browserLang = navigator.language || navigator.userLanguage;
-            return browserLang.toLowerCase().startsWith('ca') ? 'ca' : 'es';
+        function t(key, replacements = {}) {
+            const keys = key.split('.');
+            let text = translations[currentLanguage];
+            for (const k of keys) {
+                text = text?.[k];
+                if (text === undefined) return key; 
+            }
+            for (const placeholder in replacements) {
+                // Uso de RegExp para reemplazo global de placeholders
+                text = text.replace(new RegExp(`\\{${placeholder}\\}`, 'g'), replacements[placeholder]);
+            }
+            return text;
         }
 
+        function translateAttribute(element, attribute, i18nKey) {
+            if (element && i18nKey) {
+                element.setAttribute(attribute, t(i18nKey));
+            }
+        }
+        
+        function translatePage() {
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.dataset.i18n;
+                 el.textContent = t(key);
+            });
+             document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+                translateAttribute(el, 'placeholder', el.dataset.i18nPlaceholder);
+            });
+            document.querySelectorAll('[data-option-prefix]').forEach(el => {
+                 if (!jsonSuccessfullyLoaded || !gameInProgress) { 
+                    const prefix = el.dataset.optionPrefix;
+                    el.textContent = `${prefix}) ${t(el.dataset.i18n)}`;
+                }
+            });
+
+            document.title = t('title');
+             if (gameInProgress && currentQuestionLevelEl) { // Actualizar nivel de pregunta si el juego está en curso
+                currentQuestionLevelEl.textContent = t('currentQuestionLevelText', { current: currentQuestionIndex + 1, total: QUESTIONS_PER_FULL_GAME });
+            } else if (currentQuestionLevelEl) {
+                currentQuestionLevelEl.style.display = 'none';
+            }
+
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                setTimeout(() => window.MathJax.typesetPromise().catch(err => console.error('MathJax error:', err)), 100);
+            }
+        }
+        
         function initializeLanguage() {
             const savedLang = localStorage.getItem('gameLanguage');
-            currentLanguage = savedLang || detectBrowserLanguage();
+            currentLanguage = savedLang || (navigator.language || navigator.userLanguage).toLowerCase().startsWith('ca') ? 'ca' : 'es';
             updateLanguageButtons();
             translatePage();
         }
@@ -1050,65 +701,14 @@
             localStorage.setItem('gameLanguage', lang);
             updateLanguageButtons();
             translatePage();
-            if (window.MathJax && window.MathJax.typesetPromise) {
-                setTimeout(() => {
-                    window.MathJax.typesetPromise().catch(err => console.error('Error re-rendering LaTeX after language change:', err));
-                }, 100);
+            if (prizeLadderElement.children.length > 0) generatePrizeLadder();
+            if (!gameInProgress && !jsonSuccessfullyLoaded) {
+                questionTextEl.textContent = t('loadQuestionsFirst');
+            } else if (!gameInProgress && jsonSuccessfullyLoaded) {
+                 questionTextEl.textContent = t('clickStart');
             }
         }
 
-        function translatePage() {
-            const t = translations[currentLanguage];
-            document.querySelectorAll('[data-i18n]').forEach(element => {
-                const key = element.getAttribute('data-i18n');
-                const keys = key.split('.');
-                let value = t;
-                for (const k of keys) {
-                    value = value?.[k];
-                    if (!value) break;
-                }
-                if (value) element.textContent = value;
-            });
-
-            document.title = t.title;
-            const h1Elem = document.querySelector('h1');
-            if (h1Elem) h1Elem.textContent = t.title;
-
-            const topicTitleElem = document.querySelector('.topic-title');
-            if (topicTitleElem) topicTitleElem.textContent = t.topic;
-
-            if (jsonUrlInput) jsonUrlInput.placeholder = t.loadQuestionsPlaceholder;
-            if (loadJsonButton) loadJsonButton.textContent = t.loadQuestions;
-            if (nextQuestionButton) nextQuestionButton.textContent = t.nextQuestion;
-            if (restartGameButton) restartGameButton.textContent = t.restartGame;
-            if (startGameButton) startGameButton.textContent = t.startGame;
-
-            const playerNameBoxTitle = document.getElementById('playerNameBoxTitle');
-            const playerNameBoxContent = document.getElementById('playerNameBoxContent');
-            if (playerNameBoxTitle) playerNameBoxTitle.textContent = t.welcome;
-            if (playerNameBoxContent) playerNameBoxContent.textContent = t.enterName;
-            if (playerNameInput) playerNameInput.placeholder = t.yourNameHere;
-            if (submitPlayerNameButton) submitPlayerNameButton.textContent = t.start;
-
-            const lifelineBtns = document.querySelectorAll('.lifeline-button');
-            if (lifelineBtns.length >= 3) {
-                lifelineBtns[0].childNodes[lifelineBtns[0].childNodes.length -1].nodeValue = ` ${t.lifeline5050}`;
-                lifelineBtns[1].childNodes[lifelineBtns[1].childNodes.length -1].nodeValue = ` ${t.lifelineCall}`;
-                lifelineBtns[2].childNodes[lifelineBtns[2].childNodes.length -1].nodeValue = ` ${t.lifelineAudience}`;
-            }
-
-            if (!questionsLoaded && questionText) {
-                questionText.textContent = t.loadQuestionsFirst;
-                const initialOptButtons = optionsGrid.querySelectorAll('.option-button');
-                initialOptButtons.forEach(button => {
-                    const optionKey = button.dataset.option;
-                    button.textContent = `${optionKey}) ${t.optionLoadQuestions}`;
-                });
-            }
-            if(prizeLadderElement.children.length > 0) generatePrizeLadder();
-        }
-
-        // --- Utility Functions ---
         function shuffleArray(array) {
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
@@ -1116,89 +716,61 @@
             }
         }
 
-        function showStatus(message, type) {
-            const t = translations[currentLanguage];
-            let translatedMessage = message;
-            if (message.startsWith("Cargando preguntas...")) translatedMessage = t.loadingQuestions;
-            else if (message.startsWith("¡Preguntas cargadas correctamente!")) translatedMessage = `${t.questionsLoaded} ${allAvailableQuestions.length} ${t.questionsAvailable}`;
-            else if (message === "Por favor, introduce una URL válida.") translatedMessage = t.enterValidUrl;
-            else if (message.startsWith("El archivo proporcionado no es un JSON válido")) translatedMessage = t.jsonInvalid;
-            else if (message.startsWith("El JSON no tiene la estructura esperada")) translatedMessage = t.jsonStructureError;
-            else if (message.startsWith("No se pudo cargar el archivo desde la URL")) translatedMessage = t.fetchError;
-
-            statusMessage.textContent = translatedMessage;
-            statusMessage.className = `status-message status-${type}`;
-            statusMessage.style.display = 'block';
+        function showStatus(messageKey, type, replacements = {}) {
+            statusMessageEl.textContent = t(messageKey, replacements);
+            statusMessageEl.className = `status-message status-${type}`;
+            statusMessageEl.style.display = 'block';
         }
-
+        
         function processLatexText(text, element) {
-            element.innerHTML = text;
+            element.innerHTML = text; 
             if (window.MathJax && window.MathJax.typesetPromise) {
-                setTimeout(() => {
-                    window.MathJax.typesetPromise([element]).catch(err => console.error('Error rendering LaTeX in element:', element, err));
-                }, 0);
+                setTimeout(() => window.MathJax.typesetPromise([element]).catch(err => console.error('MathJax error:', err)), 0);
             }
         }
 
-        // --- Core Game Logic ---
         async function loadQuestionsFromUrl(url) {
-            const t = translations[currentLanguage];
-            showStatus(t.loadingQuestions, 'info');
+            showStatus('loadingQuestions', 'info');
             jsonLoaderSection.classList.remove('hidden');
+            jsonSuccessfullyLoaded = false;
+            startGameButton.disabled = true;
 
             try {
                 const response = await fetch(url);
-                if (!response.ok) {
-                    throw new Error(`${t.fetchError} (HTTP ${response.status})`);
-                }
-
+                if (!response.ok) throw new Error(`${t('fetchError')} (HTTP ${response.status})`);
                 const rawText = await response.text();
                 let data;
-                try {
-                    data = JSON.parse(rawText);
-                } catch (parseError) {
-                    console.error("JSON Parse Error:", parseError, "\nRaw Text:", rawText.substring(0, 500) + "...");
-                    throw new Error(t.jsonInvalid);
-                }
+                try { data = JSON.parse(rawText); }
+                catch (parseError) { throw new Error(t('jsonInvalid')); }
 
-                if (typeof data !== 'object' || data === null || !data.tema || typeof data.tema !== 'string' ||
-                    !Array.isArray(data.preguntas) || data.preguntas.length < 1) {
-                    console.error("JSON Structure Error: 'tema' or 'preguntas' array missing or invalid.", data);
-                    throw new Error(t.jsonStructureError);
+                if (!data.tema || !Array.isArray(data.preguntas) || data.preguntas.length === 0) {
+                    throw new Error(t('jsonStructureError'));
                 }
-
-                for (let i = 0; i < data.preguntas.length; i++) {
-                    const q = data.preguntas[i];
-                    if (!q || typeof q.question !== 'string' || typeof q.options !== 'object' || q.options === null ||
-                        !q.options.A || !q.options.B || !q.options.C || !q.options.D ||
-                        typeof q.correct !== 'string' || !['A', 'B', 'C', 'D'].includes(q.correct) ||
-                        typeof q.difficulty !== 'string' || !Object.values(difficultyMap).includes(q.difficulty)) {
-                        console.error(`Invalid structure for question ${i + 1}:`, q);
-                        throw new Error(`${t.jsonStructureError} (Error en pregunta ${i + 1})`);
+                for (const q of data.preguntas) {
+                    if (!q.question || !q.options || !q.options.A || !q.options.B || !q.options.C || !q.options.D || !q.correct || !q.difficulty) {
+                        throw new Error(t('jsonStructureError') + " (Falta info en alguna pregunta)");
                     }
                 }
 
-                allAvailableQuestions = data.preguntas;
+                allQuestionsLoaded = data.preguntas.map((q, index) => ({ ...q, originalIndex: index })); 
                 questionsTopic = data.tema;
-                questionsLoaded = true;
+                jsonSuccessfullyLoaded = true;
+                playedQuestionsThisSession.clear(); 
 
-                topicContent.textContent = questionsTopic;
-                topicInfo.style.display = 'block';
-                showStatus(`${t.questionsLoaded} ${allAvailableQuestions.length} ${t.questionsAvailable}`, 'success');
+                topicContentEl.textContent = questionsTopic;
+                topicInfoEl.style.display = 'block';
+                showStatus('questionsLoaded', 'success', { count: allQuestionsLoaded.length });
                 startGameButton.disabled = false;
+                questionTextEl.textContent = t('clickStart');
+                if(currentQuestionLevelEl) currentQuestionLevelEl.style.display = 'none'; // Ocultar nivel de pregunta
                 jsonLoaderSection.classList.add('hidden');
-                resetAllGamesState();
+                resetFullGameState(); 
                 return true;
 
             } catch (error) {
-                console.error('Error loading or processing questions:', error);
-                let displayError = error.message.startsWith(t.error.substring(0,5)) ||
-                                   error.message.startsWith(t.jsonInvalid.substring(0,10)) ||
-                                   error.message.startsWith(t.jsonStructureError.substring(0,10)) ||
-                                   error.message.startsWith(t.fetchError.substring(0,10))
-                                   ? error.message : `${t.error} ${error.message}`;
-                showStatus(displayError, 'error');
-                questionsLoaded = false;
+                console.error('Error loading questions:', error);
+                showStatus('error', 'error', { message: error.message });
+                jsonSuccessfullyLoaded = false;
                 startGameButton.disabled = true;
                 jsonLoaderSection.classList.remove('hidden');
                 return false;
@@ -1214,431 +786,471 @@
             }
         }
 
-        function showMessageBox(title, content, buttons) {
-            messageBoxTitle.textContent = title;
-            messageBoxContent.innerHTML = content;
-            messageBoxButtons.innerHTML = '';
-            buttons.forEach(buttonInfo => {
+        function showMessageBox(titleKey, contentKey, buttonsConfig, contentReplacements = {}) {
+            messageBoxTitleEl.textContent = t(titleKey, contentReplacements); // Pasar replacements también al título
+            processLatexText(t(contentKey, contentReplacements), messageBoxContentEl);
+            messageBoxButtonsEl.innerHTML = '';
+            buttonsConfig.forEach(btnInfo => {
                 const button = document.createElement('button');
-                button.textContent = buttonInfo.text;
-                button.className = `message-box-button ${buttonInfo.className || 'info'}`; // Default to 'info' if no class
+                button.textContent = t(btnInfo.textKey);
+                button.className = `message-box-button ${btnInfo.className || 'info'}`;
                 button.onclick = () => {
                     hideMessageBox();
-                    if (buttonInfo.onClick) buttonInfo.onClick();
+                    if (btnInfo.onClick) btnInfo.onClick();
                 };
-                messageBoxButtons.appendChild(button);
+                messageBoxButtonsEl.appendChild(button);
             });
             messageBoxOverlay.classList.add('show');
-            if (window.MathJax && window.MathJax.typesetPromise && content.match(/\$|\\\(|\\\[|\\begin\{/)) {
-                 setTimeout(() => {
-                    window.MathJax.typesetPromise([messageBoxContent]).catch(err => console.error("Error MathJax in MessageBox:", err));
-                }, 50);
-            }
         }
-
-        function hideMessageBox() {
-            messageBoxOverlay.classList.remove('show');
-        }
+        function hideMessageBox() { messageBoxOverlay.classList.remove('show'); }
 
         function showPlayerNameInput() {
             playerNameModalOverlay.classList.add('show');
             playerNameInput.value = '';
             playerNameInput.focus();
         }
-
-        function hidePlayerNameInput() {
-            playerNameModalOverlay.classList.remove('show');
-        }
+        function hidePlayerNameInput() { playerNameModalOverlay.classList.remove('show'); }
 
         function handleNameSubmission() {
-            const t = translations[currentLanguage];
             const enteredName = playerNameInput.value.trim();
-            playerName = enteredName || t.yourNameHere.replace("...", "").trim() || "Jugador";
+            playerName = enteredName || t('yourNameHere').replace('...', '').trim() || "Jugador/a";
             hidePlayerNameInput();
             hasPlayerNameBeenSet = true;
-            // Actualizar imagen del logo con el nombre del jugador y nuevo estilo claro
-            gameLogoImage.src = `https://placehold.co/280x150/F5F7FA/D35400?text=${encodeURIComponent(playerName)}&font=roboto`;
-            gameLogoImage.alt = `Nombre del jugador: ${playerName}`;
+            gameLogoImage.src = `https://placehold.co/250x120/F5F7FA/D35400?text=${encodeURIComponent(playerName)}&font=roboto`;
+            gameLogoImage.alt = `Logo con nombre: ${playerName}`;
             gameLogoImage.style.display = 'block';
-            loadQuestion();
-        }
-
-        function updatePrizeLadder() {
-            const allPrizeItems = prizeLadderElement.querySelectorAll('.prize-level-item');
-            allPrizeItems.forEach(item => item.classList.remove('current-level'));
-
-            if (score > 0 && score <= prizeLevels.length) {
-                const highlightItem = prizeLadderElement.querySelector(`.prize-level-item[data-level="${score-1}"]`);
-                if (highlightItem) {
-                     highlightItem.classList.add('current-level');
-                }
-            }
-        }
-
-        function loadQuestion() {
-            const t = translations[currentLanguage];
-            if (currentQuestionIndex >= questions.length || !questions[currentQuestionIndex]) {
-                console.warn("loadQuestion called without a valid question or index out of range.");
-                if (gameStarted) endGame(true);
-                return;
-            }
-
-            const currentQuestion = questions[currentQuestionIndex];
-            if (!currentQuestion || !currentQuestion.question || !currentQuestion.options) {
-                console.error("Current question or its properties are invalid:", currentQuestion);
-                if (gameStarted) endGame(false);
-                return;
-            }
-
-            processLatexText(currentQuestion.question, questionText);
-            optionButtons = optionsGrid.querySelectorAll('.option-button');
-
-            optionButtons.forEach(button => {
-                const optionKey = button.dataset.option;
-                const optionTextContent = currentQuestion.options[optionKey];
-
-                button.innerHTML = '';
-                const optionPrefix = document.createTextNode(`${optionKey}) `);
-                const optionSpan = document.createElement('span');
-                optionSpan.className = 'tex2jax_process';
-                optionSpan.innerHTML = optionTextContent !== undefined ? optionTextContent : t.optionLoadQuestions;
-
-                button.appendChild(optionPrefix);
-                button.appendChild(optionSpan);
-
-                button.classList.remove('correct', 'incorrect');
-                button.disabled = false;
-                button.style.display = 'block';
-                button.onclick = () => checkAnswer(optionKey);
-
-                if (window.MathJax && window.MathJax.typesetPromise) {
-                    setTimeout(() => {
-                        window.MathJax.typesetPromise([optionSpan]).catch(err => console.error(`Error rendering LaTeX in button ${optionKey}. Content: "${optionSpan.innerHTML}". Error: `, err));
-                    }, 0);
-                }
-            });
-
-            nextQuestionButton.style.display = 'none';
-            restartGameButton.style.display = 'none';
-            updatePrizeLadder();
-        }
-
-        function checkAnswer(selectedOptionKey) {
-            const t = translations[currentLanguage];
-            const currentQuestion = questions[currentQuestionIndex];
-            const isCorrect = selectedOptionKey === currentQuestion.correct;
-
-            optionButtons.forEach(button => {
-                button.disabled = true;
-                if (button.dataset.option === currentQuestion.correct) button.classList.add('correct');
-                else if (button.dataset.option === selectedOptionKey && !isCorrect) button.classList.add('incorrect');
-            });
-
-            if (isCorrect) {
-                score++;
-                updatePrizeLadder();
-                const prizeMoney = (score > 0 && score <= prizeLevels.length) ? prizeLevels[score-1] : score.toString();
-                showMessageBox(t.correct, `${t.youGotIt} ${playerName}${t.currentScore} ${prizeMoney}`,
-                    [{ text: t.continue, className: "confirm", onClick: moveToNextQuestion }]);
-            } else {
-                const correctAnswerFullText = `${currentQuestion.correct}) ${currentQuestion.options[currentQuestion.correct]}`;
-                showMessageBox(t.incorrect, `${t.correctAnswerWas} <span class="tex2jax_process">${correctAnswerFullText}</span>.<br>${t.cheer} ${playerName}!`,
-                    [{ text: t.gameOver, className: "cancel", onClick: () => endGame(false) }]);
-            }
-        }
-
-        function moveToNextQuestion() {
-            currentQuestionIndex++;
-            if (currentQuestionIndex < questions.length) {
-                loadQuestion();
-            } else {
-                endGame(true);
-            }
-        }
-
-        function endGame(wonRound) {
-            const t = translations[currentLanguage];
-            let title, content;
-            const finalScoreText = (score > 0 && score <= prizeLevels.length) ? prizeLevels[score-1] : "0";
-
-            if (wonRound && score === questions.length && questions.length >= QUESTIONS_PER_GAME ) {
-                title = `${t.congratulations} ${playerName}!`;
-                content = `${t.wonMessage} ${finalScoreText}.`;
-            } else if (wonRound) {
-                 title = `${t.congratulations} ${playerName}!`;
-                 content = `${t.roundCompleted} ${finalScoreText}.`;
-            } else {
-                title = t.gameOver;
-                content = `${t.lostMessage.replace(',', `, ${playerName}`)} ${finalScoreText}. ${t.tryAgain}`;
-            }
-
-            showMessageBox(title, content, [{ text: t.restartGame, className: "confirm", onClick: requestNewGameRound }]);
-            restartGameButton.style.display = 'block';
-            nextQuestionButton.style.display = 'none';
-            gameStarted = false;
-        }
-
-        function setupNewGameRound() {
-            const t = translations[currentLanguage];
-            currentQuestionIndex = 0; score = 0;
-            used5050 = false; usedCall = false; usedAudience = false;
-            gamesPlayedCount++;
-
-            const currentDifficulty = difficultyMap[gamesPlayedCount];
-            let questionsForThisRoundSource = [];
-
-            if (currentDifficulty) {
-                questionsForThisRoundSource = allAvailableQuestions.filter(q =>
-                    q.difficulty === currentDifficulty && !playedQuestionIndices.has(allAvailableQuestions.indexOf(q))
-                );
-            }
-
-            if (gamesPlayedCount > MAX_GAMES || questionsForThisRoundSource.length < QUESTIONS_PER_GAME) {
-                const anyUnplayedQuestions = allAvailableQuestions.filter((q, index) => !playedQuestionIndices.has(index));
-                if (anyUnplayedQuestions.length >= QUESTIONS_PER_GAME) {
-                    questionsForThisRoundSource = anyUnplayedQuestions;
-                } else if (anyUnplayedQuestions.length > 0) {
-                    questionsForThisRoundSource = anyUnplayedQuestions;
-                } else {
-                    showMessageBox(t.gamesCompleted, `${t.playedGames} ${gamesPlayedCount - 1} ${t.uniqueGames}`,
-                        [{ text: t.yesRestart, className: "confirm", onClick: resetAllGamesStateAndRestart }]);
-                    questions = [];
-                    startGameButton.style.display = 'none';
-                    restartGameButton.style.display = 'block';
-                    return false;
-                }
-            }
-
-            shuffleArray(questionsForThisRoundSource);
-            questions = questionsForThisRoundSource.slice(0, Math.min(QUESTIONS_PER_GAME, questionsForThisRoundSource.length));
-
-            if (questions.length === 0) {
-                 showMessageBox(t.gamesCompleted, `${t.playedGames} ${gamesPlayedCount - 1} ${t.uniqueGames}`,
-                        [{ text: t.yesRestart, className: "confirm", onClick: resetAllGamesStateAndRestart }]);
-                return false;
-            }
-
-            questions.forEach(q => {
-                const originalIndex = allAvailableQuestions.indexOf(q);
-                if (originalIndex !== -1) playedQuestionIndices.add(originalIndex);
-            });
-
-            lifeline5050Button.disabled = false; lifelineCallButton.disabled = false; lifelineAudienceButton.disabled = false;
-            nextQuestionButton.style.display = 'none'; restartGameButton.style.display = 'none';
-
-            optionsGrid.innerHTML = `<button class="option-button tex2jax_process" data-option="A"></button><button class="option-button tex2jax_process" data-option="B"></button><button class="option-button tex2jax_process" data-option="C"></button><button class="option-button tex2jax_process" data-option="D"></button>`;
-            optionButtons = optionsGrid.querySelectorAll('.option-button');
-            optionButtons.forEach(button => {
-                button.innerHTML = `${button.dataset.option}) ${t.optionLoadQuestions}`;
-                button.disabled = true;
-            });
-
-            generatePrizeLadder();
-            updatePrizeLadder();
-            return true;
-        }
-
-        function startGame() {
-            const t = translations[currentLanguage];
-            if (!questionsLoaded) {
-                showMessageBox(t.error, t.mustLoadQuestions, [{ text: t.understood, className: "info" }]);
-                return;
-            }
-            if (!setupNewGameRound()) return;
-            gameStarted = true;
-            startGameButton.style.display = 'none';
-            if (!hasPlayerNameBeenSet) {
-                gameLogoImage.style.display = 'none';
-                showPlayerNameInput();
-            } else {
-                loadQuestion();
-            }
-        }
-
-        function requestNewGameRound() {
-            const t = translations[currentLanguage];
-            if (!questionsLoaded) {
-                showMessageBox(t.error, t.mustLoadQuestions, [{ text: t.understood, className: "info" }]);
-                return;
-            }
-            if (!setupNewGameRound()) return;
-            gameStarted = true;
-            restartGameButton.style.display = 'none';
-            if (hasPlayerNameBeenSet) loadQuestion();
-            else showPlayerNameInput();
-        }
-
-        function resetAllGamesState() {
-            playedQuestionIndices.clear();
-            gamesPlayedCount = 0;
-            gameStarted = false;
-            const t = translations[currentLanguage];
-            if (questionText) questionText.innerHTML = t.clickStart;
-            if (optionsGrid) {
-                 optionButtons = optionsGrid.querySelectorAll('.option-button');
-                 optionButtons.forEach(button => {
-                    const optionKey = button.dataset.option;
-                    button.innerHTML = `${optionKey}) ${t.optionLoadQuestions}`;
-                    button.disabled = true;
-                });
-            }
-
-            generatePrizeLadder();
-            updatePrizeLadder();
-
-            if (startGameButton) {
-                startGameButton.disabled = !questionsLoaded;
-                startGameButton.style.display = 'block';
-            }
-            if (restartGameButton) restartGameButton.style.display = 'none';
-            if (nextQuestionButton) nextQuestionButton.style.display = 'none';
-
-            if (!hasPlayerNameBeenSet && gameLogoImage) {
-                 gameLogoImage.src = `https://placehold.co/280x150/F5F7FA/D35400?text=%C2%BFT%C3%BA%3F&font=roboto`;
-                 gameLogoImage.alt = "Imagen de billetes de dinero con el texto ¿Tú?";
-            }
-        }
-
-        function resetAllGamesStateAndRestart() {
-            resetAllGamesState();
-            jsonLoaderSection.classList.remove('hidden');
-            questionsLoaded = false;
-            startGameButton.disabled = true;
-            topicInfo.style.display = 'none';
-            topicContent.textContent = '';
-            allAvailableQuestions = [];
-            questions = [];
+            actuallyStartGame(); 
         }
 
         function generatePrizeLadder() {
             prizeLadderElement.innerHTML = '';
-            prizeLevels.slice().reverse().forEach((levelText, index) => {
+            prizeLevels.slice().reverse().forEach((levelText, index) => { 
                 const prizeItem = document.createElement('div');
                 prizeItem.classList.add('prize-level-item');
-                prizeItem.textContent = levelText;
-                prizeItem.dataset.level = prizeLevels.length - 1 - index;
+                
+                const levelNumberSpan = document.createElement('span');
+                levelNumberSpan.classList.add('level-number');
+                levelNumberSpan.textContent = `${QUESTIONS_PER_FULL_GAME - index}.`;
+                
+                const prizeTextSpan = document.createElement('span');
+                prizeTextSpan.textContent = levelText;
+
+                prizeItem.appendChild(levelNumberSpan);
+                prizeItem.appendChild(prizeTextSpan);
+
+                const prizeIndex = prizeLevels.length - 1 - index;
+                prizeItem.dataset.level = prizeIndex;
+
+                if (prizeIndex === SAFE_HAVEN_1_INDEX || prizeIndex === SAFE_HAVEN_2_INDEX) {
+                    prizeItem.classList.add('safe-haven');
+                }
                 prizeLadderElement.appendChild(prizeItem);
             });
         }
 
-        // --- Lifeline Functions ---
+        function updatePrizeLadderUI() {
+            prizeLadderElement.querySelectorAll('.prize-level-item').forEach(item => {
+                item.classList.remove('current-level');
+                if (parseInt(item.dataset.level) === currentQuestionIndex && gameInProgress) {
+                     item.classList.add('current-level');
+                }
+            });
+        }
+        
+        function selectQuestionsForNewGame() {
+            currentQuestionsForGame = [];
+            let availablePool = allQuestionsLoaded.filter(q => !playedQuestionsThisSession.has(q.originalIndex));
+            
+            for (let i = 0; i < QUESTIONS_PER_FULL_GAME; i++) {
+                const targetDifficulty = difficultyProgression[i];
+                let difficultyPool = availablePool.filter(q => q.difficulty === targetDifficulty);
+                
+                if (difficultyPool.length === 0) {
+                    let fallbackPool = availablePool.filter(q => !currentQuestionsForGame.find(cq => cq.originalIndex === q.originalIndex));
+                    if (fallbackPool.length > 0) {
+                        shuffleArray(fallbackPool);
+                        difficultyPool.push(fallbackPool[0]); 
+                        console.warn(`Not enough '${targetDifficulty}' for Q${i+1}. Using fallback.`);
+                    } else {
+                        return false; 
+                    }
+                }
+                
+                shuffleArray(difficultyPool);
+                const chosenQuestion = difficultyPool.shift(); 
+                currentQuestionsForGame.push(chosenQuestion);
+                availablePool = availablePool.filter(q => q.originalIndex !== chosenQuestion.originalIndex);
+            }
+            if (currentQuestionsForGame.length < QUESTIONS_PER_FULL_GAME) {
+                return false;
+            }
+            return true;
+        }
+
+        function displayQuestion() {
+            if (currentQuestionIndex >= currentQuestionsForGame.length) {
+                console.error("Error: Tried to display question beyond game length.");
+                endCurrentGame(false); 
+                return;
+            }
+            const question = currentQuestionsForGame[currentQuestionIndex];
+            processLatexText(question.question, questionTextEl);
+
+            if (currentQuestionLevelEl) { // Mostrar y actualizar nivel de pregunta
+                currentQuestionLevelEl.textContent = t('currentQuestionLevelText', { current: currentQuestionIndex + 1, total: QUESTIONS_PER_FULL_GAME });
+                currentQuestionLevelEl.style.display = 'block';
+            }
+
+            optionButtons.forEach(button => {
+                const optionKey = button.dataset.option;
+                const optionText = question.options[optionKey];
+                button.innerHTML = ''; 
+                const prefix = document.createTextNode(`${optionKey}) `);
+                const span = document.createElement('span');
+                span.className = 'tex2jax_process';
+                span.innerHTML = optionText;
+                button.appendChild(prefix);
+                button.appendChild(span);
+                
+                button.className = 'option-button tex2jax_process'; 
+                button.disabled = false;
+                button.style.display = 'block';
+                button.onclick = () => handleAnswer(optionKey);
+
+                if (window.MathJax && window.MathJax.typesetPromise) {
+                     setTimeout(() => window.MathJax.typesetPromise([span]).catch(err => console.error('MathJax error:', err)),0);
+                }
+            });
+
+            nextQuestionButton.style.display = 'none';
+            restartGameButton.style.display = 'none';
+            walkAwayButton.style.display = 'block'; 
+            updatePrizeLadderUI();
+        }
+
+        function handleAnswer(selectedOptionKey) {
+            walkAwayButton.style.display = 'none'; 
+            const question = currentQuestionsForGame[currentQuestionIndex];
+            const correct = selectedOptionKey === question.correct;
+
+            optionButtons.forEach(button => {
+                button.disabled = true;
+                if (button.dataset.option === question.correct) button.classList.add('correct');
+                else if (button.dataset.option === selectedOptionKey) button.classList.add('incorrect');
+            });
+
+            if (correct) {
+                score++; 
+                if (score === QUESTIONS_PER_FULL_GAME) { 
+                    endCurrentGame(true, true); 
+                } else {
+                    const prizeMoney = prizeLevels[score -1]; 
+                     showMessageBox('correct', 'currentPrize',
+                        [{ textKey: 'continue', className: 'confirm', onClick: () => {
+                            currentQuestionIndex++;
+                            displayQuestion();
+                        }}],
+                        { playerName: playerName, amount: prizeMoney }
+                    );
+                }
+            } else {
+                endCurrentGame(false); 
+            }
+        }
+        
+        function handleWalkAway() {
+            if (!gameInProgress) return;
+            const amountWon = score > 0 ? prizeLevels[score - 1] : "0 €";
+            showMessageBox('confirmWalkAway', 'walkAwayMessage', [
+                { textKey: 'yes', className: 'confirm', onClick: () => endCurrentGame(false, false, true, amountWon) }, 
+                { textKey: 'no', className: 'cancel' }
+            ], { amount: amountWon });
+        }
+
+        function endCurrentGame(isWinner, isMillionaire = false, didWalkAway = false, walkAwayAmount = "0 €") {
+            gameInProgress = false;
+            walkAwayButton.style.display = 'none';
+            if(currentQuestionLevelEl) currentQuestionLevelEl.style.display = 'none'; // Ocultar nivel de pregunta
+            currentQuestionsForGame.forEach(q => playedQuestionsThisSession.add(q.originalIndex));
+
+            let titleKey = 'gameOver';
+            let messageKey = '';
+            let finalAmount = "0 €";
+            let replacements = { playerName: playerName, amount: "0 €" };
+
+
+            if (didWalkAway) {
+                titleKey = 'gameOver'; // O un título más específico como 'playerWalksAwayTitle'
+                messageKey = 'walkAwayMessage';
+                finalAmount = walkAwayAmount;
+                replacements.amount = finalAmount;
+            } else if (isMillionaire) {
+                titleKey = 'congratulations';
+                messageKey = 'wonMillionMessage';
+                finalAmount = prizeLevels[QUESTIONS_PER_FULL_GAME - 1];
+                replacements.amount = finalAmount;
+            } else if (isWinner) { 
+                titleKey = 'congratulations';
+                messageKey = 'wonMillionMessage'; 
+                finalAmount = prizeLevels[score -1];
+                replacements.amount = finalAmount;
+            } else { 
+                titleKey = 'gameOver'; // Título genérico para pérdida
+                messageKey = 'gameOverLost'; // Este mensaje ya incluye {playerName}
+                if (score -1 >= SAFE_HAVEN_2_INDEX) { 
+                    finalAmount = prizeLevels[SAFE_HAVEN_2_INDEX];
+                    messageKey = 'prizeWonWithSafeHaven'; // Este mensaje necesita {amount}
+                } else if (score -1 >= SAFE_HAVEN_1_INDEX) {
+                    finalAmount = prizeLevels[SAFE_HAVEN_1_INDEX];
+                    messageKey = 'prizeWonWithSafeHaven'; // Este mensaje necesita {amount}
+                } else {
+                    finalAmount = "0 €";
+                    // messageKey se queda como 'gameOverLost' o podría ser 'prizeWonNoSafeHaven'
+                    // Si usamos gameOverLost, ya tiene playerName. Si usamos prizeWonNoSafeHaven, no lo tiene.
+                    // Vamos a asegurar que gameOverLost se use para el contenido y pasemos playerName.
+                    // Si usamos prizeWonNoSafeHaven, no necesita playerName.
+                     messageKey = 'prizeWonNoSafeHaven'; // Este es más específico para 0€
+                }
+                 replacements.amount = finalAmount;
+            }
+            
+            // Aseguramos que el titleKey no sea el que contiene {playerName} si el messageKey ya lo hace, o viceversa.
+            // Si titleKey es 'gameOverLost', ya tiene {playerName}.
+            // Si messageKey es 'gameOverLost', ya tiene {playerName}.
+            // Para el caso de perder, el título debería ser genérico "Fin del juego" y el contenido "¡Oh no, {playerName}..."
+            if (!isWinner && !isMillionaire && !didWalkAway) { // Caso específico de perder por respuesta incorrecta
+                 titleKey = 'gameOver'; // Título genérico
+                 messageKey = 'gameOverLost'; // Contenido con el nombre
+            }
+
+
+            showMessageBox(titleKey, messageKey,
+                [{ textKey: 'restartGame', className: 'confirm', onClick: resetFullGameStateAndStartNew }],
+                replacements // Pasamos el objeto de reemplazos completo
+            );
+            
+            restartGameButton.style.display = 'block';
+            nextQuestionButton.style.display = 'none';
+            [lifeline5050Button, lifelineCallButton, lifelineAudienceButton].forEach(b => b.disabled = true);
+        }
+        
+        function resetFullGameState() { 
+            currentQuestionIndex = 0;
+            score = 0;
+            used5050 = false; usedCall = false; usedAudience = false;
+            gameInProgress = false;
+            currentQuestionsForGame = [];
+
+            [lifeline5050Button, lifelineCallButton, lifelineAudienceButton].forEach(b => b.disabled = true); 
+            startGameButton.style.display = 'block';
+            restartGameButton.style.display = 'none';
+            nextQuestionButton.style.display = 'none';
+            walkAwayButton.style.display = 'none';
+            if(currentQuestionLevelEl) currentQuestionLevelEl.style.display = 'none';
+            
+            optionButtons.forEach(button => {
+                const prefix = button.dataset.optionPrefix;
+                button.innerHTML = `${prefix}) ${t('optionLoadQuestions')}`;
+                button.disabled = true;
+                button.className = 'option-button tex2jax_process'; 
+            });
+            if (jsonSuccessfullyLoaded) questionTextEl.textContent = t('clickStart');
+            else questionTextEl.textContent = t('loadQuestionsFirst');
+            
+            generatePrizeLadder(); 
+            updatePrizeLadderUI(); 
+        }
+        
+        function resetFullGameStateAndStartNew() {
+            resetFullGameState();
+        }
+
+        function actuallyStartGame() { 
+            if (!jsonSuccessfullyLoaded) {
+                showMessageBox('error', 'mustLoadQuestions', [{ textKey: 'understood', className: 'info' }]);
+                return;
+            }
+
+            if (!selectQuestionsForNewGame()) {
+                showMessageBox('error', 'notEnoughQuestionsForGame', [{ textKey: 'understood', className: 'info' }]);
+                startGameButton.style.display = 'block'; 
+                return;
+            }
+            
+            gameInProgress = true;
+            used5050 = false; usedCall = false; usedAudience = false;
+            [lifeline5050Button, lifelineCallButton, lifelineAudienceButton].forEach(b => b.disabled = false);
+            startGameButton.style.display = 'none';
+            restartGameButton.style.display = 'none';
+            if(currentQuestionLevelEl) currentQuestionLevelEl.style.display = 'block'; // Mostrar nivel de pregunta
+            
+            currentQuestionIndex = 0;
+            score = 0;
+            displayQuestion();
+        }
+
+        function initiateGameStart() { 
+            if (!hasPlayerNameBeenSet) {
+                gameLogoImage.style.display = 'none'; 
+                showPlayerNameInput();
+            } else {
+                actuallyStartGame();
+            }
+        }
+
         lifeline5050Button.addEventListener('click', () => {
-            const t = translations[currentLanguage];
-            if (!gameStarted || used5050 || !questions[currentQuestionIndex]) return;
-            showMessageBox(t.use5050, t.sure5050, [
-                { text: t.yes, className: "confirm", onClick: apply5050 }, { text: t.no, className: "cancel" }
+            if (!gameInProgress || used5050) return;
+            showMessageBox('use5050', 'sure5050', [
+                { textKey: 'yes', className: 'confirm', onClick: apply5050 }, { textKey: 'no', className: 'cancel' }
             ]);
         });
 
         function apply5050() {
             used5050 = true; lifeline5050Button.disabled = true;
-            const currentQuestion = questions[currentQuestionIndex];
-            const correctOption = currentQuestion.correct;
-            const allOptionKeys = Object.keys(currentQuestion.options);
-            const incorrectOptions = allOptionKeys.filter(key => key !== correctOption);
-            shuffleArray(incorrectOptions);
-
+            const question = currentQuestionsForGame[currentQuestionIndex];
+            const correctOpt = question.correct;
+            let incorrectOpts = Object.keys(question.options).filter(opt => opt !== correctOpt);
+            shuffleArray(incorrectOpts);
+            
             let hiddenCount = 0;
             optionButtons.forEach(button => {
                 const optKey = button.dataset.option;
-                if (incorrectOptions.slice(0, 2).includes(optKey) && hiddenCount < 2) {
-                    button.disabled = true; button.style.display = 'none';
+                if (incorrectOpts.slice(0, 2).includes(optKey) && hiddenCount < 2) {
+                    button.style.display = 'none'; 
                     hiddenCount++;
                 }
             });
         }
 
         lifelineCallButton.addEventListener('click', () => {
-            const t = translations[currentLanguage];
-            if (!gameStarted || usedCall || !questions[currentQuestionIndex]) return;
-            showMessageBox(t.useCall, t.sureCall, [
-                { text: t.yes, className: "confirm", onClick: applyCall }, { text: t.no, className: "cancel" }
+            if (!gameInProgress || usedCall) return;
+            showMessageBox('useCall', 'sureCall', [
+                { textKey: 'yes', className: 'confirm', onClick: applyCall }, { textKey: 'no', className: 'cancel' }
             ]);
         });
 
         function applyCall() {
-            const t = translations[currentLanguage];
             usedCall = true; lifelineCallButton.disabled = true;
-            const currentQuestion = questions[currentQuestionIndex];
-            const friendChoice = currentQuestion.correct;
-            const friendChoiceText = `${friendChoice}) <span class="tex2jax_process">${currentQuestion.options[friendChoice]}</span>`;
-            showMessageBox(t.friendCall, `${t.friendSays} ${friendChoiceText}.`, [{ text: t.understood, className: "info" }]);
+            const question = currentQuestionsForGame[currentQuestionIndex];
+            const friendChoice = question.correct; 
+            const friendChoiceText = `${friendChoice}) <span class="tex2jax_process">${question.options[friendChoice]}</span>`;
+            // La clave 'friendSays' ya contiene "{friendanswer}" en algunas traducciones, pero aquí se pasa como parte del mensaje.
+            // Para que funcione con t(), 'friendSays' debería ser "Tu amigo dice: {suggestion}" y pasar suggestion en replacements.
+            // Por ahora, se construye el mensaje directamente.
+             showMessageBox('friendCall', 'friendSays', 
+                [{ textKey: 'understood', className: 'info' }], 
+                { suggestion: friendChoiceText } // Asumiendo que 'friendSays' es "Tu amigo dice: {suggestion}"
+            );
+            // Si 'friendSays' es "Tu amigo dice: \"Creo que es la opción", entonces:
+            // processLatexText(t('friendSays') + " " + friendChoiceText + ".", messageBoxContentEl);
+            // Esto requiere ajustar cómo se llama showMessageBox o la estructura de la traducción.
+            // La forma actual es: showMessageBox('friendCall', 'friendSays', [...], { friendanswer: friendChoiceText});
+            // Y 'friendSays' es "Tu amigo dice: \"Creo que es la opción"
+            // Esto significa que la variable {friendanswer} no se usa.
+            // Lo correcto sería:
+            // friendSays: "Tu amigo dice: \"Creo que es la opción {answer}\"."
+            // Y llamar con: { answer: friendChoiceText }
+            // Por ahora, mantengo la lógica original de concatenación si la traducción no usa placeholder.
+            // Para la solución actual, si la traducción es "Tu amigo dice: \"Creo que es la opción",
+            // el friendChoiceText se añade después.
+            // Vamos a asegurar que la traducción 'friendSays' sea: "Tu amigo dice: \"Creo que es la opción {answer}\"."
+            // Y en translations: friendSays: "Tu amigo dice: \"Creo que es la opción {answer}\"."
+            // Y la llamada: showMessageBox('friendCall', 'friendSays', [{ textKey: 'understood', className: 'info' }], { answer: friendChoiceText});
+
+            // Corregido para usar placeholder en la traducción:
+            // translations.es.friendSays: "Tu amigo dice: \"Creo que es la opción {answer}\"."
+            // translations.ca.friendSays: "El teu amic diu: \"Crec que és l'opció {answer}\"."
+             showMessageBox('friendCall', 'friendSays', 
+                [{ textKey: 'understood', className: 'info' }], 
+                { answer: friendChoiceText }
+            );
         }
 
         lifelineAudienceButton.addEventListener('click', () => {
-            const t = translations[currentLanguage];
-            if (!gameStarted || usedAudience || !questions[currentQuestionIndex]) return;
-            showMessageBox(t.useAudience, t.sureAudience, [
-                { text: t.yes, className: "confirm", onClick: applyAudience }, { text: t.no, className: "cancel" }
+            if (!gameInProgress || usedAudience) return;
+            showMessageBox('useAudience', 'sureAudience', [
+                { textKey: 'yes', className: 'confirm', onClick: applyAudience }, { textKey: 'no', className: 'cancel' }
             ]);
         });
 
         function applyAudience() {
-            const t = translations[currentLanguage];
             usedAudience = true; lifelineAudienceButton.disabled = true;
-            const currentQuestion = questions[currentQuestionIndex];
-            const options = Object.keys(currentQuestion.options);
-            const correctOption = currentQuestion.correct;
+            const question = currentQuestionsForGame[currentQuestionIndex];
+            const options = Object.keys(question.options);
+            const correctOpt = question.correct;
             const votes = {}; let remainingPercentage = 100;
 
-            const correctPercentage = Math.floor(Math.random() * 31) + 50;
-            votes[correctOption] = correctPercentage;
+            const correctPercentage = Math.floor(Math.random() * 31) + 50; 
+            votes[correctOpt] = correctPercentage;
             remainingPercentage -= correctPercentage;
 
-            const incorrectOptions = options.filter(opt => opt !== correctOption);
-            shuffleArray(incorrectOptions);
-            for (let i = 0; i < incorrectOptions.length; i++) {
-                if (i === incorrectOptions.length - 1) {
-                    votes[incorrectOptions[i]] = remainingPercentage;
+            const incorrectOpts = options.filter(opt => opt !== correctOpt);
+            shuffleArray(incorrectOpts);
+            for (let i = 0; i < incorrectOpts.length; i++) {
+                if (i === incorrectOpts.length - 1) {
+                    votes[incorrectOpts[i]] = remainingPercentage;
                 } else {
-                    const percentage = Math.floor(Math.random() * (remainingPercentage / (incorrectOptions.length - i) * 1.5));
-                    votes[incorrectOptions[i]] = Math.min(percentage, remainingPercentage);
-                    remainingPercentage -= votes[incorrectOptions[i]];
+                    const perc = Math.floor(Math.random() * (remainingPercentage / (incorrectOpts.length - i) * 1.5));
+                    votes[incorrectOpts[i]] = Math.min(perc, remainingPercentage);
+                    remainingPercentage -= votes[incorrectOpts[i]];
                 }
             }
-            let currentSum = Object.values(votes).reduce((a, b) => a + b, 0);
-            if (currentSum !== 100 && votes[correctOption] !== undefined) {
-                 votes[correctOption] += (100 - currentSum);
-                 votes[correctOption] = Math.max(0, Math.min(100, votes[correctOption]));
+             let currentSum = Object.values(votes).reduce((a, b) => a + b, 0);
+            if (currentSum !== 100 && votes[correctOpt]) {
+                 votes[correctOpt] += (100 - currentSum);
+                 votes[correctOpt] = Math.max(0, Math.min(100, votes[correctOpt]));
             }
 
-            let audienceMessage = `${t.audienceVotes}<br><div style="text-align: left; display: inline-block;">`;
+            let audienceMsg = ""; // Se construirá dentro del loop
             options.forEach(opt => {
-                audienceMessage += `${opt}) <span class="tex2jax_process">${currentQuestion.options[opt]}</span>: ${votes[opt] || 0}%<br>`;
+                audienceMsg += `${opt}) <span class="tex2jax_process">${question.options[opt]}</span>: ${votes[opt] || 0}%<br>`;
             });
-            audienceMessage += `</div>`;
-            showMessageBox(t.audienceVote, audienceMessage, [{ text: t.understood, className: "info" }]);
+            // Usar una clave de traducción que acepte el contenido HTML o pasar el HTML directamente.
+            // Para este caso, es mejor usar una clave que diga "El público vota:" y luego insertar el HTML.
+            // O modificar showMessageBox para aceptar HTML directo para el contenido.
+            // Por ahora, la clave 'audienceVotes' es "El público vota:"
+            // Y el contenido se concatena.
+            // Mejor: audienceVoteContent: "{votesHTML}"
+            // Y pasar { votesHTML: audienceMsg }
+            // Por ahora, modifico la llamada directa como en la versión anterior.
+            messageBoxTitleEl.textContent = t('audienceVote'); 
+            processLatexText(t('audienceVotes') + "<br>" + audienceMsg, messageBoxContentEl); 
+            messageBoxButtonsEl.innerHTML = ''; 
+            const okBtn = document.createElement('button');
+            okBtn.textContent = t('understood');
+            okBtn.className = 'message-box-button info';
+            okBtn.onclick = hideMessageBox;
+            messageBoxButtonsEl.appendChild(okBtn);
+            messageBoxOverlay.classList.add('show'); 
         }
 
-        // --- Event Listeners ---
         loadJsonButton.addEventListener('click', () => {
             const url = jsonUrlInput.value.trim();
-            const t = translations[currentLanguage];
-            if (!url) { showStatus(t.enterValidUrl, 'error'); return; }
+            if (!url) { showStatus('enterValidUrl', 'error'); return; }
             loadQuestionsFromUrl(url);
         });
 
         document.getElementById('langCA').addEventListener('click', () => changeLanguage('ca'));
         document.getElementById('langES').addEventListener('click', () => changeLanguage('es'));
 
-        startGameButton.addEventListener('click', startGame);
-        restartGameButton.addEventListener('click', requestNewGameRound);
+        startGameButton.addEventListener('click', initiateGameStart);
+        restartGameButton.addEventListener('click', resetFullGameStateAndStartNew);
+        walkAwayButton.addEventListener('click', handleWalkAway);
         submitPlayerNameButton.addEventListener('click', handleNameSubmission);
 
         jsonUrlInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') loadJsonButton.click(); });
         playerNameInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') submitPlayerNameButton.click(); });
 
-        // --- Initial Setup ---
         window.onload = function() {
-            initializeLanguage();
-            generatePrizeLadder();
-            checkUrlParameters();
+            initializeLanguage(); 
+            generatePrizeLadder(); 
+            checkUrlParameters(); 
 
-            if (!questionsLoaded) {
-                resetAllGamesState();
-                jsonLoaderSection.classList.remove('hidden');
+            if (!jsonSuccessfullyLoaded) { 
+                resetFullGameState(); 
+                jsonLoaderSection.classList.remove('hidden'); 
             }
-
+            
             function waitForMathJax() {
                 if (window.MathJax && window.MathJax.typesetPromise) {
                     console.log('MathJax está listo.');
