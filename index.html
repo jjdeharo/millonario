@@ -130,7 +130,7 @@
 
         .lifelines {
             display: flex; justify-content: center; gap: 15px;
-            margin-bottom: 15px; /* Reducido para dar espacio al nivel de pregunta */
+            margin-bottom: 15px; 
             flex-wrap: wrap;
         }
 
@@ -150,7 +150,7 @@
         .current-question-level-display {
             font-size: 1.1em;
             font-weight: bold;
-            color: #D35400; /* Naranja oscuro, como el título */
+            color: #D35400; 
             margin-bottom: 10px;
             text-align: center;
         }
@@ -226,7 +226,7 @@
         .player-name-input::placeholder { color: #757575; }
 
         .game-area-with-ladder { display: flex; width: 100%; justify-content: space-between; align-items: flex-start; gap: 25px; }
-        .main-game-content { flex-grow: 1; display: flex; flex-direction: column; gap: 20px; /* Reducido para acomodar nivel pregunta */ }
+        .main-game-content { flex-grow: 1; display: flex; flex-direction: column; gap: 20px; }
 
         .prize-ladder {
             background-color: rgba(245, 245, 245, 0.85);
@@ -495,7 +495,7 @@
                 useCall: "¿Usar Llamada?",
                 sureCall: "¿Seguro que quieres usar la llamada?",
                 friendCall: "Llamada a un amigo",
-                friendSays: "Tu amigo dice: \"Creo que es la opción",
+                friendSays: "Tu amigo dice: \"Creo que es la opción {answer}\".", // Placeholder añadido
                 understood: "Entendido",
                 useAudience: "¿Usar Público?",
                 sureAudience: "¿Seguro que quieres usar el comodín del público?",
@@ -514,7 +514,7 @@
                 questionsAvailable: "preguntes disponibles en total.",
                 notEnoughQuestionsForGame: "No hi ha prou preguntes de totes les dificultats per a una partida completa (15 preguntes). Si us plau, carrega un fitxer JSON amb més varietat.",
                 errorLoadingNotEnoughPerDifficulty: "Error en carregar: No hi ha prou preguntes per a la dificultat '{difficulty}' (es necessiten {needed}, disponibles {available}). Carrega un JSON més complet.",
-                currentQuestionLevelText: "Pregunta {current} de {total}", // Nueva traducción
+                currentQuestionLevelText: "Pregunta {current} de {total}", 
                 enterValidUrl: "URL no vàlida.",
                 error: "Error:",
                 jsonInvalid: "JSON no vàlid.",
@@ -560,7 +560,7 @@
                 useCall: "Usar Trucada?",
                 sureCall: "Vols usar la trucada?",
                 friendCall: "Trucada a un amic",
-                friendSays: "El teu amic diu: \"Crec que és l'opció",
+                friendSays: "El teu amic diu: \"Crec que és l'opció {answer}\".", // Placeholder añadido
                 understood: "Entès",
                 useAudience: "Usar Públic?",
                 sureAudience: "Vols usar el comodí del públic?",
@@ -598,7 +598,7 @@
         const playerNameModalOverlay = document.getElementById('playerNameModalOverlay');
         const playerNameInput = document.getElementById('playerNameInput');
         const submitPlayerNameButton = document.getElementById('submitPlayerNameButton');
-        const currentQuestionLevelEl = document.getElementById('currentQuestionLevel'); // Nuevo elemento
+        const currentQuestionLevelEl = document.getElementById('currentQuestionLevel'); 
 
         // --- Game Configuration (Spain Format) ---
         const QUESTIONS_PER_FULL_GAME = 15;
@@ -644,7 +644,6 @@
                 if (text === undefined) return key; 
             }
             for (const placeholder in replacements) {
-                // Uso de RegExp para reemplazo global de placeholders
                 text = text.replace(new RegExp(`\\{${placeholder}\\}`, 'g'), replacements[placeholder]);
             }
             return text;
@@ -657,29 +656,58 @@
         }
         
         function translatePage() {
+            const t_fn = (key, replacements = {}) => t(key, replacements); // Alias for brevity
+
+            // Translate general UI elements based on data-i18n
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.dataset.i18n;
-                 el.textContent = t(key);
+                // Crucial: If game is in progress, DO NOT re-translate the actual question text
+                // or the option button's dynamic content (which is set by displayQuestion).
+                // The data-i18n on option buttons is for their *initial* state text.
+                if (gameInProgress && (el.id === 'questionText' || el.classList.contains('option-button'))) {
+                    return; // Skip these specific elements during an active game
+                }
+                // If it's an option button and game is NOT in progress, it's handled below.
+                if (!gameInProgress && el.classList.contains('option-button')) {
+                    return;
+                }
+                el.textContent = t_fn(key);
             });
-             document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+
+            // Translate placeholders
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
                 translateAttribute(el, 'placeholder', el.dataset.i18nPlaceholder);
             });
-            document.querySelectorAll('[data-option-prefix]').forEach(el => {
-                 if (!jsonSuccessfullyLoaded || !gameInProgress) { 
-                    const prefix = el.dataset.optionPrefix;
-                    el.textContent = `${prefix}) ${t(el.dataset.i18n)}`;
-                }
-            });
 
-            document.title = t('title');
-             if (gameInProgress && currentQuestionLevelEl) { // Actualizar nivel de pregunta si el juego está en curso
-                currentQuestionLevelEl.textContent = t('currentQuestionLevelText', { current: currentQuestionIndex + 1, total: QUESTIONS_PER_FULL_GAME });
-            } else if (currentQuestionLevelEl) {
-                currentQuestionLevelEl.style.display = 'none';
+            // Set initial/default texts for question area and option buttons if game is NOT in progress
+            if (!gameInProgress) {
+                if (questionTextEl) {
+                    questionTextEl.textContent = jsonSuccessfullyLoaded ? t_fn('clickStart') : t_fn('loadQuestionsFirst');
+                }
+                optionButtons.forEach(button => {
+                    const prefix = button.dataset.optionPrefix;
+                    const i18nKeyForInitialText = button.dataset.i18n || 'optionLoadQuestions';
+                    button.innerHTML = ''; // Clear previous content
+                    button.appendChild(document.createTextNode(`${prefix}) ${t_fn(i18nKeyForInitialText)}`));
+                });
             }
 
+            document.title = t_fn('title');
+
+            // Update current question level display (this IS language dependent)
+            if (currentQuestionLevelEl) {
+                if (gameInProgress) {
+                    currentQuestionLevelEl.textContent = t_fn('currentQuestionLevelText', { current: currentQuestionIndex + 1, total: QUESTIONS_PER_FULL_GAME });
+                    currentQuestionLevelEl.style.display = 'block';
+                } else {
+                    currentQuestionLevelEl.style.display = 'none';
+                }
+            }
+            
+            // Re-render MathJax for any elements that might have been translated and contain LaTeX.
+            // This is a general call; specific MathJax updates happen when content is set.
             if (window.MathJax && window.MathJax.typesetPromise) {
-                setTimeout(() => window.MathJax.typesetPromise().catch(err => console.error('MathJax error:', err)), 100);
+                 setTimeout(() => window.MathJax.typesetPromise().catch(err => console.error('MathJax error during translatePage:', err)), 100);
             }
         }
         
@@ -698,14 +726,24 @@
 
         function changeLanguage(lang) {
             currentLanguage = lang;
-            localStorage.setItem('gameLanguage', lang);
+            localStorage.setItem('gameLanguage', lang); 
             updateLanguageButtons();
-            translatePage();
-            if (prizeLadderElement.children.length > 0) generatePrizeLadder();
-            if (!gameInProgress && !jsonSuccessfullyLoaded) {
-                questionTextEl.textContent = t('loadQuestionsFirst');
-            } else if (!gameInProgress && jsonSuccessfullyLoaded) {
-                 questionTextEl.textContent = t('clickStart');
+            translatePage(); 
+
+            if (prizeLadderElement.children.length > 0) {
+                generatePrizeLadder(); 
+                updatePrizeLadderUI(); 
+            }
+            // If game is in progress, ensure MathJax is re-rendered for question and options
+            // as their surrounding might have changed or MathJax needs a nudge.
+            if (gameInProgress && window.MathJax && window.MathJax.typesetPromise) {
+                const elementsToTypeset = [questionTextEl];
+                optionButtons.forEach(btn => {
+                    const spanInside = btn.querySelector('.tex2jax_process');
+                    if (spanInside) elementsToTypeset.push(spanInside);
+                });
+                window.MathJax.typesetPromise(elementsToTypeset.filter(el => el))
+                    .catch(err => console.error('MathJax error after language change during game:', err));
             }
         }
 
@@ -725,7 +763,7 @@
         function processLatexText(text, element) {
             element.innerHTML = text; 
             if (window.MathJax && window.MathJax.typesetPromise) {
-                setTimeout(() => window.MathJax.typesetPromise([element]).catch(err => console.error('MathJax error:', err)), 0);
+                setTimeout(() => window.MathJax.typesetPromise([element]).catch(err => console.error('MathJax error in processLatexText:', element, err)), 0);
             }
         }
 
@@ -762,7 +800,7 @@
                 showStatus('questionsLoaded', 'success', { count: allQuestionsLoaded.length });
                 startGameButton.disabled = false;
                 questionTextEl.textContent = t('clickStart');
-                if(currentQuestionLevelEl) currentQuestionLevelEl.style.display = 'none'; // Ocultar nivel de pregunta
+                if(currentQuestionLevelEl) currentQuestionLevelEl.style.display = 'none'; 
                 jsonLoaderSection.classList.add('hidden');
                 resetFullGameState(); 
                 return true;
@@ -787,7 +825,7 @@
         }
 
         function showMessageBox(titleKey, contentKey, buttonsConfig, contentReplacements = {}) {
-            messageBoxTitleEl.textContent = t(titleKey, contentReplacements); // Pasar replacements también al título
+            messageBoxTitleEl.textContent = t(titleKey, contentReplacements); 
             processLatexText(t(contentKey, contentReplacements), messageBoxContentEl);
             messageBoxButtonsEl.innerHTML = '';
             buttonsConfig.forEach(btnInfo => {
@@ -896,7 +934,7 @@
             const question = currentQuestionsForGame[currentQuestionIndex];
             processLatexText(question.question, questionTextEl);
 
-            if (currentQuestionLevelEl) { // Mostrar y actualizar nivel de pregunta
+            if (currentQuestionLevelEl) { 
                 currentQuestionLevelEl.textContent = t('currentQuestionLevelText', { current: currentQuestionIndex + 1, total: QUESTIONS_PER_FULL_GAME });
                 currentQuestionLevelEl.style.display = 'block';
             }
@@ -918,7 +956,7 @@
                 button.onclick = () => handleAnswer(optionKey);
 
                 if (window.MathJax && window.MathJax.typesetPromise) {
-                     setTimeout(() => window.MathJax.typesetPromise([span]).catch(err => console.error('MathJax error:', err)),0);
+                     setTimeout(() => window.MathJax.typesetPromise([span]).catch(err => console.error('MathJax error in option button:', err)),0);
                 }
             });
 
@@ -970,7 +1008,7 @@
         function endCurrentGame(isWinner, isMillionaire = false, didWalkAway = false, walkAwayAmount = "0 €") {
             gameInProgress = false;
             walkAwayButton.style.display = 'none';
-            if(currentQuestionLevelEl) currentQuestionLevelEl.style.display = 'none'; // Ocultar nivel de pregunta
+            if(currentQuestionLevelEl) currentQuestionLevelEl.style.display = 'none'; 
             currentQuestionsForGame.forEach(q => playedQuestionsThisSession.add(q.originalIndex));
 
             let titleKey = 'gameOver';
@@ -980,7 +1018,7 @@
 
 
             if (didWalkAway) {
-                titleKey = 'gameOver'; // O un título más específico como 'playerWalksAwayTitle'
+                titleKey = 'gameOver'; 
                 messageKey = 'walkAwayMessage';
                 finalAmount = walkAwayAmount;
                 replacements.amount = finalAmount;
@@ -995,38 +1033,29 @@
                 finalAmount = prizeLevels[score -1];
                 replacements.amount = finalAmount;
             } else { 
-                titleKey = 'gameOver'; // Título genérico para pérdida
-                messageKey = 'gameOverLost'; // Este mensaje ya incluye {playerName}
+                titleKey = 'gameOver'; 
+                messageKey = 'gameOverLost'; 
                 if (score -1 >= SAFE_HAVEN_2_INDEX) { 
                     finalAmount = prizeLevels[SAFE_HAVEN_2_INDEX];
-                    messageKey = 'prizeWonWithSafeHaven'; // Este mensaje necesita {amount}
+                    messageKey = 'prizeWonWithSafeHaven'; 
                 } else if (score -1 >= SAFE_HAVEN_1_INDEX) {
                     finalAmount = prizeLevels[SAFE_HAVEN_1_INDEX];
-                    messageKey = 'prizeWonWithSafeHaven'; // Este mensaje necesita {amount}
+                    messageKey = 'prizeWonWithSafeHaven'; 
                 } else {
                     finalAmount = "0 €";
-                    // messageKey se queda como 'gameOverLost' o podría ser 'prizeWonNoSafeHaven'
-                    // Si usamos gameOverLost, ya tiene playerName. Si usamos prizeWonNoSafeHaven, no lo tiene.
-                    // Vamos a asegurar que gameOverLost se use para el contenido y pasemos playerName.
-                    // Si usamos prizeWonNoSafeHaven, no necesita playerName.
-                     messageKey = 'prizeWonNoSafeHaven'; // Este es más específico para 0€
+                     messageKey = 'prizeWonNoSafeHaven'; 
                 }
                  replacements.amount = finalAmount;
             }
             
-            // Aseguramos que el titleKey no sea el que contiene {playerName} si el messageKey ya lo hace, o viceversa.
-            // Si titleKey es 'gameOverLost', ya tiene {playerName}.
-            // Si messageKey es 'gameOverLost', ya tiene {playerName}.
-            // Para el caso de perder, el título debería ser genérico "Fin del juego" y el contenido "¡Oh no, {playerName}..."
-            if (!isWinner && !isMillionaire && !didWalkAway) { // Caso específico de perder por respuesta incorrecta
-                 titleKey = 'gameOver'; // Título genérico
-                 messageKey = 'gameOverLost'; // Contenido con el nombre
+            if (!isWinner && !isMillionaire && !didWalkAway) { 
+                 titleKey = 'gameOver'; 
+                 messageKey = 'gameOverLost'; 
             }
-
 
             showMessageBox(titleKey, messageKey,
                 [{ textKey: 'restartGame', className: 'confirm', onClick: resetFullGameStateAndStartNew }],
-                replacements // Pasamos el objeto de reemplazos completo
+                replacements 
             );
             
             restartGameButton.style.display = 'block';
@@ -1050,12 +1079,19 @@
             
             optionButtons.forEach(button => {
                 const prefix = button.dataset.optionPrefix;
-                button.innerHTML = `${prefix}) ${t('optionLoadQuestions')}`;
+                // Al resetear, usamos la clave i18n del botón para el texto inicial.
+                const i18nKeyForInitialText = button.dataset.i18n || 'optionLoadQuestions';
+                button.innerHTML = ''; // Limpiar contenido anterior (incluyendo spans de MathJax)
+                button.appendChild(document.createTextNode(`${prefix}) ${t(i18nKeyForInitialText)}`));
                 button.disabled = true;
                 button.className = 'option-button tex2jax_process'; 
             });
-            if (jsonSuccessfullyLoaded) questionTextEl.textContent = t('clickStart');
-            else questionTextEl.textContent = t('loadQuestionsFirst');
+
+            if (jsonSuccessfullyLoaded) {
+                 if (questionTextEl) questionTextEl.textContent = t('clickStart');
+            } else {
+                if (questionTextEl) questionTextEl.textContent = t('loadQuestionsFirst');
+            }
             
             generatePrizeLadder(); 
             updatePrizeLadderUI(); 
@@ -1082,7 +1118,7 @@
             [lifeline5050Button, lifelineCallButton, lifelineAudienceButton].forEach(b => b.disabled = false);
             startGameButton.style.display = 'none';
             restartGameButton.style.display = 'none';
-            if(currentQuestionLevelEl) currentQuestionLevelEl.style.display = 'block'; // Mostrar nivel de pregunta
+            if(currentQuestionLevelEl) currentQuestionLevelEl.style.display = 'block'; 
             
             currentQuestionIndex = 0;
             score = 0;
@@ -1134,35 +1170,9 @@
             const question = currentQuestionsForGame[currentQuestionIndex];
             const friendChoice = question.correct; 
             const friendChoiceText = `${friendChoice}) <span class="tex2jax_process">${question.options[friendChoice]}</span>`;
-            // La clave 'friendSays' ya contiene "{friendanswer}" en algunas traducciones, pero aquí se pasa como parte del mensaje.
-            // Para que funcione con t(), 'friendSays' debería ser "Tu amigo dice: {suggestion}" y pasar suggestion en replacements.
-            // Por ahora, se construye el mensaje directamente.
-             showMessageBox('friendCall', 'friendSays', 
+            showMessageBox('friendCall', 'friendSays', 
                 [{ textKey: 'understood', className: 'info' }], 
-                { suggestion: friendChoiceText } // Asumiendo que 'friendSays' es "Tu amigo dice: {suggestion}"
-            );
-            // Si 'friendSays' es "Tu amigo dice: \"Creo que es la opción", entonces:
-            // processLatexText(t('friendSays') + " " + friendChoiceText + ".", messageBoxContentEl);
-            // Esto requiere ajustar cómo se llama showMessageBox o la estructura de la traducción.
-            // La forma actual es: showMessageBox('friendCall', 'friendSays', [...], { friendanswer: friendChoiceText});
-            // Y 'friendSays' es "Tu amigo dice: \"Creo que es la opción"
-            // Esto significa que la variable {friendanswer} no se usa.
-            // Lo correcto sería:
-            // friendSays: "Tu amigo dice: \"Creo que es la opción {answer}\"."
-            // Y llamar con: { answer: friendChoiceText }
-            // Por ahora, mantengo la lógica original de concatenación si la traducción no usa placeholder.
-            // Para la solución actual, si la traducción es "Tu amigo dice: \"Creo que es la opción",
-            // el friendChoiceText se añade después.
-            // Vamos a asegurar que la traducción 'friendSays' sea: "Tu amigo dice: \"Creo que es la opción {answer}\"."
-            // Y en translations: friendSays: "Tu amigo dice: \"Creo que es la opción {answer}\"."
-            // Y la llamada: showMessageBox('friendCall', 'friendSays', [{ textKey: 'understood', className: 'info' }], { answer: friendChoiceText});
-
-            // Corregido para usar placeholder en la traducción:
-            // translations.es.friendSays: "Tu amigo dice: \"Creo que es la opción {answer}\"."
-            // translations.ca.friendSays: "El teu amic diu: \"Crec que és l'opció {answer}\"."
-             showMessageBox('friendCall', 'friendSays', 
-                [{ textKey: 'understood', className: 'info' }], 
-                { answer: friendChoiceText }
+                { answer: friendChoiceText } // Usar el placeholder {answer}
             );
         }
 
@@ -1201,20 +1211,13 @@
                  votes[correctOpt] = Math.max(0, Math.min(100, votes[correctOpt]));
             }
 
-            let audienceMsg = ""; // Se construirá dentro del loop
+            let audienceMsgHTML = ""; 
             options.forEach(opt => {
-                audienceMsg += `${opt}) <span class="tex2jax_process">${question.options[opt]}</span>: ${votes[opt] || 0}%<br>`;
+                audienceMsgHTML += `${opt}) <span class="tex2jax_process">${question.options[opt]}</span>: ${votes[opt] || 0}%<br>`;
             });
-            // Usar una clave de traducción que acepte el contenido HTML o pasar el HTML directamente.
-            // Para este caso, es mejor usar una clave que diga "El público vota:" y luego insertar el HTML.
-            // O modificar showMessageBox para aceptar HTML directo para el contenido.
-            // Por ahora, la clave 'audienceVotes' es "El público vota:"
-            // Y el contenido se concatena.
-            // Mejor: audienceVoteContent: "{votesHTML}"
-            // Y pasar { votesHTML: audienceMsg }
-            // Por ahora, modifico la llamada directa como en la versión anterior.
+            
             messageBoxTitleEl.textContent = t('audienceVote'); 
-            processLatexText(t('audienceVotes') + "<br>" + audienceMsg, messageBoxContentEl); 
+            processLatexText(t('audienceVotes') + "<br>" + audienceMsgHTML, messageBoxContentEl); 
             messageBoxButtonsEl.innerHTML = ''; 
             const okBtn = document.createElement('button');
             okBtn.textContent = t('understood');
