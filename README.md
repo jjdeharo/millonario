@@ -1,6 +1,6 @@
-# ¿Quién quiere ser millonario?
+# El gran reto
 
-Este proyecto, creado a partir de una bifurcación del original de [Ernesto Boixader](https://github.com/eboixader/magnitunid), es una versión web del famoso concurso “¿Quién quiere ser millonario?”. Permite cargar preguntas desde un archivo JSON externo, usar comodines clásicos y disfrutar de una experiencia interactiva.
+Este proyecto, creado a partir de una bifurcación del original de [Ernesto Boixader](https://github.com/eboixader/magnitunid), es una versión web del famoso concurso “El gran reto”. Permite cargar preguntas desde un archivo JSON externo, usar comodines clásicos y disfrutar de una experiencia interactiva.
 
 ## Características
 
@@ -68,7 +68,7 @@ El juego necesita un archivo con la estructura siguiente.
 
 ---
 
-## Prompt para generar JSON de preguntas – ¿Quién quiere ser millonario?
+## Prompt para generar JSON de preguntas – El gran reto
 Utiliza tu IA favorita para crear las preguntas con el prompt que hay a continuación.
 
 ````markdown
